@@ -1,0 +1,34 @@
+{
+    "heading" : "Text",
+    "content": {
+        "chapterCount": 3,
+        "chapters": {
+            "chapter1": {
+                "chapterName": "name1",
+                "chapterContent": {
+                    "pages": 2,
+                    "page_1": {
+                        "pageType": "text",
+                        "pageContent": "file.txt"
+                    },
+                    "page_2": {
+                        "pageType": "test",
+                        "pageContent": "test.txt"
+                    }
+                }
+            },
+            "chapter2": {
+                "chapterName": "name2",
+                "chapterContent": {
+                    "pages": 0
+                }
+            },
+            "chapter3": {
+                "chapterName": "name3",
+                "chapterContent": {
+                    "pages": 0
+                }
+            }
+        }
+    }
+}
