@@ -1,0 +1,40 @@
+{
+  "heading": "Text",
+  "content": {
+    "chapterCount": 2,
+    "chapters": {
+      "chapter1": {
+        "chapterName": "Introduction",
+        "chapterContent": {
+          "pages": 2,
+          "page_1": {
+            "pageType": "text",
+            "pageContent": "introduction1.rtf"
+          },
+          "page_2": {
+            "pageType": "text",
+            "pageContent": "introduction2.rtf"
+          }
+        }
+      },
+      "chapter2": {
+        "chapterName": "Chapter One",
+        "chapterContent": {
+          "pages": 3,
+          "page_1": {
+            "pageType": "text",
+            "pageContent": "chapter1_page1.rtf"
+          },
+          "page_2": {
+            "pageType": "text",
+            "pageContent": "chapter1_page2.rtf"
+          },
+          "page_3": {
+            "pageType": "text",
+            "pageContent": "chapter1_page3.rtf"
+          }
+        }
+      }
+    }
+  }
+}
