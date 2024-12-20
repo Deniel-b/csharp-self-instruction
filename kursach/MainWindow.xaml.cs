@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -13,8 +14,9 @@ namespace kursach
 {
     public partial class MainWindow : Window
     {
-        private Chapter _currentChapter;
+        private object _currentChapter;
         private int _currentPageIndex = 1;
+        private int _pageIndex = 1;
 
         public MainWindow()
         {
@@ -50,7 +52,9 @@ namespace kursach
                 chapterButton.Click += (s, e) =>
                 {
                     var button = s as Button;
-                    OpenTextFile($"{button.Content}" + "/introduction1.rtf");
+                    _currentChapter = button.Content;
+                    _currentPageIndex = 1;
+                    OpenTextFile($"{_currentChapter}/{_currentChapter}" + _currentPageIndex+".rtf");
                 };
 
                 ChaptersPanel.Children.Add(chapterButton);
@@ -60,12 +64,14 @@ namespace kursach
 
         private void Page_Back(object sender, RoutedEventArgs e)
         {
-            
+            _currentPageIndex--;
+            OpenTextFile($"{_currentChapter}/{_currentChapter}" + _currentPageIndex + ".rtf");
         }
 
         private void Page_Next(object sender, RoutedEventArgs e)
         {
-            
+            _currentPageIndex++;
+            OpenTextFile($"{_currentChapter}/{_currentChapter}" + _currentPageIndex + ".rtf");
         }
 
         public void OpenTextFile(string path)
@@ -77,10 +83,17 @@ namespace kursach
             );
 
 
-
-            using (FileStream fileStream = new FileStream("../../src/texts/" + path, FileMode.Open))
+            try
             {
-                range.Load(fileStream, DataFormats.Rtf);
+                using (FileStream fileStream = new FileStream("../../src/texts/" + path, FileMode.Open))
+                {
+                    range.Load(fileStream, DataFormats.Rtf);
+                }
+                _pageIndex = _currentPageIndex;
+            }
+            catch(FileNotFoundException)  
+            {
+                _currentPageIndex = _pageIndex;
             }
         }
     }

@@ -23,15 +23,15 @@
           "pages": 3,
           "page_1": {
             "pageType": "text",
-            "pageContent": "chapter1_page1.rtf"
+            "pageContent": "Chapter One1.rtf"
           },
           "page_2": {
             "pageType": "text",
-            "pageContent": "chapter1_page2.rtf"
+            "pageContent": "Chapter One2.rtf"
           },
           "page_3": {
             "pageType": "text",
-            "pageContent": "chapter1_page3.rtf"
+            "pageContent": "Chapter One3.rtf"
           }
         }
       }
