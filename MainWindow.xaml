@@ -1,0 +1,88 @@
+<Window x:Class="kursach.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:kursach"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="230"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <ScrollViewer Grid.Row="0"
+                      Grid.Column="0"
+                      VerticalScrollBarVisibility="Auto"
+                      Background="#1E1E1E">
+            <StackPanel x:Name="ChaptersPanel"
+                        Orientation="Vertical"
+                        Margin="0"
+                        Background="#1E1E1E"/>
+        </ScrollViewer>
+
+        <Grid Grid.Row="0" Grid.Column="1" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackPanel x:Name="PageStepperPanel"
+                        Grid.Row="0"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Left"
+                        Margin="0,0,0,10"/>
+            <TextBlock x:Name="PageTitleBlock"
+                       Grid.Row="1"
+                       FontSize="20"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,10"
+                       TextWrapping="Wrap"/>
+            <Grid Grid.Row="2">
+                <RichTextBox x:Name="myRichBox"
+                             IsReadOnly="True"
+                             Background="WhiteSmoke"
+                             VerticalScrollBarVisibility="Auto"/>
+                <ScrollViewer x:Name="TasksScrollViewer"
+                              Margin="0"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled"
+                              Visibility="Collapsed">
+                    <StackPanel x:Name="TasksPanel"
+                                Margin="0,10,0,0"/>
+                </ScrollViewer>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="1" Grid.Column="1" Background="LightGray">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="backButton"
+                    Grid.Column="0"
+                    Content="&lt;"
+                    Width="33"
+                    Height="25"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Click="Page_Back"/>
+
+            <Button x:Name="nextButton"
+                    Grid.Column="2"
+                    Content="&gt;"
+                    Width="33"
+                    Height="25"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Click="Page_Next"/>
+        </Grid>
+    </Grid>
+</Window>
