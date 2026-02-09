@@ -167,6 +167,51 @@
               ]
             }
           ]
+        },
+        {
+          "id": "section-a58c083c3c2a",
+          "order": 2,
+          "title": "Новый раздел",
+          "pages": [
+            {
+              "id": "page-b7bc9fd40577",
+              "order": 1,
+              "title": "Новая страница",
+              "kind": "quiz",
+              "content": {
+                "format": "richText",
+                "source": ""
+              },
+              "tasks": [
+                {
+                  "id": "quiz-3e11b66b63df",
+                  "type": "quiz",
+                  "selection": "single",
+                  "question": "Новый вопрос",
+                  "title": "Новый тест",
+                  "scoring": {
+                    "points": 1,
+                    "partial": true
+                  },
+                  "options": [
+                    {
+                      "id": "opt-c297b199590f",
+                      "text": "Вариант 1",
+                      "isCorrect": true
+                    },
+                    {
+                      "id": "opt-ff32be04c589",
+                      "text": "Вариант 2",
+                      "isCorrect": false
+                    }
+                  ],
+                  "tests": [],
+                  "hints": []
+                }
+              ],
+              "resources": []
+            }
+          ]
         }
       ]
     },

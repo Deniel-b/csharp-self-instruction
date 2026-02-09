@@ -2,11 +2,13 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Globalization;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
+using System.Windows.Input;
 using Newtonsoft.Json;
 using kursach.Services;
 using ChapterModel = kursachFile.Chapter;
@@ -43,6 +45,7 @@ public partial class MainWindow : Window
     private readonly Dictionary<string, SectionButtonInfo> _sectionButtonMap = new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, PageButtonInfo> _pageButtonMap = new(StringComparer.OrdinalIgnoreCase);
     private readonly ContentLoader _contentLoader = new();
+    private readonly ContentValidator _contentValidator = new();
     private readonly CodeTaskRunner _codeTaskRunner = new();
 
     private static string MakeSectionKey(string chapterId, string sectionId) => $"{chapterId}|{sectionId}";
@@ -55,12 +58,17 @@ public partial class MainWindow : Window
     private string? _lastLoadedSectionId;
     private bool _isAdminMode;
     private bool _suppressAdminEvents;
+    private bool _suppressHistory;
     private ChapterModel? _adminChapter;
     private SectionModel? _adminSection;
     private PageModel? _adminPage;
     private LearningTaskModel? _adminTask;
     private TaskOptionModel? _adminOption;
     private TaskTestCaseModel? _adminTest;
+    private PageResourceModel? _adminResource;
+    private readonly List<HistoryEntry> _history = new();
+    private int _historyIndex = -1;
+    private Point _dragStartPoint;
     private readonly JsonSerializerSettings _adminJsonSettings = new()
     {
         NullValueHandling = NullValueHandling.Ignore
@@ -84,15 +92,39 @@ public partial class MainWindow : Window
         var loadResult = _contentLoader.Load(ContentPath);
         if (!loadResult.Success)
         {
-            MessageBox.Show(loadResult.Message ?? "Failed to load content.",
-                            "Load Error",
+            MessageBox.Show(loadResult.Message ?? "Не удалось загрузить контент.",
+                            "Ошибка загрузки",
                             MessageBoxButton.OK,
                             MessageBoxImage.Error);
             return;
         }
 
-        _course = loadResult.Course!;
+        var course = loadResult.Course!;
+        var issues = _contentValidator.Validate(course, ResolveAssetsRoot());
+        if (issues.Count > 0)
+        {
+            LogValidationIssues(issues);
+            var errorCount = issues.Count(issue => issue.Severity == ContentIssueSeverity.Error);
+            var warningCount = issues.Count - errorCount;
+
+            if (errorCount > 0)
+            {
+                MessageBox.Show($"Контент содержит ошибки: {errorCount}. Подробности см. в logs/app.log.",
+                                "Ошибка проверки контента",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Error);
+                return;
+            }
+
+            if (warningCount > 0)
+            {
+                ShowAdminStatus($"Контент: {warningCount} предупреждений (см. logs/app.log)", isError: true);
+            }
+        }
+
+        _course = course;
         _navigator = new CourseNavigator(_course);
+        AppLogger.Info($"Контент загружен из {ResolveContentPath()}");
 
         if (!string.IsNullOrWhiteSpace(_course.Title))
         {
@@ -103,8 +135,8 @@ public partial class MainWindow : Window
 
         if (_chapters.Count == 0)
         {
-            MessageBox.Show("No chapters defined in the content manifest.",
-                            "Load Error",
+            MessageBox.Show("В контенте не найдено ни одной главы.",
+                            "Ошибка загрузки",
                             MessageBoxButton.OK,
                             MessageBoxImage.Error);
             return;
@@ -113,6 +145,7 @@ public partial class MainWindow : Window
         RenderNavigation();
         NavigateToFirstPage();
         InitializeAdminUi();
+        InitializeHistory("Контент загружен");
     }
 
     private void NavigateToFirstPage()
@@ -425,8 +458,8 @@ public partial class MainWindow : Window
     {
         if (_navigator is null)
         {
-            MessageBox.Show("Course content is not loaded yet.",
-                            "Navigation Error",
+            MessageBox.Show("Контент еще не загружен.",
+                            "Ошибка навигации",
                             MessageBoxButton.OK,
                             MessageBoxImage.Warning);
             return;
@@ -435,8 +468,8 @@ public partial class MainWindow : Window
         var result = _navigator.NavigateTo(chapterId, sectionId, pageIndex);
         if (!result.Success && result.FailureKind is NavigationFailureKind.NotFoundChapter or NavigationFailureKind.NotFoundSection)
         {
-            MessageBox.Show(result.Message ?? "Navigation target not found.",
-                            "Navigation Error",
+            MessageBox.Show(result.Message ?? "Цель навигации не найдена.",
+                            "Ошибка навигации",
                             MessageBoxButton.OK,
                             MessageBoxImage.Warning);
             return;
@@ -463,8 +496,8 @@ public partial class MainWindow : Window
             }
 
             PageTitleBlock.Text = string.Empty;
-            MessageBox.Show(result.Message ?? "Selected section has no pages to display.",
-                            "Empty Section",
+            MessageBox.Show(result.Message ?? "В выбранном разделе нет страниц.",
+                            "Пустой раздел",
                             MessageBoxButton.OK,
                             MessageBoxImage.Information);
             UpdateNavigationHighlight();
@@ -525,8 +558,8 @@ public partial class MainWindow : Window
             {
                 ClearReadingContent();
                 HideTasksPanel();
-                MessageBox.Show("Requested page is outside of the available range.",
-                                "Navigation Error",
+                MessageBox.Show("Запрошенная страница вне доступного диапазона.",
+                                "Ошибка навигации",
                                 MessageBoxButton.OK,
                                 MessageBoxImage.Warning);
                 UpdateNavigationButtons(pages);
@@ -575,8 +608,8 @@ public partial class MainWindow : Window
 
         if (page.Content is null)
         {
-            MessageBox.Show($"Page \"{page.Title}\" does not specify reading content.",
-                            "Content Error",
+            MessageBox.Show($"Page \"{page.Title}\" не содержит материал для чтения.",
+                            "Ошибка контента",
                             MessageBoxButton.OK,
                             MessageBoxImage.Warning);
             return;
@@ -584,8 +617,8 @@ public partial class MainWindow : Window
 
         if (!string.Equals(page.Content.Format, "richText", StringComparison.OrdinalIgnoreCase))
         {
-            MessageBox.Show($"Unsupported page format: {page.Content.Format}",
-                            "Content Error",
+            MessageBox.Show($"Неподдерживаемый формат страницы: {page.Content.Format}",
+                            "Ошибка контента",
                             MessageBoxButton.OK,
                             MessageBoxImage.Warning);
             return;
@@ -593,8 +626,8 @@ public partial class MainWindow : Window
 
         if (string.IsNullOrWhiteSpace(page.Content.Source))
         {
-            MessageBox.Show($"Page \"{page.Title}\" does not specify a content source.",
-                            "Content Error",
+            MessageBox.Show($"Page \"{page.Title}\" не указан источник контента.",
+                            "Ошибка контента",
                             MessageBoxButton.OK,
                             MessageBoxImage.Warning);
             return;
@@ -602,7 +635,7 @@ public partial class MainWindow : Window
 
         var relativePath = page.Content.Source.Replace('/', Path.DirectorySeparatorChar);
         var filePath = Path.Combine(AssetsRoot, relativePath);
-        Trace.WriteLine($"Loading page: {filePath}");
+        Trace.WriteLine($"Загрузка страницы: {filePath}");
 
         try
         {
@@ -615,8 +648,8 @@ public partial class MainWindow : Window
         }
         catch (FileNotFoundException)
         {
-            MessageBox.Show($"Page file not found: {filePath}",
-                            "Read Error",
+            MessageBox.Show($"Файл страницы не найден: {filePath}",
+                            "Ошибка чтения",
                             MessageBoxButton.OK,
                             MessageBoxImage.Warning);
 
@@ -630,8 +663,8 @@ public partial class MainWindow : Window
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Failed to open page file: {ex.Message}",
-                            "Read Error",
+            MessageBox.Show($"Не удалось открыть файл страницы: {ex.Message}",
+                            "Ошибка чтения",
                             MessageBoxButton.OK,
                             MessageBoxImage.Error);
         }
@@ -683,7 +716,7 @@ public partial class MainWindow : Window
             {
                 TasksPanel.Children.Add(new TextBlock
                 {
-                    Text = "Tasks for this section will appear here.",
+                    Text = "Задания для этого раздела появятся здесь.",
                     FontStyle = FontStyles.Italic,
                     Foreground = Brushes.Gray
                 });
@@ -728,7 +761,7 @@ public partial class MainWindow : Window
         var layout = new StackPanel();
         container.Child = layout;
 
-        var heading = !string.IsNullOrWhiteSpace(task.Title) ? task.Title : "Quiz";
+        var heading = !string.IsNullOrWhiteSpace(task.Title) ? task.Title : "Тест";
         layout.Children.Add(new TextBlock
         {
             Text = heading,
@@ -750,7 +783,7 @@ public partial class MainWindow : Window
         {
             layout.Children.Add(new TextBlock
             {
-                Text = $"Points: {task.Scoring.Points}" + (task.Scoring.Partial ? " (partial credit supported)" : string.Empty),
+                Text = $"Баллы: {task.Scoring.Points}" + (task.Scoring.Partial ? " (возможен частичный зачёт)" : string.Empty),
                 FontSize = 12,
                 Foreground = Brushes.DimGray,
                 Margin = new Thickness(0, 4, 0, 0)
@@ -789,14 +822,14 @@ public partial class MainWindow : Window
 
         var checkButton = new Button
         {
-            Content = "Check Answer",
+            Content = "Проверить",
             Padding = new Thickness(12, 6, 12, 6),
             Margin = new Thickness(0, 0, 10, 0)
         };
 
         var resetButton = new Button
         {
-            Content = "Clear Selection",
+            Content = "Сбросить",
             Padding = new Thickness(12, 6, 12, 6)
         };
 
@@ -823,7 +856,7 @@ public partial class MainWindow : Window
         {
             var hintsExpander = new Expander
             {
-                Header = "Hints",
+                Header = "Подсказки",
                 Margin = new Thickness(0, 10, 0, 0),
                 IsExpanded = false
             };
@@ -861,7 +894,7 @@ public partial class MainWindow : Window
         var layout = new StackPanel();
         container.Child = layout;
 
-        var heading = !string.IsNullOrWhiteSpace(task.Title) ? task.Title : "Coding Task";
+        var heading = !string.IsNullOrWhiteSpace(task.Title) ? task.Title : "Задание с кодом";
         layout.Children.Add(new TextBlock
         {
             Text = heading,
@@ -901,14 +934,14 @@ public partial class MainWindow : Window
 
         var runButton = new Button
         {
-            Content = "Run Tests",
+            Content = "Запустить тесты",
             Padding = new Thickness(12, 6, 12, 6),
             Margin = new Thickness(0, 0, 10, 0)
         };
 
         var resetButton = new Button
         {
-            Content = "Reset Code",
+            Content = "Сбросить код",
             Padding = new Thickness(12, 6, 12, 6)
         };
 
@@ -938,7 +971,7 @@ public partial class MainWindow : Window
         {
             layout.Children.Add(new TextBlock
             {
-                Text = "Sample tests:",
+                Text = "Примеры тестов:",
                 Margin = new Thickness(0, 12, 0, 0),
                 FontWeight = FontWeights.SemiBold
             });
@@ -951,7 +984,7 @@ public partial class MainWindow : Window
                     FontFamily = new FontFamily("Consolas"),
                     FontSize = 12,
                     Margin = new Thickness(0, 6, 0, 0),
-                    Text = $"Input:\n{test.Input}\nExpected:\n{test.ExpectedOutput}"
+                    Text = $"Вход:\n{test.Input}\nОжидается:\n{test.ExpectedOutput}"
                 };
                 layout.Children.Add(testBlock);
 
@@ -971,7 +1004,7 @@ public partial class MainWindow : Window
         {
             layout.Children.Add(new TextBlock
             {
-                Text = "Hidden tests will also be executed when this feature is implemented.",
+                Text = "Скрытые тесты также выполняются.",
                 TextWrapping = TextWrapping.Wrap,
                 Margin = new Thickness(0, 12, 0, 0),
                 Foreground = Brushes.Gray
@@ -992,7 +1025,7 @@ public partial class MainWindow : Window
             Background = Brushes.WhiteSmoke,
             Child = new TextBlock
             {
-                Text = $"Task type \"{task.Type}\" is not supported yet.",
+                Text = $"Тип задания \"{task.Type}\" пока не поддерживается.",
                 TextWrapping = TextWrapping.Wrap
             }
         };
@@ -1013,7 +1046,7 @@ public partial class MainWindow : Window
 
         if (selectedIds.Count == 0)
         {
-            context.FeedbackBlock.Text = "Select at least one option before checking.";
+            context.FeedbackBlock.Text = "Выберите хотя бы один вариант перед проверкой.";
             context.FeedbackBlock.Foreground = Brushes.DarkOrange;
             return;
         }
@@ -1053,7 +1086,7 @@ public partial class MainWindow : Window
             var explanation = context.Task.Solution?.Explanation;
             context.FeedbackBlock.Text = !string.IsNullOrWhiteSpace(explanation)
                 ? explanation
-                : "Correct! Well done.";
+                : "Верно! Отлично.";
             context.FeedbackBlock.Foreground = Brushes.ForestGreen;
             return;
         }
@@ -1061,12 +1094,12 @@ public partial class MainWindow : Window
         var messages = new List<string>();
         if (wrong.Count > 0)
         {
-            messages.Add("Some selected options are incorrect.");
+            messages.Add("Некоторые выбранные варианты неверны.");
         }
 
         if (missing.Count > 0)
         {
-            messages.Add("Some correct options are not selected.");
+            messages.Add("Некоторые правильные варианты не выбраны.");
         }
 
         var explanationText = context.Task.Solution?.Explanation;
@@ -1105,7 +1138,7 @@ public partial class MainWindow : Window
 
         button.IsEnabled = false;
         context.FeedbackBlock.Foreground = Brushes.DarkSlateBlue;
-        context.FeedbackBlock.Text = "Running tests...";
+        context.FeedbackBlock.Text = "Запуск тестов...";
 
         var code = context.CodeEditor.Text ?? string.Empty;
         var task = context.Task;
@@ -1113,7 +1146,7 @@ public partial class MainWindow : Window
         var result = await _codeTaskRunner.RunAsync(code, task.EntryPoint, task.Constraints, tests);
 
         context.FeedbackBlock.Text = string.IsNullOrWhiteSpace(result.Summary)
-            ? (result.Success ? "All tests passed." : "Tests failed.")
+            ? (result.Success ? "Все тесты пройдены." : "Тесты не пройдены.")
             : result.Summary;
         context.FeedbackBlock.Foreground = result.Success ? Brushes.ForestGreen : Brushes.Firebrick;
         button.IsEnabled = true;
@@ -1127,7 +1160,7 @@ public partial class MainWindow : Window
         }
 
         context.CodeEditor.Text = context.StarterCode ?? string.Empty;
-        context.FeedbackBlock.Text = "Code template restored.";
+        context.FeedbackBlock.Text = "Шаблон кода восстановлен.";
         context.FeedbackBlock.Foreground = Brushes.Gray;
     }
 
@@ -1257,6 +1290,57 @@ public partial class MainWindow : Window
         AdminTaskList.SelectedIndex = _adminPage.Tasks.Count > 0 ? 0 : -1;
         _suppressAdminEvents = false;
         UpdateAdminTaskSelection();
+    }
+
+    private void RefreshAdminResourceList()
+    {
+        if (_adminPage is null)
+        {
+            AdminResourceList.ItemsSource = null;
+            _adminResource = null;
+            LoadAdminResourceEditor();
+            return;
+        }
+
+        _adminPage.Resources ??= new List<PageResourceModel>();
+        _suppressAdminEvents = true;
+        AdminResourceList.ItemsSource = _adminPage.Resources;
+        AdminResourceList.SelectedIndex = _adminPage.Resources.Count > 0 ? 0 : -1;
+        _suppressAdminEvents = false;
+        UpdateAdminResourceSelection();
+    }
+
+    private void AdminResourceList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (_suppressAdminEvents)
+        {
+            return;
+        }
+
+        UpdateAdminResourceSelection();
+    }
+
+    private void UpdateAdminResourceSelection()
+    {
+        _adminResource = AdminResourceList.SelectedItem as PageResourceModel;
+        LoadAdminResourceEditor();
+    }
+
+    private void LoadAdminResourceEditor()
+    {
+        if (_adminResource is null)
+        {
+            AdminResourceType.Text = string.Empty;
+            AdminResourceTitle.Text = string.Empty;
+            AdminResourceUrl.Text = string.Empty;
+            return;
+        }
+
+        var type = _adminResource.Type ?? string.Empty;
+        SelectComboItem(AdminResourceType, type);
+        AdminResourceType.Text = type;
+        AdminResourceTitle.Text = _adminResource.Title ?? string.Empty;
+        AdminResourceUrl.Text = _adminResource.Url ?? string.Empty;
     }
 
     private void AdminTaskList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1410,9 +1494,12 @@ public partial class MainWindow : Window
         SelectComboItem(AdminPageKind, _adminPage?.KindNormalized ?? "reading");
         SelectComboItem(AdminPageContentFormat, _adminPage?.Content?.Format ?? "richText");
 
-        var resources = _adminPage?.Resources ?? new List<PageResourceModel>();
-        AdminPageResourcesJson.Text = JsonConvert.SerializeObject(resources, Formatting.Indented, _adminJsonSettings);
+        if (_adminPage is not null)
+        {
+            _adminPage.Resources ??= new List<PageResourceModel>();
+        }
 
+        RefreshAdminResourceList();
         RefreshAdminTaskList();
     }
 
@@ -1447,6 +1534,7 @@ public partial class MainWindow : Window
         RefreshAdminChapterList(chapter);
         RefreshNavigationAfterEdit(chapter.Id, chapter.Sections.FirstOrDefault()?.Id, 0);
         ShowAdminStatus("Глава добавлена.");
+        RecordHistory("Глава добавлена");
     }
 
     private void AdminChapterDelete_Click(object sender, RoutedEventArgs e)
@@ -1461,6 +1549,7 @@ public partial class MainWindow : Window
         RefreshAdminChapterList(_course.Chapters.FirstOrDefault());
         RefreshNavigationAfterEdit(null, null, 0);
         ShowAdminStatus("Глава удалена.");
+        RecordHistory("Глава удалена");
     }
 
     private void AdminChapterApply_Click(object sender, RoutedEventArgs e)
@@ -1474,6 +1563,7 @@ public partial class MainWindow : Window
         RenderNavigation();
         UpdateNavigationHighlight();
         ShowAdminStatus("Глава обновлена.");
+        RecordHistory("Глава обновлена");
     }
 
     private void AdminSectionAdd_Click(object sender, RoutedEventArgs e)
@@ -1494,6 +1584,7 @@ public partial class MainWindow : Window
         AdminSectionCombo.SelectedItem = section;
         RefreshNavigationAfterEdit(_adminChapter.Id, section.Id, 0);
         ShowAdminStatus("Раздел добавлен.");
+        RecordHistory("Раздел добавлен");
     }
 
     private void AdminSectionDelete_Click(object sender, RoutedEventArgs e)
@@ -1508,6 +1599,7 @@ public partial class MainWindow : Window
         RefreshAdminSectionList();
         RefreshNavigationAfterEdit(_adminChapter.Id, _adminChapter.Sections.FirstOrDefault()?.Id, 0);
         ShowAdminStatus("Раздел удален.");
+        RecordHistory("Раздел удален");
     }
 
     private void AdminSectionApply_Click(object sender, RoutedEventArgs e)
@@ -1521,6 +1613,7 @@ public partial class MainWindow : Window
         RenderNavigation();
         UpdateNavigationHighlight();
         ShowAdminStatus("Раздел обновлен.");
+        RecordHistory("Раздел обновлен");
     }
 
     private void AdminPageAdd_Click(object sender, RoutedEventArgs e)
@@ -1543,6 +1636,7 @@ public partial class MainWindow : Window
         AdminPageList.SelectedItem = page;
         RefreshNavigationAfterEdit(CurrentChapter?.Id, _adminSection.Id, _adminSection.Pages.IndexOf(page));
         ShowAdminStatus("Страница добавлена.");
+        RecordHistory("Страница добавлена");
     }
 
     private void AdminPageDelete_Click(object sender, RoutedEventArgs e)
@@ -1562,6 +1656,7 @@ public partial class MainWindow : Window
         }
         RefreshNavigationAfterEdit(CurrentChapter?.Id, _adminSection.Id, AdminPageList.SelectedIndex);
         ShowAdminStatus("Страница удалена.");
+        RecordHistory("Страница удалена");
     }
 
     private void AdminPageMoveUp_Click(object sender, RoutedEventArgs e)
@@ -1583,6 +1678,7 @@ public partial class MainWindow : Window
         RefreshAdminPageList();
         AdminPageList.SelectedIndex = index - 1;
         RefreshNavigationAfterEdit(CurrentChapter?.Id, _adminSection.Id, index - 1);
+        RecordHistory("Страница перемещена");
     }
 
     private void AdminPageMoveDown_Click(object sender, RoutedEventArgs e)
@@ -1604,6 +1700,7 @@ public partial class MainWindow : Window
         RefreshAdminPageList();
         AdminPageList.SelectedIndex = index + 1;
         RefreshNavigationAfterEdit(CurrentChapter?.Id, _adminSection.Id, index + 1);
+        RecordHistory("Страница перемещена");
     }
 
     private void AdminPageApply_Click(object sender, RoutedEventArgs e)
@@ -1641,18 +1738,13 @@ public partial class MainWindow : Window
             _adminPage.Content.Source = source;
         }
 
-        if (!TryApplyJson(AdminPageResourcesJson.Text, out List<PageResourceModel>? resources, out var resourcesError))
-        {
-            ShowAdminStatus(resourcesError ?? "Invalid resources JSON.", isError: true);
-            return;
-        }
-
-        _adminPage.Resources = resources;
+        _adminPage.Resources ??= new List<PageResourceModel>();
 
         RenderNavigation();
         UpdateNavigationHighlight();
         RefreshAdminPageList();
         ShowAdminStatus("Страница обновлена.");
+        RecordHistory("Страница обновлена");
     }
 
     private void AdminTaskAddQuiz_Click(object sender, RoutedEventArgs e)
@@ -1667,7 +1759,7 @@ public partial class MainWindow : Window
         {
             Id = GenerateId("quiz"),
             Type = "quiz",
-            Title = "Новый quiz",
+            Title = "Новый тест",
             Selection = "single",
             Question = "Новый вопрос",
             Scoring = new TaskScoringModel { Points = 1, Partial = false },
@@ -1681,7 +1773,8 @@ public partial class MainWindow : Window
         _adminPage.Tasks.Add(task);
         RefreshAdminTaskList();
         AdminTaskList.SelectedItem = task;
-        ShowAdminStatus("Добавлен quiz.");
+        ShowAdminStatus("Добавлен тест.");
+        RecordHistory("Добавлен тест");
     }
 
     private void AdminTaskAddCode_Click(object sender, RoutedEventArgs e)
@@ -1711,7 +1804,8 @@ public partial class MainWindow : Window
         _adminPage.Tasks.Add(task);
         RefreshAdminTaskList();
         AdminTaskList.SelectedItem = task;
-        ShowAdminStatus("Добавлен code.");
+        ShowAdminStatus("Добавлено код-задание.");
+        RecordHistory("Добавлено код-задание");
     }
 
     private void AdminTaskDelete_Click(object sender, RoutedEventArgs e)
@@ -1731,6 +1825,7 @@ public partial class MainWindow : Window
         }
 
         ShowAdminStatus("Задание удалено.");
+        RecordHistory("Задание удалено");
     }
 
     private void AdminTaskMoveUp_Click(object sender, RoutedEventArgs e)
@@ -1749,6 +1844,7 @@ public partial class MainWindow : Window
         (_adminPage.Tasks[index - 1], _adminPage.Tasks[index]) = (_adminPage.Tasks[index], _adminPage.Tasks[index - 1]);
         RefreshAdminTaskList();
         AdminTaskList.SelectedIndex = index - 1;
+        RecordHistory("Задание перемещено");
     }
 
     private void AdminTaskMoveDown_Click(object sender, RoutedEventArgs e)
@@ -1767,6 +1863,7 @@ public partial class MainWindow : Window
         (_adminPage.Tasks[index + 1], _adminPage.Tasks[index]) = (_adminPage.Tasks[index], _adminPage.Tasks[index + 1]);
         RefreshAdminTaskList();
         AdminTaskList.SelectedIndex = index + 1;
+        RecordHistory("Задание перемещено");
     }
 
     private void AdminTaskApply_Click(object sender, RoutedEventArgs e)
@@ -1812,6 +1909,7 @@ public partial class MainWindow : Window
 
         RefreshAdminTaskList();
         ShowAdminStatus("Задание обновлено.");
+        RecordHistory("Задание обновлено");
     }
 
     private void AdminOptionAdd_Click(object sender, RoutedEventArgs e)
@@ -1834,6 +1932,7 @@ public partial class MainWindow : Window
         AdminOptionList.SelectedItem = option;
         _suppressAdminEvents = false;
         UpdateAdminOptionSelection();
+        RecordHistory("Вариант добавлен");
     }
 
     private void AdminOptionDelete_Click(object sender, RoutedEventArgs e)
@@ -1851,6 +1950,7 @@ public partial class MainWindow : Window
             AdminOptionList.SelectedIndex = Math.Clamp(index, 0, _adminTask.Options.Count - 1);
         }
         UpdateAdminOptionSelection();
+        RecordHistory("Вариант удален");
     }
 
     private void AdminOptionApply_Click(object sender, RoutedEventArgs e)
@@ -1864,6 +1964,7 @@ public partial class MainWindow : Window
         _adminOption.IsCorrect = AdminOptionIsCorrect.IsChecked == true;
         _adminOption.Feedback = AdminOptionFeedback.Text.Trim();
         AdminOptionList.Items.Refresh();
+        RecordHistory("Вариант обновлен");
     }
 
     private void AdminTestAdd_Click(object sender, RoutedEventArgs e)
@@ -1887,6 +1988,7 @@ public partial class MainWindow : Window
         AdminTestList.SelectedItem = test;
         _suppressAdminEvents = false;
         UpdateAdminTestSelection();
+        RecordHistory("Тест добавлен");
     }
 
     private void AdminTestDelete_Click(object sender, RoutedEventArgs e)
@@ -1904,6 +2006,7 @@ public partial class MainWindow : Window
             AdminTestList.SelectedIndex = Math.Clamp(index, 0, _adminTask.Tests.Count - 1);
         }
         UpdateAdminTestSelection();
+        RecordHistory("Тест удален");
     }
 
     private void AdminTestApply_Click(object sender, RoutedEventArgs e)
@@ -1919,32 +2022,233 @@ public partial class MainWindow : Window
         _adminTest.ExpectedOutput = AdminTestExpected.Text;
         _adminTest.Explanation = AdminTestExplanation.Text.Trim();
         AdminTestList.Items.Refresh();
+        RecordHistory("Тест обновлен");
     }
 
     private void AdminResourceAdd_Click(object sender, RoutedEventArgs e)
     {
-        if (!TryApplyJson(AdminPageResourcesJson.Text, out List<PageResourceModel>? resources, out var error))
+        if (_adminPage is null)
         {
-            ShowAdminStatus(error ?? "Invalid resources JSON.", isError: true);
             return;
         }
 
-        resources ??= new List<PageResourceModel>();
-        resources.Add(new PageResourceModel
+        _adminPage.Resources ??= new List<PageResourceModel>();
+        var resource = new PageResourceModel
         {
             Type = "externalLink",
-            Title = "Новая ссылка",
+            Title = "Новый ресурс",
             Url = "https://"
-        });
-
-        AdminPageResourcesJson.Text = JsonConvert.SerializeObject(resources, Formatting.Indented, _adminJsonSettings);
-        ShowAdminStatus("Добавлен шаблон ресурса.");
+        };
+        _adminPage.Resources.Add(resource);
+        RefreshAdminResourceList();
+        AdminResourceList.SelectedItem = resource;
+        ShowAdminStatus("Ресурс добавлен.");
+        RecordHistory("Ресурс добавлен");
     }
 
-    private void AdminResourceClear_Click(object sender, RoutedEventArgs e)
+    private void AdminResourceDelete_Click(object sender, RoutedEventArgs e)
     {
-        AdminPageResourcesJson.Text = "[]";
-        ShowAdminStatus("Список ресурсов очищен.");
+        if (_adminPage?.Resources is null || _adminResource is null)
+        {
+            return;
+        }
+
+        _adminPage.Resources.Remove(_adminResource);
+        RefreshAdminResourceList();
+        ShowAdminStatus("Ресурс удален.");
+        RecordHistory("Ресурс удален");
+    }
+
+    private void AdminResourceApply_Click(object sender, RoutedEventArgs e)
+    {
+        if (_adminResource is null)
+        {
+            return;
+        }
+
+        var typeValue = ExtractComboValue(AdminResourceType) ?? AdminResourceType.Text.Trim();
+        _adminResource.Type = typeValue;
+        _adminResource.Title = AdminResourceTitle.Text.Trim();
+        _adminResource.Url = AdminResourceUrl.Text.Trim();
+        AdminResourceList.Items.Refresh();
+        ShowAdminStatus("Ресурс обновлен.");
+        RecordHistory("Ресурс обновлен");
+    }
+
+    private void AdminList_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        _dragStartPoint = e.GetPosition(null);
+    }
+
+    private void AdminPageList_PreviewMouseMove(object sender, MouseEventArgs e)
+    {
+        if (e.LeftButton != MouseButtonState.Pressed)
+        {
+            return;
+        }
+
+        var position = e.GetPosition(null);
+        if (Math.Abs(position.X - _dragStartPoint.X) < SystemParameters.MinimumHorizontalDragDistance
+            && Math.Abs(position.Y - _dragStartPoint.Y) < SystemParameters.MinimumVerticalDragDistance)
+        {
+            return;
+        }
+
+        if (sender is not ListBox listBox)
+        {
+            return;
+        }
+
+        var item = GetListBoxItemAt(listBox, e.GetPosition(listBox));
+        if (item?.DataContext is PageModel page)
+        {
+            DragDrop.DoDragDrop(listBox, new DataObject(typeof(PageModel), page), DragDropEffects.Move);
+        }
+    }
+
+    private void AdminTaskList_PreviewMouseMove(object sender, MouseEventArgs e)
+    {
+        if (e.LeftButton != MouseButtonState.Pressed)
+        {
+            return;
+        }
+
+        var position = e.GetPosition(null);
+        if (Math.Abs(position.X - _dragStartPoint.X) < SystemParameters.MinimumHorizontalDragDistance
+            && Math.Abs(position.Y - _dragStartPoint.Y) < SystemParameters.MinimumVerticalDragDistance)
+        {
+            return;
+        }
+
+        if (sender is not ListBox listBox)
+        {
+            return;
+        }
+
+        var item = GetListBoxItemAt(listBox, e.GetPosition(listBox));
+        if (item?.DataContext is LearningTaskModel task)
+        {
+            DragDrop.DoDragDrop(listBox, new DataObject(typeof(LearningTaskModel), task), DragDropEffects.Move);
+        }
+    }
+
+    private void AdminList_DragOver(object sender, DragEventArgs e)
+    {
+        if (e.Data.GetDataPresent(typeof(PageModel)) || e.Data.GetDataPresent(typeof(LearningTaskModel)))
+        {
+            e.Effects = DragDropEffects.Move;
+        }
+        else
+        {
+            e.Effects = DragDropEffects.None;
+        }
+
+        e.Handled = true;
+    }
+
+    private void AdminPageList_Drop(object sender, DragEventArgs e)
+    {
+        if (_adminSection?.Pages is null || _adminSection.Pages.Count == 0)
+        {
+            return;
+        }
+
+        if (!e.Data.GetDataPresent(typeof(PageModel)))
+        {
+            return;
+        }
+
+        var dropped = (PageModel)e.Data.GetData(typeof(PageModel))!;
+        var listBox = (ListBox)sender;
+        var targetItem = GetListBoxItemAt(listBox, e.GetPosition(listBox));
+        var targetPage = targetItem?.DataContext as PageModel;
+
+        var oldIndex = _adminSection.Pages.IndexOf(dropped);
+        if (oldIndex < 0)
+        {
+            return;
+        }
+
+        var newIndex = targetPage is null ? _adminSection.Pages.Count - 1 : _adminSection.Pages.IndexOf(targetPage);
+        if (newIndex < 0)
+        {
+            newIndex = _adminSection.Pages.Count - 1;
+        }
+
+        if (oldIndex == newIndex)
+        {
+            return;
+        }
+
+        _adminSection.Pages.RemoveAt(oldIndex);
+        if (oldIndex < newIndex)
+        {
+            newIndex--;
+        }
+        _adminSection.Pages.Insert(newIndex, dropped);
+        NormalizeOrdering();
+        RefreshAdminPageList();
+        AdminPageList.SelectedIndex = newIndex;
+        RefreshNavigationAfterEdit(CurrentChapter?.Id, _adminSection.Id, newIndex);
+        ShowAdminStatus("Страница перемещена.");
+        RecordHistory("Страница перемещена");
+    }
+
+    private void AdminTaskList_Drop(object sender, DragEventArgs e)
+    {
+        if (_adminPage?.Tasks is null || _adminPage.Tasks.Count == 0)
+        {
+            return;
+        }
+
+        if (!e.Data.GetDataPresent(typeof(LearningTaskModel)))
+        {
+            return;
+        }
+
+        var dropped = (LearningTaskModel)e.Data.GetData(typeof(LearningTaskModel))!;
+        var listBox = (ListBox)sender;
+        var targetItem = GetListBoxItemAt(listBox, e.GetPosition(listBox));
+        var targetTask = targetItem?.DataContext as LearningTaskModel;
+
+        var oldIndex = _adminPage.Tasks.IndexOf(dropped);
+        if (oldIndex < 0)
+        {
+            return;
+        }
+
+        var newIndex = targetTask is null ? _adminPage.Tasks.Count - 1 : _adminPage.Tasks.IndexOf(targetTask);
+        if (newIndex < 0)
+        {
+            newIndex = _adminPage.Tasks.Count - 1;
+        }
+
+        if (oldIndex == newIndex)
+        {
+            return;
+        }
+
+        _adminPage.Tasks.RemoveAt(oldIndex);
+        if (oldIndex < newIndex)
+        {
+            newIndex--;
+        }
+        _adminPage.Tasks.Insert(newIndex, dropped);
+        RefreshAdminTaskList();
+        AdminTaskList.SelectedIndex = newIndex;
+        ShowAdminStatus("Задание перемещено.");
+        RecordHistory("Задание перемещено");
+    }
+
+    private static ListBoxItem? GetListBoxItemAt(ListBox listBox, Point position)
+    {
+        var element = listBox.InputHitTest(position) as DependencyObject;
+        while (element is not null && element is not ListBoxItem)
+        {
+            element = VisualTreeHelper.GetParent(element);
+        }
+
+        return element as ListBoxItem;
     }
 
     private void AdminSave_Click(object sender, RoutedEventArgs e)
@@ -1955,9 +2259,39 @@ public partial class MainWindow : Window
         }
 
         NormalizeOrdering();
+        var issues = _contentValidator.Validate(_course, ResolveAssetsRoot());
+        var errorCount = issues.Count(issue => issue.Severity == ContentIssueSeverity.Error);
+        var warningCount = issues.Count - errorCount;
+        if (issues.Count > 0)
+        {
+            LogValidationIssues(issues);
+            if (errorCount > 0)
+            {
+                ShowAdminStatus($"Сохранение отменено: {errorCount} ошибок. См. logs/app.log", isError: true);
+                MessageBox.Show($"Сохранение отменено из-за ошибок контента: {errorCount}. Подробности см. в logs/app.log.",
+                                "Ошибка проверки контента",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Error);
+                return;
+            }
+        }
+
         var json = JsonConvert.SerializeObject(_course, Formatting.Indented, _adminJsonSettings);
-        File.WriteAllText(ContentPath, json);
-        ShowAdminStatus("Сохранено в content.v2.json");
+        if (!TryWriteContentFile(json, out var saveError))
+        {
+            ShowAdminStatus($"Ошибка сохранения: {saveError}", isError: true);
+            MessageBox.Show($"Не удалось сохранить content.v2.json: {saveError}",
+                            "Ошибка сохранения",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error);
+            return;
+        }
+
+        var statusMessage = warningCount > 0
+            ? $"Сохранено (есть предупреждения: {warningCount}, см. logs/app.log)"
+            : "Сохранено в content.v2.json";
+        ShowAdminStatus(statusMessage);
+        AppLogger.Info("Контент успешно сохранен.");
     }
 
     private void AdminReload_Click(object sender, RoutedEventArgs e)
@@ -1990,33 +2324,15 @@ public partial class MainWindow : Window
     {
         if (comboBox.SelectedItem is ComboBoxItem item)
         {
+            if (item.Tag is string tag && !string.IsNullOrWhiteSpace(tag))
+            {
+                return tag;
+            }
+
             return item.Content?.ToString();
         }
 
         return null;
-    }
-
-    private static bool TryApplyJson<T>(string jsonText, out List<T>? result, out string? errorMessage)
-    {
-        result = null;
-        errorMessage = null;
-
-        if (string.IsNullOrWhiteSpace(jsonText))
-        {
-            return true;
-        }
-
-        try
-        {
-            var parsed = JsonConvert.DeserializeObject<List<T>>(jsonText);
-            result = parsed ?? new List<T>();
-            return true;
-        }
-        catch (JsonException ex)
-        {
-            errorMessage = $"JSON error: {ex.Message}";
-            return false;
-        }
     }
 
     private void NormalizeOrdering()
@@ -2072,11 +2388,228 @@ public partial class MainWindow : Window
         AdminStatusText.Foreground = isError ? Brushes.Firebrick : Brushes.DarkGreen;
     }
 
+    private void InitializeHistory(string description)
+    {
+        _history.Clear();
+        _historyIndex = -1;
+        RecordHistory(description, force: true);
+    }
+
+    private void RecordHistory(string description, bool force = false)
+    {
+        if (_course is null)
+        {
+            return;
+        }
+
+        if (_suppressHistory && !force)
+        {
+            return;
+        }
+
+        var snapshot = JsonConvert.SerializeObject(_course, Formatting.None, _adminJsonSettings);
+
+        if (_historyIndex < _history.Count - 1)
+        {
+            _history.RemoveRange(_historyIndex + 1, _history.Count - _historyIndex - 1);
+        }
+
+        _history.Add(new HistoryEntry(DateTime.Now, description, snapshot));
+        _historyIndex = _history.Count - 1;
+        RefreshHistoryUi();
+    }
+
+    private void RefreshHistoryUi()
+    {
+        if (AdminHistoryList is null || AdminUndoButton is null || AdminRedoButton is null)
+        {
+            return;
+        }
+
+        AdminHistoryList.ItemsSource = _history
+            .Select(entry => $"{entry.Timestamp:HH:mm:ss} {entry.Description}")
+            .ToList();
+        AdminHistoryList.SelectedIndex = _historyIndex;
+        AdminUndoButton.IsEnabled = _historyIndex > 0;
+        AdminRedoButton.IsEnabled = _historyIndex >= 0 && _historyIndex < _history.Count - 1;
+    }
+
+    private void AdminUndo_Click(object sender, RoutedEventArgs e)
+    {
+        if (_historyIndex <= 0)
+        {
+            return;
+        }
+
+        _historyIndex--;
+        RestoreHistoryEntry(_history[_historyIndex], "Отмена");
+    }
+
+    private void AdminRedo_Click(object sender, RoutedEventArgs e)
+    {
+        if (_historyIndex < 0 || _historyIndex >= _history.Count - 1)
+        {
+            return;
+        }
+
+        _historyIndex++;
+        RestoreHistoryEntry(_history[_historyIndex], "Повтор");
+    }
+
+    private void RestoreHistoryEntry(HistoryEntry entry, string actionLabel)
+    {
+        try
+        {
+            var restored = JsonConvert.DeserializeObject<CourseContentModel>(entry.Snapshot);
+            if (restored is null)
+            {
+                ShowAdminStatus("Не удалось восстановить историю.", isError: true);
+                return;
+            }
+
+            ApplyCourseSnapshot(restored);
+            ShowAdminStatus($"{actionLabel}: {entry.Description}");
+            RefreshHistoryUi();
+        }
+        catch (Exception ex)
+        {
+            AppLogger.Error(ex, "Не удалось восстановить запись истории.");
+            ShowAdminStatus("Ошибка восстановления истории.", isError: true);
+        }
+    }
+
+    private void ApplyCourseSnapshot(CourseContentModel course)
+    {
+        var currentChapterId = CurrentChapter?.Id;
+        var currentSectionId = CurrentSection?.Id;
+        var currentPageIndex = CurrentPageIndex;
+
+        _suppressHistory = true;
+        _course = course;
+        _navigator = new CourseNavigator(_course);
+
+        if (!string.IsNullOrWhiteSpace(_course.Title))
+        {
+            Title = _course.Title;
+        }
+
+        _chapters = _course.OrderedChapters;
+        RenderNavigation();
+        if (!TryNavigateTo(currentChapterId, currentSectionId, currentPageIndex))
+        {
+            NavigateToFirstPage();
+        }
+
+        InitializeAdminUi();
+        _suppressHistory = false;
+    }
+
+    private bool TryNavigateTo(string? chapterId, string? sectionId, int pageIndex)
+    {
+        if (string.IsNullOrWhiteSpace(chapterId) || string.IsNullOrWhiteSpace(sectionId))
+        {
+            return false;
+        }
+
+        var chapter = _chapters.FirstOrDefault(item => string.Equals(item.Id, chapterId, StringComparison.OrdinalIgnoreCase));
+        if (chapter is null)
+        {
+            return false;
+        }
+
+        var section = chapter.Sections.FirstOrDefault(item => string.Equals(item.Id, sectionId, StringComparison.OrdinalIgnoreCase));
+        if (section is null || section.OrderedPages.Count == 0)
+        {
+            return false;
+        }
+
+        var index = Math.Clamp(pageIndex, 0, section.OrderedPages.Count - 1);
+        NavigateToPage(chapter.Id, section.Id, index);
+        return true;
+    }
+
+    private static string ResolveContentPath()
+    {
+        return Path.GetFullPath(ContentPath);
+    }
+
+    private static string ResolveAssetsRoot()
+    {
+        return Path.GetFullPath(AssetsRoot);
+    }
+
+    private static void LogValidationIssues(IEnumerable<ContentIssue> issues)
+    {
+        foreach (var issue in issues)
+        {
+            if (issue.Severity == ContentIssueSeverity.Error)
+            {
+                AppLogger.Error(issue.Message);
+            }
+            else
+            {
+                AppLogger.Warn(issue.Message);
+            }
+        }
+    }
+
+    private static bool TryWriteContentFile(string json, out string errorMessage)
+    {
+        var contentPath = ResolveContentPath();
+        var directory = Path.GetDirectoryName(contentPath);
+        var tempPath = contentPath + ".tmp";
+        var backupPath = contentPath + ".bak";
+
+        try
+        {
+            if (!string.IsNullOrWhiteSpace(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+
+            File.WriteAllText(tempPath, json, Encoding.UTF8);
+
+            if (File.Exists(contentPath))
+            {
+                File.Replace(tempPath, contentPath, backupPath, true);
+            }
+            else
+            {
+                File.Move(tempPath, contentPath);
+            }
+
+            errorMessage = string.Empty;
+            return true;
+        }
+        catch (Exception ex)
+        {
+            AppLogger.Error(ex, "Не удалось сохранить файл контента.");
+            errorMessage = ex.Message;
+            return false;
+        }
+        finally
+        {
+            try
+            {
+                if (File.Exists(tempPath))
+                {
+                    File.Delete(tempPath);
+                }
+            }
+            catch
+            {
+                // ignore cleanup errors
+            }
+        }
+    }
+
     private enum PageDisplayMode
     {
         Reading,
         Tasks
     }
+
+    private sealed record HistoryEntry(DateTime Timestamp, string Description, string Snapshot);
 
     private sealed class SectionButtonInfo
     {

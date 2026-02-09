@@ -53,7 +53,7 @@ public sealed class CourseNavigator
         if (!Course.TryGetChapter(chapterId, out var chapter) || chapter is null)
         {
             return NavigationResult.Fail(NavigationFailureKind.NotFoundChapter,
-                $"Chapter not found: {chapterId}");
+                $"Глава не найдена: {chapterId}");
         }
 
         CurrentChapter = chapter;
@@ -66,7 +66,7 @@ public sealed class CourseNavigator
             CurrentPageIndex = -1;
             CurrentPage = null;
             return NavigationResult.Fail(NavigationFailureKind.EmptyChapter,
-                $"Chapter \"{chapter.Title}\" has no sections to display.");
+                $"В главе \"{chapter.Title}\" нет разделов.");
         }
 
         if (!chapter.TryGetSection(sectionId, out var section) || section is null)
@@ -76,7 +76,7 @@ public sealed class CourseNavigator
             CurrentPageIndex = -1;
             CurrentPage = null;
             return NavigationResult.Fail(NavigationFailureKind.NotFoundSection,
-                $"Section not found: {sectionId}");
+                $"Раздел не найден: {sectionId}");
         }
 
         CurrentSection = section;
@@ -88,7 +88,7 @@ public sealed class CourseNavigator
             CurrentPageIndex = -1;
             CurrentPage = null;
             return NavigationResult.Fail(NavigationFailureKind.EmptySection,
-                $"Section \"{section.Title}\" has no pages to display.");
+                $"В разделе \"{section.Title}\" нет страниц.");
         }
 
         CurrentPageIndex = Math.Clamp(pageIndex, 0, pages.Count - 1);
@@ -101,20 +101,20 @@ public sealed class CourseNavigator
         if (CurrentChapter is null)
         {
             return NavigationResult.Fail(NavigationFailureKind.NoChapterSelected,
-                "No chapter selected.");
+                "Глава не выбрана.");
         }
 
         if (CurrentSection is null)
         {
             return NavigationResult.Fail(NavigationFailureKind.NoSectionSelected,
-                "No section selected.");
+                "Раздел не выбран.");
         }
 
         var pages = CurrentSectionPages;
         if (pages.Count == 0)
         {
             return NavigationResult.Fail(NavigationFailureKind.EmptySection,
-                $"Section \"{CurrentSection.Title}\" has no pages to display.");
+                $"В разделе \"{CurrentSection.Title}\" нет страниц.");
         }
 
         if (CurrentPageIndex < pages.Count - 1)
@@ -141,7 +141,7 @@ public sealed class CourseNavigator
         }
 
         return NavigationResult.Fail(NavigationFailureKind.OutOfRange,
-            "Already at the last page.");
+            "Это последняя страница.");
     }
 
     public NavigationResult MovePrevious()
@@ -149,20 +149,20 @@ public sealed class CourseNavigator
         if (CurrentChapter is null)
         {
             return NavigationResult.Fail(NavigationFailureKind.NoChapterSelected,
-                "No chapter selected.");
+                "Глава не выбрана.");
         }
 
         if (CurrentSection is null)
         {
             return NavigationResult.Fail(NavigationFailureKind.NoSectionSelected,
-                "No section selected.");
+                "Раздел не выбран.");
         }
 
         var pages = CurrentSectionPages;
         if (pages.Count == 0)
         {
             return NavigationResult.Fail(NavigationFailureKind.EmptySection,
-                $"Section \"{CurrentSection.Title}\" has no pages to display.");
+                $"В разделе \"{CurrentSection.Title}\" нет страниц.");
         }
 
         if (CurrentPageIndex > 0)
@@ -190,7 +190,7 @@ public sealed class CourseNavigator
         }
 
         return NavigationResult.Fail(NavigationFailureKind.OutOfRange,
-            "Already at the first page.");
+            "Это первая страница.");
     }
 
     private static int FindSectionIndex(IReadOnlyList<SectionModel> sections, string sectionId)

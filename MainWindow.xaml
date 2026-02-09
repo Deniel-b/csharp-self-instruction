@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:kursach"
         mc:Ignorable="d"
-        Title="MainWindow"
+        Title="Самоучитель по C#"
         Height="760"
         Width="1240"
         MinHeight="680"
@@ -333,7 +333,7 @@
                             Orientation="Horizontal"
                             VerticalAlignment="Center">
                     <ToggleButton x:Name="AdminToggle"
-                                  Content="Admin"
+                                  Content="Админ"
                                   Margin="0,0,10,0"
                                   Checked="AdminToggle_Checked"
                                   Unchecked="AdminToggle_Unchecked"/>
@@ -609,6 +609,22 @@
                                                 Content="Перезагрузить"
                                                 Click="AdminReload_Click"/>
                                     </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                        <Button x:Name="AdminUndoButton"
+                                                Content="Отмена"
+                                                Click="AdminUndo_Click"
+                                                Margin="0,0,8,0"/>
+                                        <Button x:Name="AdminRedoButton"
+                                                Content="Повтор"
+                                                Click="AdminRedo_Click"/>
+                                    </StackPanel>
+                                    <TextBlock Text="История изменений"
+                                               FontSize="11"
+                                               Foreground="{StaticResource TextSecondary}"
+                                               Margin="0,0,0,4"/>
+                                    <ListBox x:Name="AdminHistoryList"
+                                             Style="{StaticResource AdminListBoxStyle}"
+                                             Height="90"/>
 
                                     <TextBlock Text="Глава" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource TextPrimary}"/>
                                     <ComboBox x:Name="AdminChapterCombo"
@@ -664,7 +680,12 @@
                                              Style="{StaticResource AdminListBoxStyle}"
                                              ItemContainerStyle="{StaticResource AdminListBoxItemStyle}"
                                              DisplayMemberPath="Title"
-                                             SelectionChanged="AdminPageList_SelectionChanged"/>
+                                             SelectionChanged="AdminPageList_SelectionChanged"
+                                             AllowDrop="True"
+                                             PreviewMouseLeftButtonDown="AdminList_PreviewMouseLeftButtonDown"
+                                             PreviewMouseMove="AdminPageList_PreviewMouseMove"
+                                             DragOver="AdminList_DragOver"
+                                             Drop="AdminPageList_Drop"/>
                                     <StackPanel Orientation="Horizontal" Margin="0,6,0,10">
                                         <Button x:Name="AdminPageAddButton"
                                                 Content="Добавить"
@@ -695,11 +716,11 @@
                                               Margin="0,6,0,0"
                                               Style="{StaticResource AdminComboBoxStyle}"
                                               ItemContainerStyle="{StaticResource AdminComboBoxItemStyle}">
-                                        <ComboBoxItem Content="reading"/>
-                                        <ComboBoxItem Content="quiz"/>
-                                        <ComboBoxItem Content="code"/>
-                                        <ComboBoxItem Content="assessment"/>
-                                        <ComboBoxItem Content="tasks"/>
+                                        <ComboBoxItem Content="Теория" Tag="reading"/>
+                                        <ComboBoxItem Content="Тест" Tag="quiz"/>
+                                        <ComboBoxItem Content="Код" Tag="code"/>
+                                        <ComboBoxItem Content="Оценка" Tag="assessment"/>
+                                        <ComboBoxItem Content="Практика" Tag="tasks"/>
                                     </ComboBox>
                                     <TextBox x:Name="AdminPageTime"
                                              Margin="0,6,0,0"
@@ -709,8 +730,8 @@
                                               Margin="0,6,0,0"
                                               Style="{StaticResource AdminComboBoxStyle}"
                                               ItemContainerStyle="{StaticResource AdminComboBoxItemStyle}">
-                                        <ComboBoxItem Content="richText"/>
-                                        <ComboBoxItem Content="none"/>
+                                        <ComboBoxItem Content="Текст" Tag="richText"/>
+                                        <ComboBoxItem Content="Нет" Tag="none"/>
                                     </ComboBox>
                                     <TextBox x:Name="AdminPageContentSource"
                                              Margin="0,6,0,0"
@@ -727,12 +748,17 @@
                                              Style="{StaticResource AdminListBoxStyle}"
                                              ItemContainerStyle="{StaticResource AdminListBoxItemStyle}"
                                              DisplayMemberPath="Title"
-                                             SelectionChanged="AdminTaskList_SelectionChanged"/>
+                                             SelectionChanged="AdminTaskList_SelectionChanged"
+                                             AllowDrop="True"
+                                             PreviewMouseLeftButtonDown="AdminList_PreviewMouseLeftButtonDown"
+                                             PreviewMouseMove="AdminTaskList_PreviewMouseMove"
+                                             DragOver="AdminList_DragOver"
+                                             Drop="AdminTaskList_Drop"/>
                                     <StackPanel Orientation="Horizontal" Margin="0,6,0,10">
-                                        <Button Content="+ Quiz"
+                                        <Button Content="+ Тест"
                                                 Click="AdminTaskAddQuiz_Click"
                                                 Margin="0,0,6,0"/>
-                                        <Button Content="+ Code"
+                                        <Button Content="+ Код"
                                                 Click="AdminTaskAddCode_Click"
                                                 Margin="0,0,6,0"/>
                                         <Button Content="Удалить"
@@ -754,8 +780,8 @@
                                               Style="{StaticResource AdminComboBoxStyle}"
                                               ItemContainerStyle="{StaticResource AdminComboBoxItemStyle}"
                                               SelectionChanged="AdminTaskType_SelectionChanged">
-                                        <ComboBoxItem Content="quiz"/>
-                                        <ComboBoxItem Content="code"/>
+                                        <ComboBoxItem Content="Тест" Tag="quiz"/>
+                                        <ComboBoxItem Content="Код" Tag="code"/>
                                     </ComboBox>
                                     <TextBox x:Name="AdminTaskTitle"
                                              Margin="0,6,0,0"
@@ -779,7 +805,7 @@
                                              Height="70"/>
 
                                     <StackPanel x:Name="AdminQuizPanel" Margin="0,10,0,0">
-                                        <TextBlock Text="Quiz"
+                                        <TextBlock Text="Тест"
                                                    FontSize="12"
                                                    FontWeight="SemiBold"
                                                    Foreground="{StaticResource TextPrimary}"/>
@@ -791,8 +817,8 @@
                                                   Margin="0,6,0,0"
                                                   Style="{StaticResource AdminComboBoxStyle}"
                                                   ItemContainerStyle="{StaticResource AdminComboBoxItemStyle}">
-                                            <ComboBoxItem Content="single"/>
-                                            <ComboBoxItem Content="multiple"/>
+                                            <ComboBoxItem Content="Один вариант" Tag="single"/>
+                                            <ComboBoxItem Content="Несколько вариантов" Tag="multiple"/>
                                         </ComboBox>
 
                                         <TextBlock Text="Варианты ответа"
@@ -830,7 +856,7 @@
                                     </StackPanel>
 
                                     <StackPanel x:Name="AdminCodePanel" Margin="0,10,0,0">
-                                        <TextBlock Text="Code"
+                                        <TextBlock Text="Код"
                                                    FontSize="12"
                                                    FontWeight="SemiBold"
                                                    Foreground="{StaticResource TextPrimary}"/>
@@ -849,7 +875,7 @@
                                                  TextWrapping="Wrap"
                                                  FontFamily="Consolas"
                                                  Height="90"/>
-                                        <TextBlock Text="Entry point"
+                                        <TextBlock Text="Точка входа"
                                                    FontSize="11"
                                                    Foreground="{StaticResource TextSecondary}"
                                                    Margin="0,8,0,4"/>
@@ -889,20 +915,20 @@
                                                   Margin="0,6,0,0"
                                                   Style="{StaticResource AdminComboBoxStyle}"
                                                   ItemContainerStyle="{StaticResource AdminComboBoxItemStyle}">
-                                            <ComboBoxItem Content="public"/>
-                                            <ComboBoxItem Content="hidden"/>
+                                            <ComboBoxItem Content="Публичный" Tag="public"/>
+                                            <ComboBoxItem Content="Скрытый" Tag="hidden"/>
                                         </ComboBox>
                                         <TextBox x:Name="AdminTestInput"
                                                  Margin="0,6,0,0"
                                                  Style="{StaticResource AdminTextBoxStyle}"
-                                                 ToolTip="Input"
+                                                 ToolTip="Входные данные"
                                                  AcceptsReturn="True"
                                                  TextWrapping="Wrap"
                                                  Height="60"/>
                                         <TextBox x:Name="AdminTestExpected"
                                                  Margin="0,6,0,0"
                                                  Style="{StaticResource AdminTextBoxStyle}"
-                                                 ToolTip="Expected output"
+                                                 ToolTip="Ожидаемый вывод"
                                                  AcceptsReturn="True"
                                                  TextWrapping="Wrap"
                                                  Height="60"/>
@@ -924,23 +950,46 @@
                                             Click="AdminTaskApply_Click"
                                             Margin="0,10,0,0"/>
 
-                                    <TextBlock Text="Resources (JSON массива)"
+                                    <TextBlock Text="Ресурсы"
                                                FontSize="11"
                                                Foreground="{StaticResource TextSecondary}"
                                                Margin="0,8,0,4"/>
+                                    <ListBox x:Name="AdminResourceList"
+                                             Margin="0,0,0,6"
+                                             Style="{StaticResource AdminListBoxStyle}"
+                                             ItemContainerStyle="{StaticResource AdminListBoxItemStyle}"
+                                             DisplayMemberPath="Title"
+                                             SelectionChanged="AdminResourceList_SelectionChanged"/>
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                        <Button Content="+ Link"
+                                        <Button Content="+ Ресурс"
                                                 Click="AdminResourceAdd_Click"
                                                 Margin="0,0,6,0"/>
-                                        <Button Content="Очистить"
-                                                Click="AdminResourceClear_Click"/>
+                                        <Button Content="Удалить"
+                                                Click="AdminResourceDelete_Click"/>
                                     </StackPanel>
-                                    <TextBox x:Name="AdminPageResourcesJson"
-                                             AcceptsReturn="True"
-                                             TextWrapping="Wrap"
-                                             FontFamily="Consolas"
+                                    <ComboBox x:Name="AdminResourceType"
+                                              Style="{StaticResource AdminComboBoxStyle}"
+                                              ItemContainerStyle="{StaticResource AdminComboBoxItemStyle}"
+                                              IsEditable="True"
+                                              Margin="0,0,0,6">
+                                        <ComboBoxItem Content="Внешняя ссылка" Tag="externalLink"/>
+                                        <ComboBoxItem Content="Видео" Tag="video"/>
+                                        <ComboBoxItem Content="Статья" Tag="article"/>
+                                        <ComboBoxItem Content="Документация" Tag="docs"/>
+                                        <ComboBoxItem Content="Другое" Tag="other"/>
+                                    </ComboBox>
+                                    <TextBox x:Name="AdminResourceTitle"
+                                             Margin="0,0,0,6"
                                              Style="{StaticResource AdminTextBoxStyle}"
-                                             Height="90"/>
+                                             ToolTip="Название ресурса"/>
+                                    <TextBox x:Name="AdminResourceUrl"
+                                             Margin="0,0,0,6"
+                                             Style="{StaticResource AdminTextBoxStyle}"
+                                             ToolTip="URL ресурса"/>
+                                    <Button x:Name="AdminResourceApplyButton"
+                                            Content="Применить ресурс"
+                                            Click="AdminResourceApply_Click"
+                                            Margin="0,0,0,4"/>
 
                                     <Button x:Name="AdminPageApplyButton"
                                             Content="Применить страницу"

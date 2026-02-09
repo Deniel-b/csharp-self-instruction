@@ -30,13 +30,15 @@ public sealed class ContentLoader
     {
         if (string.IsNullOrWhiteSpace(contentPath))
         {
-            return ContentLoadResult.Fail(ContentLoadFailureKind.InvalidPath, "Content path is empty.");
+            AppLogger.Warn("Путь к контенту пустой.");
+            return ContentLoadResult.Fail(ContentLoadFailureKind.InvalidPath, "Путь к контенту пустой.");
         }
 
         if (!File.Exists(contentPath))
         {
+            AppLogger.Error($"Файл описания контента не найден: {contentPath}");
             return ContentLoadResult.Fail(ContentLoadFailureKind.NotFound,
-                $"Content description file not found: {contentPath}");
+                $"Файл описания контента не найден: {contentPath}");
         }
 
         try
@@ -46,21 +48,24 @@ public sealed class ContentLoader
 
             if (course is null)
             {
+                AppLogger.Error("Не удалось разобрать файл контента.");
                 return ContentLoadResult.Fail(ContentLoadFailureKind.InvalidJson,
-                    "Unable to parse content manifest.");
+                    "Не удалось разобрать файл контента.");
             }
 
             return ContentLoadResult.SuccessResult(course);
         }
         catch (JsonException ex)
         {
+            AppLogger.Error(ex, "Файл контента поврежден.");
             return ContentLoadResult.Fail(ContentLoadFailureKind.InvalidJson,
-                $"Content file is damaged: {ex.Message}");
+                $"Файл контента поврежден: {ex.Message}");
         }
         catch (Exception ex)
         {
+            AppLogger.Error(ex, "Не удалось загрузить контент.");
             return ContentLoadResult.Fail(ContentLoadFailureKind.Unexpected,
-                $"Failed to load content: {ex.Message}");
+                $"Не удалось загрузить контент: {ex.Message}");
         }
     }
 }
