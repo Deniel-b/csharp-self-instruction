@@ -30,14 +30,8 @@ public sealed class CourseContent
     public List<ResourceLink> Resources { get; set; } = new();
 
     [JsonIgnore]
-    private IReadOnlyList<Chapter>? _orderedChapters;
-
-    [JsonIgnore]
-    private Dictionary<string, Chapter>? _chaptersById;
-
-    [JsonIgnore]
     public IReadOnlyList<Chapter> OrderedChapters =>
-        _orderedChapters ??= Chapters
+        Chapters
             .OrderBy(chapter => chapter.Order)
             .ThenBy(chapter => chapter.Title, StringComparer.CurrentCultureIgnoreCase)
             .ToList();
@@ -51,12 +45,9 @@ public sealed class CourseContent
             return false;
         }
 
-        _chaptersById ??= Chapters.ToDictionary(
-            keySelector: chapter => chapter.Id,
-            elementSelector: chapter => chapter,
-            comparer: StringComparer.OrdinalIgnoreCase);
-
-        return _chaptersById.TryGetValue(chapterId, out chapter);
+        chapter = Chapters.FirstOrDefault(ch =>
+            string.Equals(ch.Id, chapterId, StringComparison.OrdinalIgnoreCase));
+        return chapter is not null;
     }
 }
 
@@ -83,18 +74,51 @@ public sealed class Chapter
     [JsonProperty("summary")]
     public string? Summary { get; set; }
 
+    [JsonProperty("sections")]
+    public List<Section> Sections { get; set; } = new();
+
+    [JsonIgnore]
+    public IReadOnlyList<Section> OrderedSections =>
+        Sections
+            .OrderBy(section => section.Order)
+            .ThenBy(section => section.Title, StringComparer.CurrentCultureIgnoreCase)
+            .ToList();
+
+    public bool TryGetSection(string? sectionId, out Section? section)
+    {
+        section = null;
+
+        if (string.IsNullOrWhiteSpace(sectionId) || Sections.Count == 0)
+        {
+            return false;
+        }
+
+        section = Sections.FirstOrDefault(item =>
+            string.Equals(item.Id, sectionId, StringComparison.OrdinalIgnoreCase));
+        return section is not null;
+    }
+}
+
+public sealed class Section
+{
+    [JsonProperty("id")]
+    public string Id { get; set; } = string.Empty;
+
+    [JsonProperty("order")]
+    public int Order { get; set; }
+
+    [JsonProperty("title")]
+    public string Title { get; set; } = string.Empty;
+
+    [JsonProperty("summary")]
+    public string? Summary { get; set; }
+
     [JsonProperty("pages")]
     public List<Page> Pages { get; set; } = new();
 
     [JsonIgnore]
-    private IReadOnlyList<Page>? _orderedPages;
-
-    [JsonIgnore]
-    private Dictionary<string, Page>? _pagesById;
-
-    [JsonIgnore]
     public IReadOnlyList<Page> OrderedPages =>
-        _orderedPages ??= Pages
+        Pages
             .OrderBy(page => page.Order)
             .ThenBy(page => page.Title, StringComparer.CurrentCultureIgnoreCase)
             .ToList();
@@ -122,12 +146,9 @@ public sealed class Chapter
             return false;
         }
 
-        _pagesById ??= Pages.ToDictionary(
-            keySelector: page => page.Id,
-            elementSelector: page => page,
-            comparer: StringComparer.OrdinalIgnoreCase);
-
-        return _pagesById.TryGetValue(pageId, out page);
+        page = Pages.FirstOrDefault(item =>
+            string.Equals(item.Id, pageId, StringComparison.OrdinalIgnoreCase));
+        return page is not null;
     }
 }
 
