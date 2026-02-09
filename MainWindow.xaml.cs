@@ -6,7 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
-using Newtonsoft.Json;
+using kursach.Services;
 using ChapterModel = kursachFile.Chapter;
 using CourseContentModel = kursachFile.CourseContent;
 using PageModel = kursachFile.Page;
@@ -33,15 +33,18 @@ public partial class MainWindow : Window
     private static readonly SolidColorBrush StepperForeground = Brushes.WhiteSmoke;
 
     private readonly Dictionary<string, PageButtonInfo> _pageButtonMap = new(StringComparer.OrdinalIgnoreCase);
+    private readonly ContentLoader _contentLoader = new();
 
     private static string MakePageKey(string chapterId, int pageIndex) => $"{chapterId}|{pageIndex}";
 
     private CourseContentModel? _course;
     private IReadOnlyList<ChapterModel> _chapters = Array.Empty<ChapterModel>();
-    private string? _currentChapterId;
-    private IReadOnlyList<PageModel> _currentChapterPages = Array.Empty<PageModel>();
-    private int _currentPageIndex;
+    private CourseNavigator? _navigator;
     private int _lastLoadedPageIndex = -1;
+
+    private IReadOnlyList<PageModel> CurrentPages => _navigator?.CurrentChapterPages ?? Array.Empty<PageModel>();
+    private int CurrentPageIndex => _navigator?.CurrentPageIndex ?? -1;
+    private ChapterModel? CurrentChapter => _navigator?.CurrentChapter;
 
     public MainWindow()
     {
@@ -52,66 +55,37 @@ public partial class MainWindow : Window
 
     private void LoadContent()
     {
-        try
+        var loadResult = _contentLoader.Load(ContentPath);
+        if (!loadResult.Success)
         {
-            if (!File.Exists(ContentPath))
-            {
-                MessageBox.Show($"Content description file not found: {ContentPath}",
-                                "Load Error",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Error);
-                return;
-            }
-
-            var json = File.ReadAllText(ContentPath);
-            _course = JsonConvert.DeserializeObject<CourseContentModel>(json);
-
-            if (_course is null)
-            {
-                MessageBox.Show("Unable to parse content manifest.",
-                                "Load Error",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Error);
-                return;
-            }
-
-            if (!string.IsNullOrWhiteSpace(_course.Title))
-            {
-                Title = _course.Title;
-            }
-
-            _chapters = _course.OrderedChapters;
-
-            if (_chapters.Count == 0)
-            {
-                MessageBox.Show("No chapters defined in the content manifest.",
-                                "Load Error",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Error);
-                return;
-            }
-
-            RenderNavigation();
-
-            if (_chapters.Count > 0)
-            {
-                NavigateToPage(_chapters[0].Id, 0);
-            }
-        }
-        catch (JsonException ex)
-        {
-            MessageBox.Show($"Content file is damaged: {ex.Message}",
+            MessageBox.Show(loadResult.Message ?? "Failed to load content.",
                             "Load Error",
                             MessageBoxButton.OK,
                             MessageBoxImage.Error);
+            return;
         }
-        catch (Exception ex)
+
+        _course = loadResult.Course!;
+        _navigator = new CourseNavigator(_course);
+
+        if (!string.IsNullOrWhiteSpace(_course.Title))
         {
-            MessageBox.Show($"Failed to load content: {ex.Message}",
+            Title = _course.Title;
+        }
+
+        _chapters = _course.OrderedChapters;
+
+        if (_chapters.Count == 0)
+        {
+            MessageBox.Show("No chapters defined in the content manifest.",
                             "Load Error",
                             MessageBoxButton.OK,
                             MessageBoxImage.Error);
+            return;
         }
+
+        RenderNavigation();
+        NavigateToPage(_chapters[0].Id, 0);
     }
 
     private void RenderNavigation()
@@ -376,92 +350,102 @@ public partial class MainWindow : Window
 
     private bool IsCurrentSelection(string chapterId, int pageIndex)
     {
-        return string.Equals(_currentChapterId, chapterId, StringComparison.OrdinalIgnoreCase)
-               && _currentPageIndex == pageIndex;
+        return CurrentChapter is not null
+               && string.Equals(CurrentChapter.Id, chapterId, StringComparison.OrdinalIgnoreCase)
+               && CurrentPageIndex == pageIndex;
     }
 
     private void NavigateToPage(string chapterId, int pageIndex)
     {
-        if (!TryGetChapter(chapterId, out var chapter) || chapter is null)
+        if (_navigator is null)
         {
-            MessageBox.Show($"Chapter not found: {chapterId}",
+            MessageBox.Show("Course content is not loaded yet.",
                             "Navigation Error",
                             MessageBoxButton.OK,
                             MessageBoxImage.Warning);
             return;
         }
 
-        _currentChapterId = chapterId;
-        _currentChapterPages = chapter.OrderedPages;
-        RenderPageStepper(chapter);
-
-        if (_currentChapterPages.Count == 0)
+        var result = _navigator.NavigateTo(chapterId, pageIndex);
+        if (!result.Success && result.FailureKind == NavigationFailureKind.NotFound)
         {
-            myRichBox.Document.Blocks.Clear();
+            MessageBox.Show(result.Message ?? $"Chapter not found: {chapterId}",
+                            "Navigation Error",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Warning);
+            return;
+        }
+
+        if (CurrentChapter is not null)
+        {
+            RenderPageStepper(CurrentChapter);
+        }
+
+        if (CurrentPages.Count == 0)
+        {
+            ClearReadingContent();
             myRichBox.Visibility = Visibility.Collapsed;
             TasksScrollViewer.Visibility = Visibility.Collapsed;
-            PageTitleBlock.Text = chapter.Title;
-            MessageBox.Show($"Chapter \"{chapter.Title}\" has no pages to display.",
+            PageTitleBlock.Text = CurrentChapter?.Title ?? string.Empty;
+            MessageBox.Show(result.Message ?? "Selected chapter has no pages to display.",
                             "Empty Chapter",
                             MessageBoxButton.OK,
                             MessageBoxImage.Information);
             UpdateNavigationHighlight();
-            UpdateNavigationButtons(_currentChapterPages);
+            UpdateNavigationButtons(CurrentPages);
             return;
         }
 
-        _currentPageIndex = Math.Clamp(pageIndex, 0, _currentChapterPages.Count - 1);
         _lastLoadedPageIndex = -1;
-
         LoadPage();
-    }
-
-    private bool TryGetChapter(string? chapterId, out ChapterModel? chapter)
-    {
-        if (_course is null)
-        {
-            chapter = null;
-            return false;
-        }
-
-        return _course.TryGetChapter(chapterId, out chapter);
     }
 
     private void Page_Back(object sender, RoutedEventArgs e)
     {
-        if (_currentPageIndex <= 0)
+        if (_navigator is null)
         {
             return;
         }
 
-        _currentPageIndex--;
-        LoadPage();
+        if (_navigator.MovePrevious().Success)
+        {
+            LoadPage();
+        }
     }
 
     private void Page_Next(object sender, RoutedEventArgs e)
     {
-        if (_currentChapterPages.Count == 0 || _currentPageIndex >= _currentChapterPages.Count - 1)
+        if (_navigator is null)
         {
             return;
         }
 
-        _currentPageIndex++;
-        LoadPage();
+        if (_navigator.MoveNext().Success)
+        {
+            LoadPage();
+        }
     }
 
     private void LoadPage()
     {
         try
         {
-            if (_currentChapterPages.Count == 0)
+            if (_navigator is null)
             {
-                ClearReadingContent();
-                HideTasksPanel();
                 UpdateNavigationButtons();
                 return;
             }
 
-            if (_currentPageIndex < 0 || _currentPageIndex >= _currentChapterPages.Count)
+            var pages = CurrentPages;
+            if (pages.Count == 0)
+            {
+                ClearReadingContent();
+                HideTasksPanel();
+                UpdateNavigationButtons(pages);
+                return;
+            }
+
+            if (CurrentPageIndex < 0 || CurrentPageIndex >= pages.Count)
             {
                 ClearReadingContent();
                 HideTasksPanel();
@@ -469,11 +453,11 @@ public partial class MainWindow : Window
                                 "Navigation Error",
                                 MessageBoxButton.OK,
                                 MessageBoxImage.Warning);
-                UpdateNavigationButtons(_currentChapterPages);
+                UpdateNavigationButtons(pages);
                 return;
             }
 
-            var page = _currentChapterPages[_currentPageIndex];
+            var page = pages[CurrentPageIndex];
             PageTitleBlock.Text = page.Title;
 
             switch (DetermineDisplayMode(page))
@@ -489,7 +473,7 @@ public partial class MainWindow : Window
         }
         finally
         {
-            UpdateNavigationButtons(_currentChapterPages);
+            UpdateNavigationButtons(CurrentPages);
             UpdateNavigationHighlight();
         }
     }
@@ -539,7 +523,7 @@ public partial class MainWindow : Window
             documentRange.Load(stream, DataFormats.Rtf);
             myRichBox.ScrollToHome();
 
-            _lastLoadedPageIndex = _currentPageIndex;
+            _lastLoadedPageIndex = CurrentPageIndex;
         }
         catch (FileNotFoundException)
         {
@@ -550,7 +534,10 @@ public partial class MainWindow : Window
 
             if (_lastLoadedPageIndex >= 0)
             {
-                _currentPageIndex = _lastLoadedPageIndex;
+                if (_navigator is not null && CurrentChapter is not null)
+                {
+                    _navigator.NavigateTo(CurrentChapter.Id, _lastLoadedPageIndex);
+                }
             }
         }
         catch (Exception ex)
@@ -579,7 +566,7 @@ public partial class MainWindow : Window
         }
 
         TasksScrollViewer.ScrollToHome();
-        _lastLoadedPageIndex = _currentPageIndex;
+        _lastLoadedPageIndex = CurrentPageIndex;
     }
 
     private void ClearReadingContent()
@@ -1053,8 +1040,8 @@ public partial class MainWindow : Window
             return;
         }
 
-        backButton.IsEnabled = _currentPageIndex > 0;
-        nextButton.IsEnabled = _currentPageIndex < pages.Count - 1;
+        backButton.IsEnabled = CurrentPageIndex > 0;
+        nextButton.IsEnabled = CurrentPageIndex < pages.Count - 1;
     }
 
     private enum PageDisplayMode
