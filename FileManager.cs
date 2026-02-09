@@ -143,28 +143,74 @@ public sealed class Page
     public string Title { get; set; } = string.Empty;
 
     [JsonProperty("kind")]
-    public string Kind { get; set; } = "reading";
+    public string? Kind { get; set; }
 
     [JsonProperty("estimatedTimeMinutes")]
     public int? EstimatedTimeMinutes { get; set; }
 
     [JsonProperty("content")]
-    public PageContent Content { get; set; } = new();
+    public PageContent? Content { get; set; }
 
     [JsonProperty("tasks")]
-    public List<LearningTask> Tasks { get; set; } = new();
+    public List<LearningTask>? Tasks { get; set; }
 
     [JsonProperty("resources")]
-    public List<PageResource> Resources { get; set; } = new();
+    public List<PageResource>? Resources { get; set; }
 
     [JsonIgnore]
-    public string KindNormalized => string.IsNullOrWhiteSpace(Kind)
-        ? "reading"
-        : Kind.Trim().ToLowerInvariant();
+    public IReadOnlyList<LearningTask> TasksOrEmpty =>
+        Tasks ?? (IReadOnlyList<LearningTask>)Array.Empty<LearningTask>();
+
+    [JsonIgnore]
+    public IReadOnlyList<PageResource> ResourcesOrEmpty =>
+        Resources ?? (IReadOnlyList<PageResource>)Array.Empty<PageResource>();
+
+    [JsonIgnore]
+    public bool HasContent => Content is not null && !string.IsNullOrWhiteSpace(Content.Source);
+
+    [JsonIgnore]
+    public bool HasTasks => Tasks is { Count: > 0 };
+
+    [JsonIgnore]
+    public string KindNormalized
+    {
+        get
+        {
+            if (!string.IsNullOrWhiteSpace(Kind))
+            {
+                return Kind.Trim().ToLowerInvariant();
+            }
+
+            var inferred = InferKindFromTasks();
+            return inferred ?? "reading";
+        }
+    }
 
     [JsonIgnore]
     public bool IsTaskPage =>
-        KindNormalized is "quiz" or "code" or "assessment" or "tasks";
+        HasTasks || KindNormalized is "quiz" or "code" or "assessment" or "tasks";
+
+    private string? InferKindFromTasks()
+    {
+        if (Tasks is null || Tasks.Count == 0)
+        {
+            return null;
+        }
+
+        var distinctTypes = Tasks
+            .Select(task => task.Type)
+            .Where(type => !string.IsNullOrWhiteSpace(type))
+            .Select(type => type.Trim().ToLowerInvariant())
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToList();
+
+        if (distinctTypes.Count == 1)
+        {
+            return distinctTypes[0];
+        }
+
+        return "tasks";
+    }
 }
 
 public sealed class PageContent

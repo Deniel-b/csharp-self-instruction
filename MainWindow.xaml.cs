@@ -501,6 +501,15 @@ public partial class MainWindow : Window
         TasksPanel.Children.Clear();
         ClearReadingContent();
 
+        if (page.Content is null)
+        {
+            MessageBox.Show($"Page \"{page.Title}\" does not specify reading content.",
+                            "Content Error",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Warning);
+            return;
+        }
+
         if (!string.Equals(page.Content.Format, "richText", StringComparison.OrdinalIgnoreCase))
         {
             MessageBox.Show($"Unsupported page format: {page.Content.Format}",
@@ -559,13 +568,14 @@ public partial class MainWindow : Window
         ClearReadingContent();
         TasksScrollViewer.Visibility = Visibility.Visible;
 
-        if (page.Tasks.Count == 0)
+        var tasks = page.Tasks ?? new List<LearningTaskModel>();
+        if (tasks.Count == 0)
         {
             RenderTasks(Array.Empty<LearningTaskModel>(), showPlaceholder: true);
         }
         else
         {
-            RenderTasks(page.Tasks, showPlaceholder: false);
+            RenderTasks(tasks, showPlaceholder: false);
         }
 
         TasksScrollViewer.ScrollToHome();
@@ -585,14 +595,7 @@ public partial class MainWindow : Window
 
     private static PageDisplayMode DetermineDisplayMode(PageModel page)
     {
-        return page.KindNormalized switch
-        {
-            "quiz" => PageDisplayMode.Tasks,
-            "code" => PageDisplayMode.Tasks,
-            "assessment" => PageDisplayMode.Tasks,
-            "tasks" => PageDisplayMode.Tasks,
-            _ => PageDisplayMode.Reading
-        };
+        return page.IsTaskPage ? PageDisplayMode.Tasks : PageDisplayMode.Reading;
     }
 
     private void RenderTasks(IReadOnlyList<LearningTaskModel>? tasks, bool showPlaceholder = false)

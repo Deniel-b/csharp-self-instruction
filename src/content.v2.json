@@ -19,27 +19,22 @@
         {
           "id": "intro-overview",
           "order": 1,
-          "kind": "reading",
           "title": "Что такое C#",
           "estimatedTimeMinutes": 10,
           "content": {
             "format": "richText",
             "source": "texts/Introduction/introduction1.rtf"
-          },
-          "tasks": [],
-          "resources": []
+          }
         },
         {
           "id": "intro-hello-world",
           "order": 2,
-          "kind": "reading",
           "title": "Первая программа",
           "estimatedTimeMinutes": 15,
           "content": {
             "format": "richText",
             "source": "texts/Introduction/introduction2.rtf"
           },
-          "tasks": [],
           "resources": [
             {
               "type": "externalLink",
@@ -54,10 +49,6 @@
           "kind": "quiz",
           "title": "Проверь себя: Hello World",
           "estimatedTimeMinutes": 5,
-          "content": {
-            "format": "none",
-            "source": ""
-          },
           "tasks": [
             {
               "id": "intro-quiz-hello-world",
@@ -105,8 +96,7 @@
                 "explanation": "Console.WriteLine выводит строку и завершает её символом новой строки."
               }
             }
-          ],
-          "resources": []
+          ]
         },
         {
           "id": "intro-hello-world-code",
@@ -114,10 +104,6 @@
           "kind": "code",
           "title": "Практика: Hello World",
           "estimatedTimeMinutes": 10,
-          "content": {
-            "format": "none",
-            "source": ""
-          },
           "tasks": [
             {
               "id": "intro-code-hello-world",
@@ -168,8 +154,7 @@
                 "Не забывайте про символ новой строки в ответе."
               ]
             }
-          ],
-          "resources": []
+          ]
         }
       ]
     },
@@ -182,15 +167,12 @@
         {
           "id": "variables-basics",
           "order": 1,
-          "kind": "reading",
           "title": "Объявление переменных",
           "estimatedTimeMinutes": 12,
           "content": {
             "format": "richText",
             "source": "texts/Chapter One/Chapter One1.rtf"
-          },
-          "tasks": [],
-          "resources": []
+          }
         },
         {
           "id": "variables-basics-quiz",
@@ -198,10 +180,6 @@
           "kind": "quiz",
           "title": "Проверь себя: переменные",
           "estimatedTimeMinutes": 5,
-          "content": {
-            "format": "none",
-            "source": ""
-          },
           "tasks": [
             {
               "id": "variables-quiz-basic",
@@ -250,21 +228,17 @@
                 "Сравните типы выражений с типами переменных."
               ]
             }
-          ],
-          "resources": []
+          ]
         },
         {
           "id": "variables-operations",
           "order": 3,
-          "kind": "reading",
           "title": "Арифметика и приведения",
           "estimatedTimeMinutes": 20,
           "content": {
             "format": "richText",
             "source": "texts/Chapter One/Chapter One2.rtf"
-          },
-          "tasks": [],
-          "resources": []
+          }
         },
         {
           "id": "variables-operations-code",
@@ -272,10 +246,6 @@
           "kind": "code",
           "title": "Практика: среднее арифметическое",
           "estimatedTimeMinutes": 10,
-          "content": {
-            "format": "none",
-            "source": ""
-          },
           "tasks": [
             {
               "id": "variables-code-average",
@@ -328,21 +298,17 @@
                 "Используйте CultureInfo.InvariantCulture для вывода."
               ]
             }
-          ],
-          "resources": []
+          ]
         },
         {
           "id": "variables-summary",
           "order": 5,
-          "kind": "reading",
           "title": "Итоги главы",
           "estimatedTimeMinutes": 8,
           "content": {
             "format": "richText",
             "source": "texts/Chapter One/Chapter One3.rtf"
-          },
-          "tasks": [],
-          "resources": []
+          }
         }
       ]
     }
