@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "2.0.0",
   "language": "ru-RU",
   "title": "Самоучитель по C#",
@@ -11,327 +11,972 @@
   ],
   "chapters": [
     {
-      "id": "chapter-introduction",
+      "id": "chapter-1",
       "order": 1,
-      "title": "Введение в C#",
-      "summary": "История появления C#, экосистема .NET и установка инструментов.",
+      "title": "Общая структура программы",
+      "summary": "Теория главы 1",
       "sections": [
         {
-          "id": "chapter-introduction-section-1",
+          "id": "chapter-1-section-1",
           "order": 1,
-          "title": "Раздел 1",
-          "summary": "История появления C#, экосистема .NET и установка инструментов.",
+          "title": "Общая структура программы",
+          "summary": "Общая структура программы",
           "pages": [
             {
-              "id": "intro-overview",
+              "id": "chapter-1-section-1-page-1",
               "order": 1,
-              "title": "Что такое C#",
-              "estimatedTimeMinutes": 10,
+              "title": "Общая структура программы ? ????? 1",
+              "estimatedTimeMinutes": 5,
               "content": {
                 "format": "richText",
-                "source": "texts/Introduction/introduction1.rtf"
+                "source": "new theory/pages/1_1_1.rtf"
               },
               "tasks": [],
               "resources": []
             },
             {
-              "id": "intro-hello-world",
+              "id": "chapter-1-section-1-page-2",
               "order": 2,
-              "title": "Первая программа",
-              "estimatedTimeMinutes": 15,
+              "title": "Общая структура программы ? ????? 2",
+              "estimatedTimeMinutes": 5,
               "content": {
                 "format": "richText",
-                "source": "texts/Introduction/introduction2.rtf"
+                "source": "new theory/pages/1_1_2.rtf"
               },
-              "resources": [
-                {
-                  "type": "externalLink",
-                  "title": "Документация: Console.WriteLine",
-                  "url": "https://learn.microsoft.com/dotnet/api/system.console.writeline"
-                }
-              ]
+              "tasks": [],
+              "resources": []
             },
             {
-              "id": "intro-hello-world-quiz",
+              "id": "chapter-1-section-1-page-3",
               "order": 3,
-              "title": "Проверь себя: Hello World",
-              "kind": "quiz",
+              "title": "Общая структура программы ? ????? 3",
               "estimatedTimeMinutes": 5,
-              "tasks": [
-                {
-                  "id": "intro-quiz-hello-world",
-                  "type": "quiz",
-                  "selection": "single",
-                  "question": "Какой метод выводит строку в консоль и переносит курсор на новую строку?",
-                  "scoring": {
-                    "points": 2,
-                    "partial": false
-                  },
-                  "options": [
-                    {
-                      "id": "option-console-write-line",
-                      "text": "Console.WriteLine();",
-                      "isCorrect": true,
-                      "feedback": "Именно Console.WriteLine выводит строку и завершает её переводом строки."
-                    },
-                    {
-                      "id": "option-system-print",
-                      "text": "System.Print();",
-                      "isCorrect": false,
-                      "feedback": "Такого метода в .NET нет."
-                    },
-                    {
-                      "id": "option-console-log",
-                      "text": "Console.Log();",
-                      "isCorrect": false,
-                      "feedback": "Console.Log — метод из JavaScript, но не из C#."
-                    },
-                    {
-                      "id": "option-debug-write-line",
-                      "text": "Debug.WriteLine();",
-                      "isCorrect": false,
-                      "feedback": "Debug.WriteLine выводит в окно отладчика, а не в стандартную консоль."
-                    }
-                  ],
-                  "solution": {
-                    "correctOptionIds": [
-                      "option-console-write-line"
-                    ],
-                    "explanation": "Console.WriteLine выводит строку и завершает её символом новой строки."
-                  },
-                  "tests": [],
-                  "hints": [
-                    "Вспомните класс Console и его методы.",
-                    "Метод должен завершаться переводом строки."
-                  ]
-                }
-              ]
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/1_1_3.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-1-section-2",
+          "order": 2,
+          "title": "Переменные и константы",
+          "summary": "Переменные и константы",
+          "pages": [
+            {
+              "id": "chapter-1-section-2-page-1",
+              "order": 1,
+              "title": "Переменные и константы ? ????? 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/1_2_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
             },
             {
-              "id": "intro-hello-world-code",
-              "order": 4,
-              "title": "Практика: Hello World",
-              "kind": "code",
-              "estimatedTimeMinutes": 10,
-              "tasks": [
-                {
-                  "id": "intro-code-hello-world",
-                  "type": "code",
-                  "title": "Приветствие пользователя",
-                  "prompt": "Считайте из консоли имя и выведите \"Hello, <name>!\". Имя может содержать пробелы.",
-                  "starterCode": "using System;\n\npublic static class Solution\n{\n    public static void Solve()\n    {\n        // TODO: считайте имя пользователя и выведите приветствие\n    }\n}\n",
-                  "entryPoint": {
-                    "class": "Solution",
-                    "method": "Solve",
-                    "signature": "public static void Solve()"
-                  },
-                  "constraints": {
-                    "timeLimitMs": 2000,
-                    "memoryLimitMb": 128,
-                    "disallow": [
-                      "Environment.Exit",
-                      "Process.Start"
-                    ]
-                  },
-                  "scoring": {
-                    "points": 5,
-                    "partial": true
-                  },
-                  "options": [],
-                  "tests": [
-                    {
-                      "id": "sample-1",
-                      "visibility": "public",
-                      "input": "Alice\n",
-                      "expectedOutput": "Hello, Alice!\n",
-                      "explanation": "Пользователь вводит имя Alice."
-                    },
-                    {
-                      "id": "sample-2",
-                      "visibility": "public",
-                      "input": "Bob\n",
-                      "expectedOutput": "Hello, Bob!\n"
-                    },
-                    {
-                      "id": "hidden-1",
-                      "visibility": "hidden",
-                      "input": "C# Learner\n",
-                      "expectedOutput": "Hello, C# Learner!\n"
-                    }
-                  ],
-                  "hints": [
-                    "Используйте Console.ReadLine и интерполяцию строк.",
-                    "Не забывайте про символ новой строки в ответе."
-                  ]
-                }
-              ]
+              "id": "chapter-1-section-2-page-2",
+              "order": 2,
+              "title": "Переменные и константы ? ????? 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/1_2_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-1-section-3",
+          "order": 3,
+          "title": "Типы данных",
+          "summary": "Типы данных",
+          "pages": [
+            {
+              "id": "chapter-1-section-3-page-1",
+              "order": 1,
+              "title": "Типы данных ? ????? 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/1_3_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-1-section-3-page-2",
+              "order": 2,
+              "title": "Типы данных ? ????? 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/1_3_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-1-section-3-page-3",
+              "order": 3,
+              "title": "Типы данных ? ????? 3",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/1_3_3.rtf"
+              },
+              "tasks": [],
+              "resources": []
             }
           ]
         }
       ]
     },
     {
-      "id": "chapter-variables",
+      "id": "chapter-2",
       "order": 2,
-      "title": "Переменные и типы данных",
-      "summary": "Объявление переменных, базовые типы и преобразования.",
+      "title": "Классы и методы",
+      "summary": "Теория главы 2",
       "sections": [
         {
-          "id": "chapter-variables-section-1",
+          "id": "chapter-2-section-1",
           "order": 1,
-          "title": "Раздел 1",
-          "summary": "Объявление переменных, базовые типы и преобразования.",
+          "title": "Классы и методы (Program Main)",
+          "summary": "Классы и методы (Program Main)",
           "pages": [
             {
-              "id": "variables-basics",
+              "id": "chapter-2-section-1-page-1",
               "order": 1,
-              "title": "Объявление переменных",
-              "estimatedTimeMinutes": 12,
+              "title": "Классы и методы (Program Main) ? ????? 1",
+              "estimatedTimeMinutes": 5,
               "content": {
                 "format": "richText",
-                "source": "texts/Chapter One/Chapter One1.rtf"
+                "source": "new theory/pages/2_1_1.rtf"
               },
               "tasks": [],
               "resources": []
             },
             {
-              "id": "variables-basics-quiz",
+              "id": "chapter-2-section-1-page-2",
               "order": 2,
-              "title": "Проверь себя: переменные",
-              "kind": "quiz",
+              "title": "Классы и методы (Program Main) ? ????? 2",
               "estimatedTimeMinutes": 5,
-              "tasks": [
-                {
-                  "id": "variables-quiz-basic",
-                  "type": "quiz",
-                  "selection": "multiple",
-                  "question": "Выберите корректные объявления переменных в C#.",
-                  "scoring": {
-                    "points": 3,
-                    "partial": true
-                  },
-                  "options": [
-                    {
-                      "id": "option-1",
-                      "text": "int count = 10;",
-                      "isCorrect": true,
-                      "feedback": "Корректное объявление целочисленной переменной."
-                    },
-                    {
-                      "id": "option-2",
-                      "text": "var name;",
-                      "isCorrect": false,
-                      "feedback": "var требует обязательной инициализации."
-                    },
-                    {
-                      "id": "option-3",
-                      "text": "string title = \"Intro\";",
-                      "isCorrect": true,
-                      "feedback": "Строка инициализирована корректно."
-                    },
-                    {
-                      "id": "option-4",
-                      "text": "decimal price = \"9.99\";",
-                      "isCorrect": false,
-                      "feedback": "Строку нельзя присвоить decimal без явного преобразования."
-                    }
-                  ],
-                  "solution": {
-                    "correctOptionIds": [
-                      "option-1",
-                      "option-3"
-                    ],
-                    "explanation": "var требует инициализации, а decimal не принимает строку без преобразования."
-                  },
-                  "tests": [],
-                  "hints": [
-                    "Помните про вывод типа при использовании var.",
-                    "Сравните типы выражений с типами переменных."
-                  ]
-                }
-              ]
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/2_1_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-2-section-2",
+          "order": 2,
+          "title": "Классы и объекты",
+          "summary": "Классы и объекты",
+          "pages": [
+            {
+              "id": "chapter-2-section-2-page-1",
+              "order": 1,
+              "title": "Классы и объекты ? ????? 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/2_2_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
             },
             {
-              "id": "variables-operations",
+              "id": "chapter-2-section-2-page-2",
+              "order": 2,
+              "title": "Классы и объекты ? ????? 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/2_2_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-2-page-3",
               "order": 3,
-              "title": "Арифметика и приведения",
-              "estimatedTimeMinutes": 20,
+              "title": "Классы и объекты ? ????? 3",
+              "estimatedTimeMinutes": 5,
               "content": {
                 "format": "richText",
-                "source": "texts/Chapter One/Chapter One2.rtf"
-              }
+                "source": "new theory/pages/2_2_3.rtf"
+              },
+              "tasks": [],
+              "resources": []
             },
             {
-              "id": "variables-operations-code",
+              "id": "chapter-2-section-2-page-4",
               "order": 4,
-              "title": "Практика: среднее арифметическое",
-              "kind": "code",
-              "estimatedTimeMinutes": 10,
-              "tasks": [
-                {
-                  "id": "variables-code-average",
-                  "type": "code",
-                  "title": "Среднее арифметическое",
-                  "prompt": "Считайте три целых числа и выведите их среднее арифметическое с точностью до двух знаков после запятой.",
-                  "starterCode": "using System;\nusing System.Globalization;\n\npublic static class Solution\n{\n    public static void Solve()\n    {\n        // Подсказка: используйте decimal или double и ToString(\"F2\")\n    }\n}\n",
-                  "entryPoint": {
-                    "class": "Solution",
-                    "method": "Solve",
-                    "signature": "public static void Solve()"
-                  },
-                  "constraints": {
-                    "timeLimitMs": 2000,
-                    "memoryLimitMb": 128,
-                    "disallow": []
-                  },
-                  "scoring": {
-                    "points": 6,
-                    "partial": true
-                  },
-                  "options": [],
-                  "tests": [
-                    {
-                      "id": "sample-1",
-                      "visibility": "public",
-                      "input": "1 2 3\n",
-                      "expectedOutput": "2.00\n",
-                      "explanation": "1 + 2 + 3 = 6, 6 / 3 = 2.00"
-                    },
-                    {
-                      "id": "sample-2",
-                      "visibility": "public",
-                      "input": "5 10 15\n",
-                      "expectedOutput": "10.00\n"
-                    },
-                    {
-                      "id": "hidden-1",
-                      "visibility": "hidden",
-                      "input": "-10 0 10\n",
-                      "expectedOutput": "0.00\n"
-                    },
-                    {
-                      "id": "hidden-2",
-                      "visibility": "hidden",
-                      "input": "100 200 101\n",
-                      "expectedOutput": "133.67\n"
-                    }
-                  ],
-                  "hints": [
-                    "Сумма трёх целых чисел может быть нецелой при делении.",
-                    "Используйте CultureInfo.InvariantCulture для вывода."
-                  ]
-                }
-              ]
-            },
-            {
-              "id": "variables-summary",
-              "order": 5,
-              "title": "Итоги главы",
-              "estimatedTimeMinutes": 8,
+              "title": "Классы и объекты ? ????? 4",
+              "estimatedTimeMinutes": 5,
               "content": {
                 "format": "richText",
-                "source": "texts/Chapter One/Chapter One3.rtf"
-              }
+                "source": "new theory/pages/2_2_4.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-2-section-3",
+          "order": 3,
+          "title": "Конструкторы",
+          "summary": "Конструкторы",
+          "pages": [
+            {
+              "id": "chapter-2-section-3-page-1",
+              "order": 1,
+              "title": "Конструкторы ? ????? 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/2_3_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-3-page-2",
+              "order": 2,
+              "title": "Конструкторы ? ????? 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/2_3_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-3-page-3",
+              "order": 3,
+              "title": "Конструкторы ? ????? 3",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/2_3_3.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-3-page-4",
+              "order": 4,
+              "title": "Конструкторы ? ????? 4",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/2_3_4.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-2-section-4",
+          "order": 4,
+          "title": "Пространство имен",
+          "summary": "Пространство имен",
+          "pages": [
+            {
+              "id": "chapter-2-section-4-page-1",
+              "order": 1,
+              "title": "Пространство имен ? ????? 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/2_4_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-4-page-2",
+              "order": 2,
+              "title": "Пространство имен ? ????? 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/2_4_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-2-section-5",
+          "order": 5,
+          "title": "Модификаторы доступа",
+          "summary": "Модификаторы доступа",
+          "pages": [
+            {
+              "id": "chapter-2-section-5-page-1",
+              "order": 1,
+              "title": "Модификаторы доступа ? ????? 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/2_5_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-5-page-2",
+              "order": 2,
+              "title": "Модификаторы доступа ? ????? 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/2_5_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-5-page-3",
+              "order": 3,
+              "title": "Модификаторы доступа ? ????? 3",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/2_5_3.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-5-page-4",
+              "order": 4,
+              "title": "Модификаторы доступа ? ????? 4",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/2_5_4.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-2-section-6",
+          "order": 6,
+          "title": "Структуры",
+          "summary": "Структуры",
+          "pages": [
+            {
+              "id": "chapter-2-section-6-page-1",
+              "order": 1,
+              "title": "Структуры ? ????? 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/2_6_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-6-page-2",
+              "order": 2,
+              "title": "Структуры ? ????? 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/2_6_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-6-page-3",
+              "order": 3,
+              "title": "Структуры ? ????? 3",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/2_6_3.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-6-page-4",
+              "order": 4,
+              "title": "Структуры ? ????? 4",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/2_6_4.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-2-section-7",
+          "order": 7,
+          "title": "Типы значений и ссылочные типы",
+          "summary": "Типы значений и ссылочные типы",
+          "pages": [
+            {
+              "id": "chapter-2-section-7-page-1",
+              "order": 1,
+              "title": "Типы значений и ссылочные типы ? ????? 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/2_7_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-7-page-2",
+              "order": 2,
+              "title": "Типы значений и ссылочные типы ? ????? 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/2_7_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-7-page-3",
+              "order": 3,
+              "title": "Типы значений и ссылочные типы ? ????? 3",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/2_7_3.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-7-page-4",
+              "order": 4,
+              "title": "Типы значений и ссылочные типы ? ????? 4",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/2_7_4.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-2-section-8",
+          "order": 8,
+          "title": "Методы",
+          "summary": "Методы",
+          "pages": [
+            {
+              "id": "chapter-2-section-8-page-1",
+              "order": 1,
+              "title": "Методы ? ????? 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/2_8_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-8-page-2",
+              "order": 2,
+              "title": "Методы ? ????? 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/2_8_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-2-section-9",
+          "order": 9,
+          "title": "Параметры методов",
+          "summary": "Параметры методов",
+          "pages": [
+            {
+              "id": "chapter-2-section-9-page-1",
+              "order": 1,
+              "title": "Параметры методов ? ????? 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/2_9_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-9-page-2",
+              "order": 2,
+              "title": "Параметры методов ? ????? 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/2_9_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-9-page-3",
+              "order": 3,
+              "title": "Параметры методов ? ????? 3",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/2_9_3.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-2-section-10",
+          "order": 10,
+          "title": "Свойства",
+          "summary": "Свойства",
+          "pages": [
+            {
+              "id": "chapter-2-section-10-page-1",
+              "order": 1,
+              "title": "Свойства ? ????? 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/2_10_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-10-page-2",
+              "order": 2,
+              "title": "Свойства ? ????? 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/2_10_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-10-page-3",
+              "order": 3,
+              "title": "Свойства ? ????? 3",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/2_10_3.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-10-page-4",
+              "order": 4,
+              "title": "Свойства ? ????? 4",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/2_10_4.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-10-page-5",
+              "order": 5,
+              "title": "Свойства ? ????? 5",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/2_10_5.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-2-section-11",
+          "order": 11,
+          "title": "Исключения",
+          "summary": "Исключения",
+          "pages": [
+            {
+              "id": "chapter-2-section-11-page-1",
+              "order": 1,
+              "title": "Исключения ? ????? 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/2_11_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-11-page-2",
+              "order": 2,
+              "title": "Исключения ? ????? 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/2_11_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chapter-3",
+      "order": 3,
+      "title": "Операторы C#",
+      "summary": "Теория главы 3",
+      "sections": [
+        {
+          "id": "chapter-3-section-1",
+          "order": 1,
+          "title": "Вывод",
+          "summary": "Вывод",
+          "pages": [
+            {
+              "id": "chapter-3-section-1-page-1",
+              "order": 1,
+              "title": "Вывод ? ????? 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/3_1_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-1-page-2",
+              "order": 2,
+              "title": "Вывод ? ????? 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/3_1_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-3-section-2",
+          "order": 2,
+          "title": "Консольный ввод",
+          "summary": "Консольный ввод",
+          "pages": [
+            {
+              "id": "chapter-3-section-2-page-1",
+              "order": 1,
+              "title": "Консольный ввод ? ????? 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/3_2_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-2-page-2",
+              "order": 2,
+              "title": "Консольный ввод ? ????? 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/3_2_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-3-section-3",
+          "order": 3,
+          "title": "Арифметические операции и присваивание",
+          "summary": "Арифметические операции и присваивание",
+          "pages": [
+            {
+              "id": "chapter-3-section-3-page-1",
+              "order": 1,
+              "title": "Арифметические операции и присваивание ? ????? 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/3_3_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-3-page-2",
+              "order": 2,
+              "title": "Арифметические операции и присваивание ? ????? 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/3_3_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-3-page-3",
+              "order": 3,
+              "title": "Арифметические операции и присваивание ? ????? 3",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/3_3_3.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-3-page-4",
+              "order": 4,
+              "title": "Арифметические операции и присваивание ? ????? 4",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/3_3_4.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-3-section-4",
+          "order": 4,
+          "title": "Условные выражения",
+          "summary": "Условные выражения",
+          "pages": [
+            {
+              "id": "chapter-3-section-4-page-1",
+              "order": 1,
+              "title": "Условные выражения ? ????? 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/3_4_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-4-page-2",
+              "order": 2,
+              "title": "Условные выражения ? ????? 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/3_4_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-3-section-5",
+          "order": 5,
+          "title": "Поразрядные операции",
+          "summary": "Поразрядные операции",
+          "pages": [
+            {
+              "id": "chapter-3-section-5-page-1",
+              "order": 1,
+              "title": "Поразрядные операции ? ????? 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/3_5_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-5-page-2",
+              "order": 2,
+              "title": "Поразрядные операции ? ????? 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/3_5_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-5-page-3",
+              "order": 3,
+              "title": "Поразрядные операции ? ????? 3",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/3_5_3.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-5-page-4",
+              "order": 4,
+              "title": "Поразрядные операции ? ????? 4",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/3_5_4.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-3-section-6",
+          "order": 6,
+          "title": "Условные операторы (if)",
+          "summary": "Условные операторы (if)",
+          "pages": [
+            {
+              "id": "chapter-3-section-6-page-1",
+              "order": 1,
+              "title": "Условные операторы (if) ? ????? 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/3_6_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-6-page-2",
+              "order": 2,
+              "title": "Условные операторы (if) ? ????? 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/3_6_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-3-section-7",
+          "order": 7,
+          "title": "Циклы",
+          "summary": "Циклы",
+          "pages": [
+            {
+              "id": "chapter-3-section-7-page-1",
+              "order": 1,
+              "title": "Циклы ? ????? 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/3_7_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-7-page-2",
+              "order": 2,
+              "title": "Циклы ? ????? 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/3_7_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-7-page-3",
+              "order": 3,
+              "title": "Циклы ? ????? 3",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/3_7_3.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-7-page-4",
+              "order": 4,
+              "title": "Циклы ? ????? 4",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/3_7_4.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-7-page-5",
+              "order": 5,
+              "title": "Циклы ? ????? 5",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/pages/3_7_5.rtf"
+              },
+              "tasks": [],
+              "resources": []
             }
           ]
         }

@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Input;
 using Newtonsoft.Json;
 using kursach.Services;
+using kursach.ViewModels;
 using ChapterModel = kursachFile.Chapter;
 using CourseContentModel = kursachFile.CourseContent;
 using PageModel = kursachFile.Page;
@@ -31,139 +32,107 @@ public partial class MainWindow : Window
     private const string AssetsRoot = "src";
     private static readonly Thickness TaskContainerMargin = new(0, 0, 0, 15);
     private static readonly Thickness OptionMargin = new(0, 6, 0, 0);
-    private static readonly SolidColorBrush PageButtonForeground = new(Color.FromRgb(0xD6, 0xE0, 0xEC));
-    private static readonly SolidColorBrush PageButtonSelectedForeground = Brushes.White;
-    private static readonly SolidColorBrush PageButtonSelectedBackground = new(Color.FromRgb(0xFF, 0x7A, 0x3D));
-    private static readonly SolidColorBrush PageButtonHoverBackground = new(Color.FromRgb(0x1C, 0x27, 0x33));
-    private static readonly SolidColorBrush PageButtonDefaultBackground = Brushes.Transparent;
+    private SolidColorBrush _pageButtonForeground = new(Color.FromRgb(0xD6, 0xE0, 0xEC));
+    private SolidColorBrush _pageButtonSelectedForeground = new(Colors.White);
+    private SolidColorBrush _pageButtonSelectedBackground = new(Color.FromRgb(0xFF, 0x7A, 0x3D));
+    private SolidColorBrush _pageButtonHoverBackground = new(Color.FromRgb(0x1C, 0x27, 0x33));
+    private Brush _pageButtonDefaultBackground = Brushes.Transparent;
 
-    private static readonly SolidColorBrush StepperDefaultBackground = new(Color.FromRgb(0x1C, 0x27, 0x33));
-    private static readonly SolidColorBrush StepperHoverBackground = new(Color.FromRgb(0x2B, 0x3A, 0x4B));
-    private static readonly SolidColorBrush StepperSelectedBackground = new(Color.FromRgb(0xFF, 0x7A, 0x3D));
-    private static readonly SolidColorBrush StepperForeground = Brushes.WhiteSmoke;
+    private SolidColorBrush _stepperDefaultBackground = new(Color.FromRgb(0x1C, 0x27, 0x33));
+    private SolidColorBrush _stepperHoverBackground = new(Color.FromRgb(0x2B, 0x3A, 0x4B));
+    private SolidColorBrush _stepperSelectedBackground = new(Color.FromRgb(0xFF, 0x7A, 0x3D));
+    private SolidColorBrush _stepperForeground = new(Colors.WhiteSmoke);
+    private SolidColorBrush _stepperInactiveForeground = new(Color.FromRgb(0x9B, 0xAB, 0xBF));
 
     private readonly Dictionary<string, SectionButtonInfo> _sectionButtonMap = new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, PageButtonInfo> _pageButtonMap = new(StringComparer.OrdinalIgnoreCase);
-    private readonly ContentLoader _contentLoader = new();
     private readonly ContentValidator _contentValidator = new();
     private readonly CodeTaskRunner _codeTaskRunner = new();
+    private readonly ContentEditingService _contentEditingService = new();
+    private readonly AdminViewModel _adminViewModel;
 
     private static string MakeSectionKey(string chapterId, string sectionId) => $"{chapterId}|{sectionId}";
     private static string MakePageKey(string chapterId, string sectionId, int pageIndex) => $"{chapterId}|{sectionId}|{pageIndex}";
 
-    private CourseContentModel? _course;
-    private IReadOnlyList<ChapterModel> _chapters = Array.Empty<ChapterModel>();
-    private CourseNavigator? _navigator;
     private int _lastLoadedPageIndex = -1;
     private string? _lastLoadedSectionId;
-    private bool _isAdminMode;
-    private bool _suppressAdminEvents;
-    private bool _suppressHistory;
-    private ChapterModel? _adminChapter;
-    private SectionModel? _adminSection;
-    private PageModel? _adminPage;
-    private LearningTaskModel? _adminTask;
-    private TaskOptionModel? _adminOption;
-    private TaskTestCaseModel? _adminTest;
-    private PageResourceModel? _adminResource;
-    private readonly List<HistoryEntry> _history = new();
-    private int _historyIndex = -1;
     private Point _dragStartPoint;
     private readonly JsonSerializerSettings _adminJsonSettings = new()
     {
         NullValueHandling = NullValueHandling.Ignore
     };
 
-    private IReadOnlyList<SectionModel> CurrentSections => _navigator?.CurrentChapterSections ?? Array.Empty<SectionModel>();
-    private IReadOnlyList<PageModel> CurrentPages => _navigator?.CurrentSectionPages ?? Array.Empty<PageModel>();
-    private int CurrentPageIndex => _navigator?.CurrentPageIndex ?? -1;
-    private ChapterModel? CurrentChapter => _navigator?.CurrentChapter;
-    private SectionModel? CurrentSection => _navigator?.CurrentSection;
+    private bool _isAdminMode
+    {
+        get => _adminViewModel.IsAdminMode;
+        set => _adminViewModel.IsAdminMode = value;
+    }
+
+    private bool _suppressAdminEvents
+    {
+        get => _adminViewModel.SuppressAdminEvents;
+        set => _adminViewModel.SuppressAdminEvents = value;
+    }
+
+    private bool _suppressHistory
+    {
+        get => _adminViewModel.SuppressHistory;
+        set => _adminViewModel.SuppressHistory = value;
+    }
+
+    private ChapterModel? _adminChapter
+    {
+        get => _adminViewModel.SelectedChapter;
+        set => _adminViewModel.SelectedChapter = value;
+    }
+
+    private SectionModel? _adminSection
+    {
+        get => _adminViewModel.SelectedSection;
+        set => _adminViewModel.SelectedSection = value;
+    }
+
+    private PageModel? _adminPage
+    {
+        get => _adminViewModel.SelectedPage;
+        set => _adminViewModel.SelectedPage = value;
+    }
+
+    private LearningTaskModel? _adminTask
+    {
+        get => _adminViewModel.SelectedTask;
+        set => _adminViewModel.SelectedTask = value;
+    }
+
+    private TaskOptionModel? _adminOption
+    {
+        get => _adminViewModel.SelectedOption;
+        set => _adminViewModel.SelectedOption = value;
+    }
+
+    private TaskTestCaseModel? _adminTest
+    {
+        get => _adminViewModel.SelectedTest;
+        set => _adminViewModel.SelectedTest = value;
+    }
+
+    private PageResourceModel? _adminResource
+    {
+        get => _adminViewModel.SelectedResource;
+        set => _adminViewModel.SelectedResource = value;
+    }
 
     public MainWindow()
     {
+        _adminViewModel = new AdminViewModel(_contentEditingService);
         InitializeComponent();
+        ThemeToggle.IsChecked = false;
+        ApplyTheme(isDark: false);
         UpdateNavigationButtons();
         LoadContent();
     }
 
-    private void LoadContent()
-    {
-        var loadResult = _contentLoader.Load(ContentPath);
-        if (!loadResult.Success)
-        {
-            MessageBox.Show(loadResult.Message ?? "Не удалось загрузить контент.",
-                            "Ошибка загрузки",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Error);
-            return;
-        }
 
-        var course = loadResult.Course!;
-        var issues = _contentValidator.Validate(course, ResolveAssetsRoot());
-        if (issues.Count > 0)
-        {
-            LogValidationIssues(issues);
-            var errorCount = issues.Count(issue => issue.Severity == ContentIssueSeverity.Error);
-            var warningCount = issues.Count - errorCount;
-
-            if (errorCount > 0)
-            {
-                MessageBox.Show($"Контент содержит ошибки: {errorCount}. Подробности см. в logs/app.log.",
-                                "Ошибка проверки контента",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Error);
-                return;
-            }
-
-            if (warningCount > 0)
-            {
-                ShowAdminStatus($"Контент: {warningCount} предупреждений (см. logs/app.log)", isError: true);
-            }
-        }
-
-        _course = course;
-        _navigator = new CourseNavigator(_course);
-        AppLogger.Info($"Контент загружен из {ResolveContentPath()}");
-
-        if (!string.IsNullOrWhiteSpace(_course.Title))
-        {
-            Title = _course.Title;
-        }
-
-        _chapters = _course.OrderedChapters;
-
-        if (_chapters.Count == 0)
-        {
-            MessageBox.Show("В контенте не найдено ни одной главы.",
-                            "Ошибка загрузки",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Error);
-            return;
-        }
-
-        RenderNavigation();
-        NavigateToFirstPage();
-        InitializeAdminUi();
-        InitializeHistory("Контент загружен");
-    }
-
-    private void NavigateToFirstPage()
-    {
-        foreach (var chapter in _chapters)
-        {
-            foreach (var section in chapter.OrderedSections)
-            {
-                if (section.OrderedPages.Count == 0)
-                {
-                    continue;
-                }
-
-                NavigateToPage(chapter.Id, section.Id, 0);
-                return;
-            }
-        }
-    }
 
     private void RenderNavigation()
     {
@@ -171,14 +140,14 @@ public partial class MainWindow : Window
         _sectionButtonMap.Clear();
 
         int chapterNumber = 1;
-        foreach (var chapter in _chapters)
+        foreach (var chapter in _viewModel.Chapters)
         {
             ChaptersPanel.Children.Add(new TextBlock
             {
                 Text = $"{chapterNumber} {chapter.Title}",
                 FontSize = 15,
                 FontWeight = FontWeights.SemiBold,
-                Foreground = Brushes.White,
+                Foreground = ResolveBrush("SidebarText", Brushes.White),
                 Margin = new Thickness(12, chapterNumber == 1 ? 12 : 24, 12, 6),
                 TextWrapping = TextWrapping.Wrap
             });
@@ -189,7 +158,7 @@ public partial class MainWindow : Window
                 {
                     Text = "Разделов пока нет",
                     Margin = new Thickness(24, 0, 12, 0),
-                    Foreground = Brushes.LightGray,
+                    Foreground = ResolveBrush("SidebarMuted", Brushes.LightGray),
                     FontStyle = FontStyles.Italic
                 });
                 chapterNumber++;
@@ -219,6 +188,11 @@ public partial class MainWindow : Window
         }
 
         UpdateNavigationHighlight();
+    }
+
+    private Brush ResolveBrush(string key, Brush fallback)
+    {
+        return TryFindResource(key) as Brush ?? fallback;
     }
 
     private void RenderPageStepper(ChapterModel chapter, SectionModel section)
@@ -258,7 +232,7 @@ public partial class MainWindow : Window
             Text = text,
             TextWrapping = TextWrapping.NoWrap,
             TextTrimming = TextTrimming.CharacterEllipsis,
-            Foreground = PageButtonForeground
+            Foreground = _pageButtonForeground
         };
 
         var button = new Button
@@ -270,8 +244,8 @@ public partial class MainWindow : Window
             HorizontalContentAlignment = HorizontalAlignment.Left,
             BorderThickness = new Thickness(0),
             BorderBrush = Brushes.Transparent,
-            Background = PageButtonDefaultBackground,
-            Foreground = PageButtonForeground,
+            Background = _pageButtonDefaultBackground,
+            Foreground = _pageButtonForeground,
             Focusable = false,
             Style = (Style)FindResource("NavButtonStyle")
         };
@@ -293,7 +267,7 @@ public partial class MainWindow : Window
             HorizontalAlignment = HorizontalAlignment.Center,
             VerticalAlignment = VerticalAlignment.Center,
             FontWeight = FontWeights.SemiBold,
-            Foreground = StepperForeground
+            Foreground = _stepperForeground
         };
 
         var button = new Button
@@ -303,7 +277,7 @@ public partial class MainWindow : Window
             Margin = new Thickness(2, 0, 2, 0),
             Padding = new Thickness(0),
             Content = label,
-            Background = StepperDefaultBackground,
+            Background = _stepperDefaultBackground,
             BorderBrush = Brushes.Transparent,
             BorderThickness = new Thickness(0),
             Focusable = false,
@@ -339,7 +313,7 @@ public partial class MainWindow : Window
 
         if (!IsCurrentPageSelection(selection.ChapterId, selection.SectionId, selection.PageIndex))
         {
-            button.Background = StepperHoverBackground;
+            button.Background = _stepperHoverBackground;
         }
     }
 
@@ -352,7 +326,7 @@ public partial class MainWindow : Window
 
         if (!IsCurrentPageSelection(selection.ChapterId, selection.SectionId, selection.PageIndex))
         {
-            button.Background = StepperDefaultBackground;
+            button.Background = _stepperDefaultBackground;
         }
     }
 
@@ -365,7 +339,7 @@ public partial class MainWindow : Window
 
         if (!IsCurrentSectionSelection(selection.ChapterId, selection.SectionId))
         {
-            button.Background = PageButtonHoverBackground;
+            button.Background = _pageButtonHoverBackground;
         }
     }
 
@@ -378,7 +352,7 @@ public partial class MainWindow : Window
 
         if (!IsCurrentSectionSelection(selection.ChapterId, selection.SectionId))
         {
-            button.Background = PageButtonDefaultBackground;
+            button.Background = _pageButtonDefaultBackground;
         }
     }
 
@@ -409,12 +383,12 @@ public partial class MainWindow : Window
             var isSelected = IsCurrentSectionSelection(info.ChapterId, info.SectionId);
             if (info.LeftButton is not null)
             {
-                info.LeftButton.Background = isSelected ? PageButtonSelectedBackground : PageButtonDefaultBackground;
+                info.LeftButton.Background = isSelected ? _pageButtonSelectedBackground : _pageButtonDefaultBackground;
             }
 
             if (info.LeftLabel is not null)
             {
-                info.LeftLabel.Foreground = isSelected ? PageButtonSelectedForeground : PageButtonForeground;
+                info.LeftLabel.Foreground = isSelected ? _pageButtonSelectedForeground : _pageButtonForeground;
                 info.LeftLabel.FontWeight = isSelected ? FontWeights.SemiBold : FontWeights.Normal;
             }
         }
@@ -424,12 +398,12 @@ public partial class MainWindow : Window
             var isSelected = IsCurrentPageSelection(info.ChapterId, info.SectionId, info.PageIndex);
             if (info.StepperButton is not null)
             {
-                info.StepperButton.Background = isSelected ? StepperSelectedBackground : StepperDefaultBackground;
+                info.StepperButton.Background = isSelected ? _stepperSelectedBackground : _stepperDefaultBackground;
             }
 
             if (info.StepperLabel is not null)
             {
-                info.StepperLabel.Foreground = isSelected ? StepperForeground : Brushes.LightGray;
+                info.StepperLabel.Foreground = isSelected ? _stepperForeground : _stepperInactiveForeground;
                 info.StepperLabel.FontWeight = isSelected ? FontWeights.Bold : FontWeights.Normal;
             }
         }
@@ -454,92 +428,12 @@ public partial class MainWindow : Window
         NavigateToPage(chapterId, sectionId, 0);
     }
 
-    private void NavigateToPage(string chapterId, string sectionId, int pageIndex)
-    {
-        if (_navigator is null)
-        {
-            MessageBox.Show("Контент еще не загружен.",
-                            "Ошибка навигации",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Warning);
-            return;
-        }
-
-        var result = _navigator.NavigateTo(chapterId, sectionId, pageIndex);
-        if (!result.Success && result.FailureKind is NavigationFailureKind.NotFoundChapter or NavigationFailureKind.NotFoundSection)
-        {
-            MessageBox.Show(result.Message ?? "Цель навигации не найдена.",
-                            "Ошибка навигации",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Warning);
-            return;
-        }
-
-        if (CurrentChapter is not null && CurrentSection is not null)
-        {
-            RenderPageStepper(CurrentChapter, CurrentSection);
-            _lastLoadedSectionId = CurrentSection.Id;
-        }
-        else
-        {
-            PageStepperPanel.Children.Clear();
-        }
-
-        if (CurrentPages.Count == 0)
-        {
-            ClearReadingContent();
-            myRichBox.Visibility = Visibility.Collapsed;
-            TasksScrollViewer.Visibility = Visibility.Collapsed;
-            if (SectionTitleBlock is not null)
-            {
-                SectionTitleBlock.Text = CurrentChapter?.Title ?? string.Empty;
-            }
-
-            PageTitleBlock.Text = string.Empty;
-            MessageBox.Show(result.Message ?? "В выбранном разделе нет страниц.",
-                            "Пустой раздел",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Information);
-            UpdateNavigationHighlight();
-            UpdateNavigationButtons(CurrentPages);
-            return;
-        }
-
-        _lastLoadedPageIndex = -1;
-        LoadPage();
-    }
-
-    private void Page_Back(object sender, RoutedEventArgs e)
-    {
-        if (_navigator is null)
-        {
-            return;
-        }
-
-        if (_navigator.MovePrevious().Success)
-        {
-            LoadPage();
-        }
-    }
-
-    private void Page_Next(object sender, RoutedEventArgs e)
-    {
-        if (_navigator is null)
-        {
-            return;
-        }
-
-        if (_navigator.MoveNext().Success)
-        {
-            LoadPage();
-        }
-    }
 
     private void LoadPage()
     {
         try
         {
-            if (_navigator is null)
+            if (_viewModel.Navigator is null)
             {
                 UpdateNavigationButtons();
                 return;
@@ -642,6 +536,7 @@ public partial class MainWindow : Window
             using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
             var documentRange = new TextRange(myRichBox.Document.ContentStart, myRichBox.Document.ContentEnd);
             documentRange.Load(stream, DataFormats.Rtf);
+            ApplyReadingDocumentTheme();
             myRichBox.ScrollToHome();
 
             _lastLoadedPageIndex = CurrentPageIndex;
@@ -655,9 +550,9 @@ public partial class MainWindow : Window
 
             if (_lastLoadedPageIndex >= 0)
             {
-                if (_navigator is not null && CurrentChapter is not null && CurrentSection is not null)
+                if (_viewModel.Navigator is not null && CurrentChapter is not null && CurrentSection is not null)
                 {
-                    _navigator.NavigateTo(CurrentChapter.Id, CurrentSection.Id, _lastLoadedPageIndex);
+                    _viewModel.Navigator.NavigateTo(CurrentChapter.Id, CurrentSection.Id, _lastLoadedPageIndex);
                 }
             }
         }
@@ -695,6 +590,19 @@ public partial class MainWindow : Window
         myRichBox.Document.Blocks.Clear();
     }
 
+    private void ApplyReadingDocumentTheme()
+    {
+        if (myRichBox?.Document is null)
+        {
+            return;
+        }
+
+        var textRange = new TextRange(myRichBox.Document.ContentStart, myRichBox.Document.ContentEnd);
+        textRange.ApplyPropertyValue(TextElement.ForegroundProperty, ResolveBrush("TextPrimary", Brushes.Black));
+        textRange.ApplyPropertyValue(TextElement.BackgroundProperty, Brushes.Transparent);
+        myRichBox.Background = Brushes.Transparent;
+    }
+
     private void HideTasksPanel()
     {
         TasksScrollViewer.Visibility = Visibility.Collapsed;
@@ -718,7 +626,7 @@ public partial class MainWindow : Window
                 {
                     Text = "Задания для этого раздела появятся здесь.",
                     FontStyle = FontStyles.Italic,
-                    Foreground = Brushes.Gray
+                    Foreground = ResolveBrush("TaskHintText", Brushes.Gray)
                 });
             }
 
@@ -752,10 +660,10 @@ public partial class MainWindow : Window
         {
             Margin = TaskContainerMargin,
             Padding = new Thickness(12),
-            BorderBrush = Brushes.LightGray,
+            BorderBrush = ResolveBrush("TaskCardBorder", Brushes.LightGray),
             BorderThickness = new Thickness(1),
             CornerRadius = new CornerRadius(4),
-            Background = Brushes.WhiteSmoke
+            Background = ResolveBrush("TaskCardBackground", Brushes.WhiteSmoke)
         };
 
         var layout = new StackPanel();
@@ -766,7 +674,8 @@ public partial class MainWindow : Window
         {
             Text = heading,
             FontSize = 16,
-            FontWeight = FontWeights.SemiBold
+            FontWeight = FontWeights.SemiBold,
+            Foreground = ResolveBrush("TextPrimary", Brushes.Black)
         });
 
         if (!string.IsNullOrWhiteSpace(task.Question))
@@ -775,7 +684,8 @@ public partial class MainWindow : Window
             {
                 Text = task.Question,
                 TextWrapping = TextWrapping.Wrap,
-                Margin = new Thickness(0, 6, 0, 0)
+                Margin = new Thickness(0, 6, 0, 0),
+                Foreground = ResolveBrush("TextPrimary", Brushes.Black)
             });
         }
 
@@ -785,7 +695,7 @@ public partial class MainWindow : Window
             {
                 Text = $"Баллы: {task.Scoring.Points}" + (task.Scoring.Partial ? " (возможен частичный зачёт)" : string.Empty),
                 FontSize = 12,
-                Foreground = Brushes.DimGray,
+                Foreground = ResolveBrush("TaskHintText", Brushes.DimGray),
                 Margin = new Thickness(0, 4, 0, 0)
             });
         }
@@ -809,6 +719,7 @@ public partial class MainWindow : Window
             optionControl.Tag = option;
             optionControl.Margin = OptionMargin;
             optionControl.ToolTip = option.Feedback;
+            optionControl.Foreground = ResolveBrush("TextPrimary", Brushes.Black);
             optionsPanel.Children.Add(optionControl);
             optionButtons.Add(optionControl);
         }
@@ -824,20 +735,22 @@ public partial class MainWindow : Window
         {
             Content = "Проверить",
             Padding = new Thickness(12, 6, 12, 6),
-            Margin = new Thickness(0, 0, 10, 0)
+            Margin = new Thickness(0, 0, 10, 0),
+            Style = (Style)FindResource(typeof(Button))
         };
 
         var resetButton = new Button
         {
             Content = "Сбросить",
-            Padding = new Thickness(12, 6, 12, 6)
+            Padding = new Thickness(12, 6, 12, 6),
+            Style = (Style)FindResource(typeof(Button))
         };
 
         var feedbackBlock = new TextBlock
         {
             Margin = new Thickness(0, 10, 0, 0),
             TextWrapping = TextWrapping.Wrap,
-            Foreground = Brushes.Gray
+            Foreground = ResolveBrush("StatusInfo", Brushes.Gray)
         };
 
         var context = new QuizTaskContext(task, optionButtons, feedbackBlock);
@@ -868,7 +781,8 @@ public partial class MainWindow : Window
                 {
                     Text = $"• {hint}",
                     TextWrapping = TextWrapping.Wrap,
-                    Margin = new Thickness(0, 2, 0, 0)
+                    Margin = new Thickness(0, 2, 0, 0),
+                    Foreground = ResolveBrush("TextSecondary", Brushes.Gray)
                 });
             }
 
@@ -885,10 +799,10 @@ public partial class MainWindow : Window
         {
             Margin = TaskContainerMargin,
             Padding = new Thickness(12),
-            BorderBrush = Brushes.SlateGray,
+            BorderBrush = ResolveBrush("TaskCardBorder", Brushes.SlateGray),
             BorderThickness = new Thickness(1),
             CornerRadius = new CornerRadius(4),
-            Background = Brushes.WhiteSmoke
+            Background = ResolveBrush("TaskCardBackground", Brushes.WhiteSmoke)
         };
 
         var layout = new StackPanel();
@@ -899,7 +813,8 @@ public partial class MainWindow : Window
         {
             Text = heading,
             FontSize = 16,
-            FontWeight = FontWeights.SemiBold
+            FontWeight = FontWeights.SemiBold,
+            Foreground = ResolveBrush("TextPrimary", Brushes.Black)
         });
 
         if (!string.IsNullOrWhiteSpace(task.Prompt))
@@ -908,7 +823,8 @@ public partial class MainWindow : Window
             {
                 Text = task.Prompt,
                 TextWrapping = TextWrapping.Wrap,
-                Margin = new Thickness(0, 6, 0, 10)
+                Margin = new Thickness(0, 6, 0, 10),
+                Foreground = ResolveBrush("TextPrimary", Brushes.Black)
             });
         }
 
@@ -923,7 +839,10 @@ public partial class MainWindow : Window
             FontSize = 13,
             MinHeight = 160,
             Text = task.StarterCode ?? string.Empty,
-            Margin = new Thickness(0, 0, 0, 10)
+            Margin = new Thickness(0, 0, 0, 10),
+            Background = ResolveBrush("TaskCodeBackground", Brushes.WhiteSmoke),
+            Foreground = ResolveBrush("TextPrimary", Brushes.Black),
+            BorderBrush = ResolveBrush("TaskCardBorder", Brushes.SlateGray)
         };
         layout.Children.Add(codeEditor);
 
@@ -936,13 +855,15 @@ public partial class MainWindow : Window
         {
             Content = "Запустить тесты",
             Padding = new Thickness(12, 6, 12, 6),
-            Margin = new Thickness(0, 0, 10, 0)
+            Margin = new Thickness(0, 0, 10, 0),
+            Style = (Style)FindResource(typeof(Button))
         };
 
         var resetButton = new Button
         {
             Content = "Сбросить код",
-            Padding = new Thickness(12, 6, 12, 6)
+            Padding = new Thickness(12, 6, 12, 6),
+            Style = (Style)FindResource(typeof(Button))
         };
 
         buttonsPanel.Children.Add(runButton);
@@ -953,7 +874,7 @@ public partial class MainWindow : Window
         {
             Margin = new Thickness(0, 10, 0, 0),
             TextWrapping = TextWrapping.Wrap,
-            Foreground = Brushes.Gray
+            Foreground = ResolveBrush("StatusInfo", Brushes.Gray)
         };
         layout.Children.Add(feedbackBlock);
 
@@ -973,7 +894,8 @@ public partial class MainWindow : Window
             {
                 Text = "Примеры тестов:",
                 Margin = new Thickness(0, 12, 0, 0),
-                FontWeight = FontWeights.SemiBold
+                FontWeight = FontWeights.SemiBold,
+                Foreground = ResolveBrush("TextPrimary", Brushes.Black)
             });
 
             foreach (var test in publicTests)
@@ -984,6 +906,7 @@ public partial class MainWindow : Window
                     FontFamily = new FontFamily("Consolas"),
                     FontSize = 12,
                     Margin = new Thickness(0, 6, 0, 0),
+                    Foreground = ResolveBrush("TextPrimary", Brushes.Black),
                     Text = $"Вход:\n{test.Input}\nОжидается:\n{test.ExpectedOutput}"
                 };
                 layout.Children.Add(testBlock);
@@ -995,7 +918,8 @@ public partial class MainWindow : Window
                         Text = test.Explanation,
                         TextWrapping = TextWrapping.Wrap,
                         Margin = new Thickness(0, 2, 0, 0),
-                        FontStyle = FontStyles.Italic
+                        FontStyle = FontStyles.Italic,
+                        Foreground = ResolveBrush("TaskHintText", Brushes.Gray)
                     });
                 }
             }
@@ -1007,7 +931,7 @@ public partial class MainWindow : Window
                 Text = "Скрытые тесты также выполняются.",
                 TextWrapping = TextWrapping.Wrap,
                 Margin = new Thickness(0, 12, 0, 0),
-                Foreground = Brushes.Gray
+                Foreground = ResolveBrush("TaskHintText", Brushes.Gray)
             });
         }
 
@@ -1020,13 +944,14 @@ public partial class MainWindow : Window
         {
             Margin = TaskContainerMargin,
             Padding = new Thickness(12),
-            BorderBrush = Brushes.LightGray,
+            BorderBrush = ResolveBrush("TaskCardBorder", Brushes.LightGray),
             BorderThickness = new Thickness(1),
-            Background = Brushes.WhiteSmoke,
+            Background = ResolveBrush("TaskCardBackground", Brushes.WhiteSmoke),
             Child = new TextBlock
             {
                 Text = $"Тип задания \"{task.Type}\" пока не поддерживается.",
-                TextWrapping = TextWrapping.Wrap
+                TextWrapping = TextWrapping.Wrap,
+                Foreground = ResolveBrush("TextPrimary", Brushes.Black)
             }
         };
     }
@@ -1047,7 +972,7 @@ public partial class MainWindow : Window
         if (selectedIds.Count == 0)
         {
             context.FeedbackBlock.Text = "Выберите хотя бы один вариант перед проверкой.";
-            context.FeedbackBlock.Foreground = Brushes.DarkOrange;
+            context.FeedbackBlock.Foreground = ResolveBrush("StatusWarning", Brushes.DarkOrange);
             return;
         }
 
@@ -1069,15 +994,15 @@ public partial class MainWindow : Window
 
             if (option.IsCorrect)
             {
-                toggle.Foreground = Brushes.ForestGreen;
+                toggle.Foreground = ResolveBrush("StatusSuccess", Brushes.ForestGreen);
             }
             else if (toggle.IsChecked == true)
             {
-                toggle.Foreground = Brushes.Firebrick;
+                toggle.Foreground = ResolveBrush("StatusError", Brushes.Firebrick);
             }
             else
             {
-                toggle.ClearValue(Control.ForegroundProperty);
+                toggle.Foreground = ResolveBrush("TextPrimary", Brushes.Black);
             }
         }
 
@@ -1087,7 +1012,7 @@ public partial class MainWindow : Window
             context.FeedbackBlock.Text = !string.IsNullOrWhiteSpace(explanation)
                 ? explanation
                 : "Верно! Отлично.";
-            context.FeedbackBlock.Foreground = Brushes.ForestGreen;
+            context.FeedbackBlock.Foreground = ResolveBrush("StatusSuccess", Brushes.ForestGreen);
             return;
         }
 
@@ -1109,7 +1034,7 @@ public partial class MainWindow : Window
         }
 
         context.FeedbackBlock.Text = string.Join(" ", messages);
-        context.FeedbackBlock.Foreground = Brushes.Firebrick;
+        context.FeedbackBlock.Foreground = ResolveBrush("StatusError", Brushes.Firebrick);
     }
 
     private void QuizResetButton_Click(object sender, RoutedEventArgs e)
@@ -1122,11 +1047,11 @@ public partial class MainWindow : Window
         foreach (var toggle in context.OptionButtons)
         {
             toggle.IsChecked = false;
-            toggle.ClearValue(Control.ForegroundProperty);
+            toggle.Foreground = ResolveBrush("TextPrimary", Brushes.Black);
         }
 
         context.FeedbackBlock.Text = string.Empty;
-        context.FeedbackBlock.Foreground = Brushes.Gray;
+        context.FeedbackBlock.Foreground = ResolveBrush("StatusInfo", Brushes.Gray);
     }
 
     private async void RunCodeTask_Click(object sender, RoutedEventArgs e)
@@ -1137,7 +1062,7 @@ public partial class MainWindow : Window
         }
 
         button.IsEnabled = false;
-        context.FeedbackBlock.Foreground = Brushes.DarkSlateBlue;
+        context.FeedbackBlock.Foreground = ResolveBrush("StatusInfo", Brushes.DarkSlateBlue);
         context.FeedbackBlock.Text = "Запуск тестов...";
 
         var code = context.CodeEditor.Text ?? string.Empty;
@@ -1148,7 +1073,9 @@ public partial class MainWindow : Window
         context.FeedbackBlock.Text = string.IsNullOrWhiteSpace(result.Summary)
             ? (result.Success ? "Все тесты пройдены." : "Тесты не пройдены.")
             : result.Summary;
-        context.FeedbackBlock.Foreground = result.Success ? Brushes.ForestGreen : Brushes.Firebrick;
+        context.FeedbackBlock.Foreground = result.Success
+            ? ResolveBrush("StatusSuccess", Brushes.ForestGreen)
+            : ResolveBrush("StatusError", Brushes.Firebrick);
         button.IsEnabled = true;
     }
 
@@ -1161,20 +1088,20 @@ public partial class MainWindow : Window
 
         context.CodeEditor.Text = context.StarterCode ?? string.Empty;
         context.FeedbackBlock.Text = "Шаблон кода восстановлен.";
-        context.FeedbackBlock.Foreground = Brushes.Gray;
+        context.FeedbackBlock.Foreground = ResolveBrush("StatusInfo", Brushes.Gray);
     }
 
     private void UpdateNavigationButtons(IReadOnlyList<PageModel>? pages = null)
     {
-        if (_navigator is null || pages is null || pages.Count == 0)
+        if (_viewModel.Navigator is null || pages is null || pages.Count == 0)
         {
             backButton.IsEnabled = false;
             nextButton.IsEnabled = false;
             return;
         }
 
-        backButton.IsEnabled = _navigator.CanMovePrevious;
-        nextButton.IsEnabled = _navigator.CanMoveNext;
+        backButton.IsEnabled = _viewModel.Navigator.CanMovePrevious;
+        nextButton.IsEnabled = _viewModel.Navigator.CanMoveNext;
     }
 
     private void AdminToggle_Checked(object sender, RoutedEventArgs e)
@@ -1208,14 +1135,14 @@ public partial class MainWindow : Window
 
     private void InitializeAdminUi()
     {
-        if (_course is null)
+        if (_viewModel.Course is null)
         {
             return;
         }
 
         _suppressAdminEvents = true;
-        AdminChapterCombo.ItemsSource = _course.Chapters;
-        AdminChapterCombo.SelectedIndex = _course.Chapters.Count > 0 ? 0 : -1;
+        AdminChapterCombo.ItemsSource = _viewModel.Course.Chapters;
+        AdminChapterCombo.SelectedIndex = _viewModel.Course.Chapters.Count > 0 ? 0 : -1;
         _suppressAdminEvents = false;
 
         UpdateAdminChapterSelection();
@@ -1519,7 +1446,7 @@ public partial class MainWindow : Window
 
     private void AdminChapterAdd_Click(object sender, RoutedEventArgs e)
     {
-        if (_course is null)
+        if (_viewModel.Course is null)
         {
             return;
         }
@@ -1529,7 +1456,7 @@ public partial class MainWindow : Window
             Id = GenerateId("chapter"),
             Title = "Новая глава"
         };
-        _course.Chapters.Add(chapter);
+        _contentEditingService.AddChapter(_viewModel.Course, chapter);
         NormalizeOrdering();
         RefreshAdminChapterList(chapter);
         RefreshNavigationAfterEdit(chapter.Id, chapter.Sections.FirstOrDefault()?.Id, 0);
@@ -1539,14 +1466,14 @@ public partial class MainWindow : Window
 
     private void AdminChapterDelete_Click(object sender, RoutedEventArgs e)
     {
-        if (_course is null || _adminChapter is null)
+        if (_viewModel.Course is null || _adminChapter is null)
         {
             return;
         }
 
-        _course.Chapters.Remove(_adminChapter);
+        _contentEditingService.RemoveChapter(_viewModel.Course, _adminChapter);
         NormalizeOrdering();
-        RefreshAdminChapterList(_course.Chapters.FirstOrDefault());
+        RefreshAdminChapterList(_viewModel.Course.Chapters.FirstOrDefault());
         RefreshNavigationAfterEdit(null, null, 0);
         ShowAdminStatus("Глава удалена.");
         RecordHistory("Глава удалена");
@@ -1559,7 +1486,7 @@ public partial class MainWindow : Window
             return;
         }
 
-        _adminChapter.Title = AdminChapterTitle.Text.Trim();
+        _contentEditingService.UpdateChapter(_adminChapter, AdminChapterTitle.Text.Trim());
         RenderNavigation();
         UpdateNavigationHighlight();
         ShowAdminStatus("Глава обновлена.");
@@ -1578,7 +1505,7 @@ public partial class MainWindow : Window
             Id = GenerateId("section"),
             Title = "Новый раздел"
         };
-        _adminChapter.Sections.Add(section);
+        _contentEditingService.AddSection(_adminChapter, section);
         NormalizeOrdering();
         RefreshAdminSectionList();
         AdminSectionCombo.SelectedItem = section;
@@ -1594,7 +1521,7 @@ public partial class MainWindow : Window
             return;
         }
 
-        _adminChapter.Sections.Remove(_adminSection);
+        _contentEditingService.RemoveSection(_adminChapter, _adminSection);
         NormalizeOrdering();
         RefreshAdminSectionList();
         RefreshNavigationAfterEdit(_adminChapter.Id, _adminChapter.Sections.FirstOrDefault()?.Id, 0);
@@ -1609,7 +1536,7 @@ public partial class MainWindow : Window
             return;
         }
 
-        _adminSection.Title = AdminSectionTitle.Text.Trim();
+        _contentEditingService.UpdateSection(_adminSection, AdminSectionTitle.Text.Trim());
         RenderNavigation();
         UpdateNavigationHighlight();
         ShowAdminStatus("Раздел обновлен.");
@@ -1630,7 +1557,7 @@ public partial class MainWindow : Window
             Kind = "reading",
             Content = new PageContentModel { Format = "richText", Source = string.Empty }
         };
-        _adminSection.Pages.Add(page);
+        _contentEditingService.AddPage(_adminSection, page);
         NormalizeOrdering();
         RefreshAdminPageList();
         AdminPageList.SelectedItem = page;
@@ -1647,7 +1574,7 @@ public partial class MainWindow : Window
         }
 
         var index = _adminSection.Pages.IndexOf(_adminPage);
-        _adminSection.Pages.Remove(_adminPage);
+        _contentEditingService.RemovePage(_adminSection, _adminPage);
         NormalizeOrdering();
         RefreshAdminPageList();
         if (_adminSection.Pages.Count > 0)
@@ -1666,18 +1593,14 @@ public partial class MainWindow : Window
             return;
         }
 
-        var index = _adminSection.Pages.IndexOf(_adminPage);
-        if (index <= 0)
+        if (!_contentEditingService.MovePage(_adminSection, _adminPage, -1, out var newIndex))
         {
             return;
         }
-
-        (_adminSection.Pages[index - 1], _adminSection.Pages[index]) =
-            (_adminSection.Pages[index], _adminSection.Pages[index - 1]);
         NormalizeOrdering();
         RefreshAdminPageList();
-        AdminPageList.SelectedIndex = index - 1;
-        RefreshNavigationAfterEdit(CurrentChapter?.Id, _adminSection.Id, index - 1);
+        AdminPageList.SelectedIndex = newIndex;
+        RefreshNavigationAfterEdit(CurrentChapter?.Id, _adminSection.Id, newIndex);
         RecordHistory("Страница перемещена");
     }
 
@@ -1688,18 +1611,14 @@ public partial class MainWindow : Window
             return;
         }
 
-        var index = _adminSection.Pages.IndexOf(_adminPage);
-        if (index < 0 || index >= _adminSection.Pages.Count - 1)
+        if (!_contentEditingService.MovePage(_adminSection, _adminPage, 1, out var newIndex))
         {
             return;
         }
-
-        (_adminSection.Pages[index + 1], _adminSection.Pages[index]) =
-            (_adminSection.Pages[index], _adminSection.Pages[index + 1]);
         NormalizeOrdering();
         RefreshAdminPageList();
-        AdminPageList.SelectedIndex = index + 1;
-        RefreshNavigationAfterEdit(CurrentChapter?.Id, _adminSection.Id, index + 1);
+        AdminPageList.SelectedIndex = newIndex;
+        RefreshNavigationAfterEdit(CurrentChapter?.Id, _adminSection.Id, newIndex);
         RecordHistory("Страница перемещена");
     }
 
@@ -1710,33 +1629,20 @@ public partial class MainWindow : Window
             return;
         }
 
-        _adminPage.Title = AdminPageTitle.Text.Trim();
         var kindValue = ExtractComboValue(AdminPageKind);
-        _adminPage.Kind = string.Equals(kindValue, "reading", StringComparison.OrdinalIgnoreCase)
-            ? null
-            : kindValue;
-
-        if (int.TryParse(AdminPageTime.Text, NumberStyles.Integer, CultureInfo.InvariantCulture, out var minutes))
+        int? minutes = null;
+        if (int.TryParse(AdminPageTime.Text, NumberStyles.Integer, CultureInfo.InvariantCulture, out var parsedMinutes))
         {
-            _adminPage.EstimatedTimeMinutes = minutes;
-        }
-        else
-        {
-            _adminPage.EstimatedTimeMinutes = null;
+            minutes = parsedMinutes;
         }
 
-        var format = ExtractComboValue(AdminPageContentFormat);
-        var source = AdminPageContentSource.Text.Trim();
-        if (string.IsNullOrWhiteSpace(format) && string.IsNullOrWhiteSpace(source))
-        {
-            _adminPage.Content = null;
-        }
-        else
-        {
-            _adminPage.Content ??= new PageContentModel();
-            _adminPage.Content.Format = string.IsNullOrWhiteSpace(format) ? "richText" : format;
-            _adminPage.Content.Source = source;
-        }
+        _contentEditingService.UpdatePage(
+            _adminPage,
+            AdminPageTitle.Text.Trim(),
+            kindValue,
+            minutes,
+            ExtractComboValue(AdminPageContentFormat),
+            AdminPageContentSource.Text.Trim());
 
         _adminPage.Resources ??= new List<PageResourceModel>();
 
@@ -1770,7 +1676,7 @@ public partial class MainWindow : Window
             }
         };
 
-        _adminPage.Tasks.Add(task);
+        _contentEditingService.AddTask(_adminPage.Tasks, task);
         RefreshAdminTaskList();
         AdminTaskList.SelectedItem = task;
         ShowAdminStatus("Добавлен тест.");
@@ -1801,7 +1707,7 @@ public partial class MainWindow : Window
             Scoring = new TaskScoringModel { Points = 1, Partial = true }
         };
 
-        _adminPage.Tasks.Add(task);
+        _contentEditingService.AddTask(_adminPage.Tasks, task);
         RefreshAdminTaskList();
         AdminTaskList.SelectedItem = task;
         ShowAdminStatus("Добавлено код-задание.");
@@ -1817,7 +1723,7 @@ public partial class MainWindow : Window
 
         _adminPage.Tasks ??= new List<LearningTaskModel>();
         var index = _adminPage.Tasks.IndexOf(_adminTask);
-        _adminPage.Tasks.Remove(_adminTask);
+        _contentEditingService.RemoveTask(_adminPage.Tasks, _adminTask);
         RefreshAdminTaskList();
         if (_adminPage.Tasks.Count > 0)
         {
@@ -1835,15 +1741,12 @@ public partial class MainWindow : Window
             return;
         }
 
-        var index = _adminPage.Tasks.IndexOf(_adminTask);
-        if (index <= 0)
+        if (!_contentEditingService.MoveTask(_adminPage.Tasks, _adminTask, -1, out var newIndex))
         {
             return;
         }
-
-        (_adminPage.Tasks[index - 1], _adminPage.Tasks[index]) = (_adminPage.Tasks[index], _adminPage.Tasks[index - 1]);
         RefreshAdminTaskList();
-        AdminTaskList.SelectedIndex = index - 1;
+        AdminTaskList.SelectedIndex = newIndex;
         RecordHistory("Задание перемещено");
     }
 
@@ -1854,15 +1757,12 @@ public partial class MainWindow : Window
             return;
         }
 
-        var index = _adminPage.Tasks.IndexOf(_adminTask);
-        if (index < 0 || index >= _adminPage.Tasks.Count - 1)
+        if (!_contentEditingService.MoveTask(_adminPage.Tasks, _adminTask, 1, out var newIndex))
         {
             return;
         }
-
-        (_adminPage.Tasks[index + 1], _adminPage.Tasks[index]) = (_adminPage.Tasks[index], _adminPage.Tasks[index + 1]);
         RefreshAdminTaskList();
-        AdminTaskList.SelectedIndex = index + 1;
+        AdminTaskList.SelectedIndex = newIndex;
         RecordHistory("Задание перемещено");
     }
 
@@ -1873,23 +1773,24 @@ public partial class MainWindow : Window
             return;
         }
 
-        _adminTask.Title = AdminTaskTitle.Text.Trim();
-        _adminTask.Scoring ??= new TaskScoringModel();
+        var points = int.TryParse(AdminTaskPoints.Text, NumberStyles.Integer, CultureInfo.InvariantCulture, out var parsedPoints)
+            ? parsedPoints
+            : (int?)null;
 
-        if (int.TryParse(AdminTaskPoints.Text, NumberStyles.Integer, CultureInfo.InvariantCulture, out var points))
-        {
-            _adminTask.Scoring.Points = points;
-        }
-
-        _adminTask.Scoring.Partial = AdminTaskPartial.IsChecked == true;
-        _adminTask.Hints = AdminTaskHints.Text
+        var hints = AdminTaskHints.Text
             .Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries)
             .Select(line => line.Trim())
             .Where(line => !string.IsNullOrWhiteSpace(line))
             .ToList();
 
         var type = ExtractComboValue(AdminTaskType) ?? _adminTask.Type;
-        _adminTask.Type = type ?? "quiz";
+        _contentEditingService.UpdateTaskCore(
+            _adminTask,
+            AdminTaskTitle.Text.Trim(),
+            points,
+            AdminTaskPartial.IsChecked == true,
+            hints,
+            type ?? "quiz");
 
         if (string.Equals(_adminTask.Type, "quiz", StringComparison.OrdinalIgnoreCase))
         {
@@ -1926,7 +1827,7 @@ public partial class MainWindow : Window
             Text = "Новый вариант",
             IsCorrect = false
         };
-        _adminTask.Options.Add(option);
+        _contentEditingService.AddOption(_adminTask.Options, option);
         _suppressAdminEvents = true;
         AdminOptionList.ItemsSource = _adminTask.Options;
         AdminOptionList.SelectedItem = option;
@@ -1943,7 +1844,7 @@ public partial class MainWindow : Window
         }
 
         var index = _adminTask.Options.IndexOf(_adminOption);
-        _adminTask.Options.Remove(_adminOption);
+        _contentEditingService.RemoveOption(_adminTask.Options, _adminOption);
         AdminOptionList.ItemsSource = _adminTask.Options;
         if (_adminTask.Options.Count > 0)
         {
@@ -1960,9 +1861,11 @@ public partial class MainWindow : Window
             return;
         }
 
-        _adminOption.Text = AdminOptionText.Text.Trim();
-        _adminOption.IsCorrect = AdminOptionIsCorrect.IsChecked == true;
-        _adminOption.Feedback = AdminOptionFeedback.Text.Trim();
+        _contentEditingService.UpdateOption(
+            _adminOption,
+            AdminOptionText.Text.Trim(),
+            AdminOptionIsCorrect.IsChecked == true,
+            AdminOptionFeedback.Text.Trim());
         AdminOptionList.Items.Refresh();
         RecordHistory("Вариант обновлен");
     }
@@ -1982,7 +1885,7 @@ public partial class MainWindow : Window
             Input = string.Empty,
             ExpectedOutput = string.Empty
         };
-        _adminTask.Tests.Add(test);
+        _contentEditingService.AddTest(_adminTask.Tests, test);
         _suppressAdminEvents = true;
         AdminTestList.ItemsSource = _adminTask.Tests;
         AdminTestList.SelectedItem = test;
@@ -1999,7 +1902,7 @@ public partial class MainWindow : Window
         }
 
         var index = _adminTask.Tests.IndexOf(_adminTest);
-        _adminTask.Tests.Remove(_adminTest);
+        _contentEditingService.RemoveTest(_adminTask.Tests, _adminTest);
         AdminTestList.ItemsSource = _adminTask.Tests;
         if (_adminTask.Tests.Count > 0)
         {
@@ -2016,11 +1919,13 @@ public partial class MainWindow : Window
             return;
         }
 
-        _adminTest.Id = AdminTestId.Text.Trim();
-        _adminTest.Visibility = ExtractComboValue(AdminTestVisibility) ?? "hidden";
-        _adminTest.Input = AdminTestInput.Text;
-        _adminTest.ExpectedOutput = AdminTestExpected.Text;
-        _adminTest.Explanation = AdminTestExplanation.Text.Trim();
+        _contentEditingService.UpdateTest(
+            _adminTest,
+            AdminTestId.Text.Trim(),
+            ExtractComboValue(AdminTestVisibility) ?? "hidden",
+            AdminTestInput.Text,
+            AdminTestExpected.Text,
+            AdminTestExplanation.Text.Trim());
         AdminTestList.Items.Refresh();
         RecordHistory("Тест обновлен");
     }
@@ -2039,7 +1944,7 @@ public partial class MainWindow : Window
             Title = "Новый ресурс",
             Url = "https://"
         };
-        _adminPage.Resources.Add(resource);
+        _contentEditingService.AddResource(_adminPage.Resources, resource);
         RefreshAdminResourceList();
         AdminResourceList.SelectedItem = resource;
         ShowAdminStatus("Ресурс добавлен.");
@@ -2053,7 +1958,7 @@ public partial class MainWindow : Window
             return;
         }
 
-        _adminPage.Resources.Remove(_adminResource);
+        _contentEditingService.RemoveResource(_adminPage.Resources, _adminResource);
         RefreshAdminResourceList();
         ShowAdminStatus("Ресурс удален.");
         RecordHistory("Ресурс удален");
@@ -2067,9 +1972,11 @@ public partial class MainWindow : Window
         }
 
         var typeValue = ExtractComboValue(AdminResourceType) ?? AdminResourceType.Text.Trim();
-        _adminResource.Type = typeValue;
-        _adminResource.Title = AdminResourceTitle.Text.Trim();
-        _adminResource.Url = AdminResourceUrl.Text.Trim();
+        _contentEditingService.UpdateResource(
+            _adminResource,
+            typeValue,
+            AdminResourceTitle.Text.Trim(),
+            AdminResourceUrl.Text.Trim());
         AdminResourceList.Items.Refresh();
         ShowAdminStatus("Ресурс обновлен.");
         RecordHistory("Ресурс обновлен");
@@ -2163,29 +2070,17 @@ public partial class MainWindow : Window
         var targetItem = GetListBoxItemAt(listBox, e.GetPosition(listBox));
         var targetPage = targetItem?.DataContext as PageModel;
 
-        var oldIndex = _adminSection.Pages.IndexOf(dropped);
-        if (oldIndex < 0)
+        var requestedIndex = targetPage is null ? _adminSection.Pages.Count - 1 : _adminSection.Pages.IndexOf(targetPage);
+        if (requestedIndex < 0)
+        {
+            requestedIndex = _adminSection.Pages.Count - 1;
+        }
+
+        if (!_contentEditingService.MovePageToIndex(_adminSection, dropped, requestedIndex, out var newIndex))
         {
             return;
         }
 
-        var newIndex = targetPage is null ? _adminSection.Pages.Count - 1 : _adminSection.Pages.IndexOf(targetPage);
-        if (newIndex < 0)
-        {
-            newIndex = _adminSection.Pages.Count - 1;
-        }
-
-        if (oldIndex == newIndex)
-        {
-            return;
-        }
-
-        _adminSection.Pages.RemoveAt(oldIndex);
-        if (oldIndex < newIndex)
-        {
-            newIndex--;
-        }
-        _adminSection.Pages.Insert(newIndex, dropped);
         NormalizeOrdering();
         RefreshAdminPageList();
         AdminPageList.SelectedIndex = newIndex;
@@ -2211,29 +2106,17 @@ public partial class MainWindow : Window
         var targetItem = GetListBoxItemAt(listBox, e.GetPosition(listBox));
         var targetTask = targetItem?.DataContext as LearningTaskModel;
 
-        var oldIndex = _adminPage.Tasks.IndexOf(dropped);
-        if (oldIndex < 0)
+        var requestedIndex = targetTask is null ? _adminPage.Tasks.Count - 1 : _adminPage.Tasks.IndexOf(targetTask);
+        if (requestedIndex < 0)
+        {
+            requestedIndex = _adminPage.Tasks.Count - 1;
+        }
+
+        if (!_contentEditingService.MoveTaskToIndex(_adminPage.Tasks, dropped, requestedIndex, out var newIndex))
         {
             return;
         }
 
-        var newIndex = targetTask is null ? _adminPage.Tasks.Count - 1 : _adminPage.Tasks.IndexOf(targetTask);
-        if (newIndex < 0)
-        {
-            newIndex = _adminPage.Tasks.Count - 1;
-        }
-
-        if (oldIndex == newIndex)
-        {
-            return;
-        }
-
-        _adminPage.Tasks.RemoveAt(oldIndex);
-        if (oldIndex < newIndex)
-        {
-            newIndex--;
-        }
-        _adminPage.Tasks.Insert(newIndex, dropped);
         RefreshAdminTaskList();
         AdminTaskList.SelectedIndex = newIndex;
         ShowAdminStatus("Задание перемещено.");
@@ -2253,13 +2136,13 @@ public partial class MainWindow : Window
 
     private void AdminSave_Click(object sender, RoutedEventArgs e)
     {
-        if (_course is null)
+        if (_viewModel.Course is null)
         {
             return;
         }
 
         NormalizeOrdering();
-        var issues = _contentValidator.Validate(_course, ResolveAssetsRoot());
+        var issues = _contentValidator.Validate(_viewModel.Course, ResolveAssetsRoot());
         var errorCount = issues.Count(issue => issue.Severity == ContentIssueSeverity.Error);
         var warningCount = issues.Count - errorCount;
         if (issues.Count > 0)
@@ -2276,8 +2159,8 @@ public partial class MainWindow : Window
             }
         }
 
-        var json = JsonConvert.SerializeObject(_course, Formatting.Indented, _adminJsonSettings);
-        if (!TryWriteContentFile(json, out var saveError))
+        var json = JsonConvert.SerializeObject(_viewModel.Course, Formatting.Indented, _adminJsonSettings);
+        if (!_contentEditingService.TryWriteContentFile(ResolveContentPath(), json, out var saveError))
         {
             ShowAdminStatus($"Ошибка сохранения: {saveError}", isError: true);
             MessageBox.Show($"Не удалось сохранить content.v2.json: {saveError}",
@@ -2304,15 +2187,15 @@ public partial class MainWindow : Window
 
     private void RefreshAdminChapterList(ChapterModel? selectChapter)
     {
-        if (_course is null)
+        if (_viewModel.Course is null)
         {
             return;
         }
 
         _suppressAdminEvents = true;
-        AdminChapterCombo.ItemsSource = _course.Chapters;
+        AdminChapterCombo.ItemsSource = _viewModel.Course.Chapters;
         AdminChapterCombo.SelectedItem = selectChapter;
-        if (AdminChapterCombo.SelectedIndex == -1 && _course.Chapters.Count > 0)
+        if (AdminChapterCombo.SelectedIndex == -1 && _viewModel.Course.Chapters.Count > 0)
         {
             AdminChapterCombo.SelectedIndex = 0;
         }
@@ -2337,25 +2220,9 @@ public partial class MainWindow : Window
 
     private void NormalizeOrdering()
     {
-        if (_course is null)
+        if (_viewModel.Course is not null)
         {
-            return;
-        }
-
-        var chapterOrder = 1;
-        foreach (var chapter in _course.Chapters)
-        {
-            chapter.Order = chapterOrder++;
-            var sectionOrder = 1;
-            foreach (var section in chapter.Sections)
-            {
-                section.Order = sectionOrder++;
-                var pageOrder = 1;
-                foreach (var page in section.Pages)
-                {
-                    page.Order = pageOrder++;
-                }
-            }
+            _contentEditingService.NormalizeOrdering(_viewModel.Course);
         }
     }
 
@@ -2372,9 +2239,9 @@ public partial class MainWindow : Window
         NavigateToFirstPage();
     }
 
-    private static string GenerateId(string prefix)
+    private string GenerateId(string prefix)
     {
-        return $"{prefix}-{Guid.NewGuid():N}".Substring(0, Math.Min(24, prefix.Length + 1 + 12));
+        return _contentEditingService.GenerateId(prefix);
     }
 
     private void ShowAdminStatus(string message, bool isError = false)
@@ -2385,37 +2252,20 @@ public partial class MainWindow : Window
         }
 
         AdminStatusText.Text = message;
-        AdminStatusText.Foreground = isError ? Brushes.Firebrick : Brushes.DarkGreen;
+        AdminStatusText.Foreground = isError
+            ? ResolveBrush("StatusError", Brushes.Firebrick)
+            : ResolveBrush("StatusSuccess", Brushes.DarkGreen);
     }
 
     private void InitializeHistory(string description)
     {
-        _history.Clear();
-        _historyIndex = -1;
-        RecordHistory(description, force: true);
+        _adminViewModel.InitializeHistory(_viewModel.Course, description, _adminJsonSettings);
+        RefreshHistoryUi();
     }
 
     private void RecordHistory(string description, bool force = false)
     {
-        if (_course is null)
-        {
-            return;
-        }
-
-        if (_suppressHistory && !force)
-        {
-            return;
-        }
-
-        var snapshot = JsonConvert.SerializeObject(_course, Formatting.None, _adminJsonSettings);
-
-        if (_historyIndex < _history.Count - 1)
-        {
-            _history.RemoveRange(_historyIndex + 1, _history.Count - _historyIndex - 1);
-        }
-
-        _history.Add(new HistoryEntry(DateTime.Now, description, snapshot));
-        _historyIndex = _history.Count - 1;
+        _adminViewModel.RecordHistory(_viewModel.Course, description, _adminJsonSettings, force);
         RefreshHistoryUi();
     }
 
@@ -2426,41 +2276,39 @@ public partial class MainWindow : Window
             return;
         }
 
-        AdminHistoryList.ItemsSource = _history
+        AdminHistoryList.ItemsSource = _adminViewModel.History
             .Select(entry => $"{entry.Timestamp:HH:mm:ss} {entry.Description}")
             .ToList();
-        AdminHistoryList.SelectedIndex = _historyIndex;
-        AdminUndoButton.IsEnabled = _historyIndex > 0;
-        AdminRedoButton.IsEnabled = _historyIndex >= 0 && _historyIndex < _history.Count - 1;
+        AdminHistoryList.SelectedIndex = _adminViewModel.HistoryIndex;
+        AdminUndoButton.IsEnabled = _adminViewModel.CanUndo;
+        AdminRedoButton.IsEnabled = _adminViewModel.CanRedo;
     }
 
     private void AdminUndo_Click(object sender, RoutedEventArgs e)
     {
-        if (_historyIndex <= 0)
+        if (!_adminViewModel.TryUndo(out var entry) || entry is null)
         {
             return;
         }
 
-        _historyIndex--;
-        RestoreHistoryEntry(_history[_historyIndex], "Отмена");
+        RestoreHistoryEntry(entry, "Отмена");
     }
 
     private void AdminRedo_Click(object sender, RoutedEventArgs e)
     {
-        if (_historyIndex < 0 || _historyIndex >= _history.Count - 1)
+        if (!_adminViewModel.TryRedo(out var entry) || entry is null)
         {
             return;
         }
 
-        _historyIndex++;
-        RestoreHistoryEntry(_history[_historyIndex], "Повтор");
+        RestoreHistoryEntry(entry, "Повтор");
     }
 
-    private void RestoreHistoryEntry(HistoryEntry entry, string actionLabel)
+    private void RestoreHistoryEntry(AdminHistoryEntry entry, string actionLabel)
     {
         try
         {
-            var restored = JsonConvert.DeserializeObject<CourseContentModel>(entry.Snapshot);
+            var restored = _contentEditingService.RestoreSnapshot(entry.Snapshot);
             if (restored is null)
             {
                 ShowAdminStatus("Не удалось восстановить историю.", isError: true);
@@ -2477,57 +2325,6 @@ public partial class MainWindow : Window
             ShowAdminStatus("Ошибка восстановления истории.", isError: true);
         }
     }
-
-    private void ApplyCourseSnapshot(CourseContentModel course)
-    {
-        var currentChapterId = CurrentChapter?.Id;
-        var currentSectionId = CurrentSection?.Id;
-        var currentPageIndex = CurrentPageIndex;
-
-        _suppressHistory = true;
-        _course = course;
-        _navigator = new CourseNavigator(_course);
-
-        if (!string.IsNullOrWhiteSpace(_course.Title))
-        {
-            Title = _course.Title;
-        }
-
-        _chapters = _course.OrderedChapters;
-        RenderNavigation();
-        if (!TryNavigateTo(currentChapterId, currentSectionId, currentPageIndex))
-        {
-            NavigateToFirstPage();
-        }
-
-        InitializeAdminUi();
-        _suppressHistory = false;
-    }
-
-    private bool TryNavigateTo(string? chapterId, string? sectionId, int pageIndex)
-    {
-        if (string.IsNullOrWhiteSpace(chapterId) || string.IsNullOrWhiteSpace(sectionId))
-        {
-            return false;
-        }
-
-        var chapter = _chapters.FirstOrDefault(item => string.Equals(item.Id, chapterId, StringComparison.OrdinalIgnoreCase));
-        if (chapter is null)
-        {
-            return false;
-        }
-
-        var section = chapter.Sections.FirstOrDefault(item => string.Equals(item.Id, sectionId, StringComparison.OrdinalIgnoreCase));
-        if (section is null || section.OrderedPages.Count == 0)
-        {
-            return false;
-        }
-
-        var index = Math.Clamp(pageIndex, 0, section.OrderedPages.Count - 1);
-        NavigateToPage(chapter.Id, section.Id, index);
-        return true;
-    }
-
     private static string ResolveContentPath()
     {
         return Path.GetFullPath(ContentPath);
@@ -2553,65 +2350,12 @@ public partial class MainWindow : Window
         }
     }
 
-    private static bool TryWriteContentFile(string json, out string errorMessage)
-    {
-        var contentPath = ResolveContentPath();
-        var directory = Path.GetDirectoryName(contentPath);
-        var tempPath = contentPath + ".tmp";
-        var backupPath = contentPath + ".bak";
-
-        try
-        {
-            if (!string.IsNullOrWhiteSpace(directory))
-            {
-                Directory.CreateDirectory(directory);
-            }
-
-            File.WriteAllText(tempPath, json, Encoding.UTF8);
-
-            if (File.Exists(contentPath))
-            {
-                File.Replace(tempPath, contentPath, backupPath, true);
-            }
-            else
-            {
-                File.Move(tempPath, contentPath);
-            }
-
-            errorMessage = string.Empty;
-            return true;
-        }
-        catch (Exception ex)
-        {
-            AppLogger.Error(ex, "Не удалось сохранить файл контента.");
-            errorMessage = ex.Message;
-            return false;
-        }
-        finally
-        {
-            try
-            {
-                if (File.Exists(tempPath))
-                {
-                    File.Delete(tempPath);
-                }
-            }
-            catch
-            {
-                // ignore cleanup errors
-            }
-        }
-    }
-
     private enum PageDisplayMode
     {
         Reading,
         Tasks
     }
-
-    private sealed record HistoryEntry(DateTime Timestamp, string Description, string Snapshot);
-
-    private sealed class SectionButtonInfo
+private sealed class SectionButtonInfo
     {
         public SectionButtonInfo(string chapterId, string sectionId)
         {
@@ -2699,7 +2443,5 @@ public partial class MainWindow : Window
         public string StarterCode { get; }
     }
 }
-
-
 
 

@@ -35,25 +35,8 @@
               "resources": []
             },
             {
-              "id": "intro-hello-world",
-              "order": 2,
-              "title": "Первая программа",
-              "estimatedTimeMinutes": 15,
-              "content": {
-                "format": "richText",
-                "source": "texts/Introduction/introduction2.rtf"
-              },
-              "resources": [
-                {
-                  "type": "externalLink",
-                  "title": "Документация: Console.WriteLine",
-                  "url": "https://learn.microsoft.com/dotnet/api/system.console.writeline"
-                }
-              ]
-            },
-            {
               "id": "intro-hello-world-quiz",
-              "order": 3,
+              "order": 2,
               "title": "Проверь себя: Hello World",
               "kind": "quiz",
               "estimatedTimeMinutes": 5,
@@ -109,7 +92,7 @@
             },
             {
               "id": "intro-hello-world-code",
-              "order": 4,
+              "order": 3,
               "title": "Практика: Hello World",
               "kind": "code",
               "estimatedTimeMinutes": 10,
@@ -164,52 +147,26 @@
                     "Не забывайте про символ новой строки в ответе."
                   ]
                 }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "section-a58c083c3c2a",
-          "order": 2,
-          "title": "Новый раздел",
-          "pages": [
-            {
-              "id": "page-b7bc9fd40577",
-              "order": 1,
-              "title": "Новая страница",
-              "kind": "quiz",
-              "content": {
-                "format": "richText",
-                "source": ""
-              },
-              "tasks": [
-                {
-                  "id": "quiz-3e11b66b63df",
-                  "type": "quiz",
-                  "selection": "single",
-                  "question": "Новый вопрос",
-                  "title": "Новый тест",
-                  "scoring": {
-                    "points": 1,
-                    "partial": true
-                  },
-                  "options": [
-                    {
-                      "id": "opt-c297b199590f",
-                      "text": "Вариант 1",
-                      "isCorrect": true
-                    },
-                    {
-                      "id": "opt-ff32be04c589",
-                      "text": "Вариант 2",
-                      "isCorrect": false
-                    }
-                  ],
-                  "tests": [],
-                  "hints": []
-                }
               ],
               "resources": []
+            },
+            {
+              "id": "intro-hello-world",
+              "order": 4,
+              "title": "Первая программа",
+              "estimatedTimeMinutes": 15,
+              "content": {
+                "format": "richText",
+                "source": "texts/Introduction/introduction2.rtf"
+              },
+              "tasks": [],
+              "resources": [
+                {
+                  "type": "externalLink",
+                  "title": "Документация: Console.WriteLine",
+                  "url": "https://learn.microsoft.com/dotnet/api/system.console.writeline"
+                }
+              ]
             }
           ]
         }
@@ -381,6 +338,12 @@
           ]
         }
       ]
+    },
+    {
+      "id": "chapter-091c1b25b5aa",
+      "order": 3,
+      "title": "хуй",
+      "sections": []
     }
   ],
   "glossary": [

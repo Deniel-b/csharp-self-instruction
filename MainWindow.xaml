@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:kursach"
+        xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
         mc:Ignorable="d"
         Title="Самоучитель по C#"
         Height="760"
@@ -13,34 +14,57 @@
         Background="{DynamicResource AppBackground}"
         FontFamily="Bahnschrift">
     <Window.Resources>
-        <LinearGradientBrush x:Key="AppBackground" StartPoint="0,0" EndPoint="1,1">
+        <LinearGradientBrush po:Freeze="False" x:Key="AppBackground" StartPoint="0,0" EndPoint="1,1">
             <GradientStop Color="#F7F2EA" Offset="0"/>
             <GradientStop Color="#E6EDF6" Offset="1"/>
         </LinearGradientBrush>
 
-        <LinearGradientBrush x:Key="HeroBrush" StartPoint="0,0" EndPoint="1,1">
+        <LinearGradientBrush po:Freeze="False" x:Key="HeroBrush" StartPoint="0,0" EndPoint="1,1">
             <GradientStop Color="#202B36" Offset="0"/>
             <GradientStop Color="#2C3A48" Offset="1"/>
         </LinearGradientBrush>
 
-        <SolidColorBrush x:Key="SidebarBackground" Color="#0F1520"/>
-        <SolidColorBrush x:Key="SidebarSurface" Color="#18222D"/>
-        <SolidColorBrush x:Key="SidebarText" Color="#E8EEF6"/>
-        <SolidColorBrush x:Key="SidebarMuted" Color="#93A4B6"/>
+        <SolidColorBrush po:Freeze="False" x:Key="SidebarBackground" Color="#0F1520"/>
+        <SolidColorBrush po:Freeze="False" x:Key="SidebarSurface" Color="#18222D"/>
+        <SolidColorBrush po:Freeze="False" x:Key="SidebarBorder" Color="#243245"/>
+        <SolidColorBrush po:Freeze="False" x:Key="SidebarText" Color="#E8EEF6"/>
+        <SolidColorBrush po:Freeze="False" x:Key="SidebarMuted" Color="#93A4B6"/>
 
-        <SolidColorBrush x:Key="SurfaceCard" Color="#FFFFFF"/>
-        <SolidColorBrush x:Key="SurfaceMuted" Color="#F6F1EA"/>
-        <SolidColorBrush x:Key="TextPrimary" Color="#1C212B"/>
-        <SolidColorBrush x:Key="TextSecondary" Color="#657281"/>
+        <SolidColorBrush po:Freeze="False" x:Key="SurfaceCard" Color="#FFFFFF"/>
+        <SolidColorBrush po:Freeze="False" x:Key="SurfaceMuted" Color="#F6F1EA"/>
+        <SolidColorBrush po:Freeze="False" x:Key="SurfaceBorder" Color="#E5EAF0"/>
+        <SolidColorBrush po:Freeze="False" x:Key="TextPrimary" Color="#1C212B"/>
+        <SolidColorBrush po:Freeze="False" x:Key="TextSecondary" Color="#657281"/>
 
-        <SolidColorBrush x:Key="Accent" Color="#FF7A3D"/>
-        <SolidColorBrush x:Key="AccentDark" Color="#D65F2E"/>
-        <SolidColorBrush x:Key="AccentMuted" Color="#FFE2D0"/>
+        <SolidColorBrush po:Freeze="False" x:Key="InputBackground" Color="#101926"/>
+        <SolidColorBrush po:Freeze="False" x:Key="InputForeground" Color="#E8EEF6"/>
+        <SolidColorBrush po:Freeze="False" x:Key="InputBorder" Color="#253243"/>
+
+        <SolidColorBrush po:Freeze="False" x:Key="Accent" Color="#FF7A3D"/>
+        <SolidColorBrush po:Freeze="False" x:Key="AccentDark" Color="#D65F2E"/>
+        <SolidColorBrush po:Freeze="False" x:Key="AccentMuted" Color="#FFE2D0"/>
+        <SolidColorBrush po:Freeze="False" x:Key="ControlBorder" Color="#D7DEE8"/>
+        <SolidColorBrush po:Freeze="False" x:Key="ControlHoverBackground" Color="#FFF3EB"/>
+        <SolidColorBrush po:Freeze="False" x:Key="ControlHoverBorder" Color="#FFC8A8"/>
+        <SolidColorBrush po:Freeze="False" x:Key="ControlPressedBackground" Color="#FFE3D2"/>
+        <SolidColorBrush po:Freeze="False" x:Key="HeroCaption" Color="#C7D4E3"/>
+        <SolidColorBrush po:Freeze="False" x:Key="HeroTitle" Color="#FFFFFF"/>
+        <SolidColorBrush po:Freeze="False" x:Key="ContextPanelBackground" Color="#F2F5F9"/>
+        <SolidColorBrush po:Freeze="False" x:Key="ContextInnerBackground" Color="#FFFFFF"/>
+        <SolidColorBrush po:Freeze="False" x:Key="TaskCardBackground" Color="#FFFFFF"/>
+        <SolidColorBrush po:Freeze="False" x:Key="TaskCodeBackground" Color="#F7FAFF"/>
+        <SolidColorBrush po:Freeze="False" x:Key="TaskCardBorder" Color="#D8E1EE"/>
+        <SolidColorBrush po:Freeze="False" x:Key="TaskHintText" Color="#6C7787"/>
+        <SolidColorBrush po:Freeze="False" x:Key="StatusInfo" Color="#6B7C93"/>
+        <SolidColorBrush po:Freeze="False" x:Key="StatusWarning" Color="#B7792C"/>
+        <SolidColorBrush po:Freeze="False" x:Key="StatusSuccess" Color="#2D8A53"/>
+        <SolidColorBrush po:Freeze="False" x:Key="StatusError" Color="#BF4747"/>
+        <SolidColorBrush po:Freeze="False" x:Key="ShadowColor" Color="#1D2735"/>
 
         <Style TargetType="Button">
             <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
             <Setter Property="Background" Value="{StaticResource SurfaceCard}"/>
-            <Setter Property="BorderBrush" Value="#D7DEE8"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ControlBorder}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="14,8"/>
             <Setter Property="FontSize" Value="13"/>
@@ -59,11 +83,11 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="ButtonBorder" Property="Background" Value="#FFF3EB"/>
-                                <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="#FFC8A8"/>
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="{StaticResource ControlHoverBackground}"/>
+                                <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="{StaticResource ControlHoverBorder}"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="ButtonBorder" Property="Background" Value="#FFE3D2"/>
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="{StaticResource ControlPressedBackground}"/>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter Property="Opacity" Value="0.55"/>
@@ -108,7 +132,7 @@
         <Style x:Key="NavButtonStyle" TargetType="Button">
             <Setter Property="Foreground" Value="{StaticResource SidebarText}"/>
             <Setter Property="Background" Value="{StaticResource SidebarSurface}"/>
-            <Setter Property="BorderBrush" Value="#243245"/>
+            <Setter Property="BorderBrush" Value="{StaticResource SidebarBorder}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="14,10"/>
             <Setter Property="FontSize" Value="13"/>
@@ -159,9 +183,9 @@
         </Style>
 
         <Style TargetType="TextBox">
-            <Setter Property="Background" Value="#101926"/>
-            <Setter Property="Foreground" Value="{StaticResource SidebarText}"/>
-            <Setter Property="BorderBrush" Value="#253243"/>
+            <Setter Property="Background" Value="{StaticResource InputBackground}"/>
+            <Setter Property="Foreground" Value="{StaticResource InputForeground}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource InputBorder}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="10,8"/>
             <Setter Property="FontSize" Value="12"/>
@@ -180,18 +204,18 @@
         </Style>
 
         <Style TargetType="ComboBox">
-            <Setter Property="Background" Value="#101926"/>
-            <Setter Property="Foreground" Value="{StaticResource SidebarText}"/>
-            <Setter Property="BorderBrush" Value="#253243"/>
+            <Setter Property="Background" Value="{StaticResource InputBackground}"/>
+            <Setter Property="Foreground" Value="{StaticResource InputForeground}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource InputBorder}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="6,4"/>
             <Setter Property="FontSize" Value="12"/>
         </Style>
 
         <Style x:Key="AdminTextBoxStyle" TargetType="TextBox">
-            <Setter Property="Background" Value="White"/>
+            <Setter Property="Background" Value="{StaticResource ContextInnerBackground}"/>
             <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
-            <Setter Property="BorderBrush" Value="#D3DAE6"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ControlBorder}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="8,6"/>
             <Setter Property="FontSize" Value="12"/>
@@ -210,9 +234,9 @@
         </Style>
 
         <Style x:Key="AdminComboBoxStyle" TargetType="ComboBox">
-            <Setter Property="Background" Value="White"/>
+            <Setter Property="Background" Value="{StaticResource ContextInnerBackground}"/>
             <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
-            <Setter Property="BorderBrush" Value="#D3DAE6"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ControlBorder}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="6,4"/>
             <Setter Property="FontSize" Value="12"/>
@@ -220,13 +244,13 @@
 
         <Style x:Key="AdminComboBoxItemStyle" TargetType="ComboBoxItem">
             <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
-            <Setter Property="Background" Value="White"/>
+            <Setter Property="Background" Value="{StaticResource ContextInnerBackground}"/>
         </Style>
 
         <Style x:Key="AdminListBoxStyle" TargetType="ListBox">
-            <Setter Property="Background" Value="White"/>
+            <Setter Property="Background" Value="{StaticResource ContextInnerBackground}"/>
             <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
-            <Setter Property="BorderBrush" Value="#D3DAE6"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ControlBorder}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="FontSize" Value="12"/>
         </Style>
@@ -246,10 +270,10 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="ItemBorder" Property="Background" Value="#FFE8DA"/>
+                                <Setter TargetName="ItemBorder" Property="Background" Value="{StaticResource AccentMuted}"/>
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="ItemBorder" Property="Background" Value="#FFF3EB"/>
+                                <Setter TargetName="ItemBorder" Property="Background" Value="{StaticResource ControlHoverBackground}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -260,7 +284,7 @@
         <Style TargetType="ToggleButton">
             <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
             <Setter Property="Background" Value="{StaticResource SurfaceCard}"/>
-            <Setter Property="BorderBrush" Value="#D7DEE8"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ControlBorder}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="10,6"/>
             <Setter Property="FontSize" Value="12"/>
@@ -279,8 +303,8 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="ToggleBorder" Property="Background" Value="#FFF3EB"/>
-                                <Setter TargetName="ToggleBorder" Property="BorderBrush" Value="#FFC8A8"/>
+                                <Setter TargetName="ToggleBorder" Property="Background" Value="{StaticResource ControlHoverBackground}"/>
+                                <Setter TargetName="ToggleBorder" Property="BorderBrush" Value="{StaticResource ControlHoverBorder}"/>
                             </Trigger>
                             <Trigger Property="IsChecked" Value="True">
                                 <Setter TargetName="ToggleBorder" Property="Background" Value="{StaticResource Accent}"/>
@@ -332,6 +356,11 @@
                 <StackPanel DockPanel.Dock="Right"
                             Orientation="Horizontal"
                             VerticalAlignment="Center">
+                    <ToggleButton x:Name="ThemeToggle"
+                                  Content="Темная тема"
+                                  Margin="0,0,10,0"
+                                  Checked="ThemeToggle_Checked"
+                                  Unchecked="ThemeToggle_Unchecked"/>
                     <ToggleButton x:Name="AdminToggle"
                                   Content="Админ"
                                   Margin="0,0,10,0"
@@ -349,7 +378,7 @@
                     <Border Background="{StaticResource SurfaceCard}"
                             CornerRadius="12"
                             Padding="10,4"
-                            BorderBrush="#E5EAF0"
+                            BorderBrush="{StaticResource SurfaceBorder}"
                             BorderThickness="1">
                         <TextBlock Text="Офлайн"
                                    FontSize="12"
@@ -365,12 +394,12 @@
                 Margin="24,0,16,24"
                 Background="{StaticResource SidebarBackground}"
                 CornerRadius="20">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="20"
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="20"
                                   ShadowDepth="6"
                                   Opacity="0.22"
-                                  Color="#1D2735"/>
-            </Border.Effect>
+                                  Color="Black"/>
+                </Border.Effect>
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -425,7 +454,7 @@
                     <DropShadowEffect BlurRadius="18"
                                       ShadowDepth="6"
                                       Opacity="0.18"
-                                      Color="#1D2735"/>
+                                      Color="Black"/>
                 </Border.Effect>
                 <Grid>
                     <Canvas>
@@ -448,17 +477,17 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0" Margin="0,0,20,0">
                             <TextBlock Text="Текущая тема"
-                                       FontSize="12"
-                                       Foreground="#C7D4E3"
+                                      FontSize="12"
+                                       Foreground="{StaticResource HeroCaption}"
                                        Margin="0,0,0,6"/>
                             <TextBlock x:Name="SectionTitleBlock"
                                        FontSize="26"
                                        FontWeight="SemiBold"
-                                       Foreground="White"
+                                       Foreground="{StaticResource HeroTitle}"
                                        TextWrapping="Wrap"/>
                             <TextBlock Text="Материал и практика"
                                        FontSize="12"
-                                       Foreground="#C7D4E3"
+                                       Foreground="{StaticResource HeroCaption}"
                                        Margin="0,8,0,0"/>
                         </StackPanel>
                         <StackPanel Grid.Column="1"
@@ -466,7 +495,7 @@
                                     VerticalAlignment="Center">
                             <TextBlock Text="Навигация"
                                        FontSize="12"
-                                       Foreground="#C7D4E3"
+                                       Foreground="{StaticResource HeroCaption}"
                                        Margin="0,0,0,6"
                                        HorizontalAlignment="Right"/>
                             <WrapPanel x:Name="PageStepperPanel"
@@ -502,7 +531,7 @@
                     <DropShadowEffect BlurRadius="16"
                                       ShadowDepth="6"
                                       Opacity="0.12"
-                                      Color="#1D2735"/>
+                                      Color="Black"/>
                 </Border.Effect>
                 <Grid Margin="20">
                     <Grid.RowDefinitions>
@@ -551,7 +580,7 @@
                     <Grid Grid.Row="0"
                           Grid.Column="1">
                         <Border x:Name="ContextPanel"
-                                Background="#F2F5F9"
+                                Background="{StaticResource ContextPanelBackground}"
                                 CornerRadius="16"
                                 Padding="16">
                             <StackPanel>
@@ -564,10 +593,10 @@
                                            Foreground="{StaticResource TextSecondary}"
                                            Margin="0,6,0,12"
                                            TextWrapping="Wrap"/>
-                                <Border Background="White"
+                                <Border Background="{StaticResource ContextInnerBackground}"
                                         CornerRadius="12"
                                         Padding="12"
-                                        BorderBrush="#E3E8F0"
+                                        BorderBrush="{StaticResource ControlBorder}"
                                         BorderThickness="1">
                                     <StackPanel>
                                         <TextBlock Text="Совет"
@@ -585,7 +614,7 @@
                         </Border>
 
                         <Border x:Name="AdminPanel"
-                                Background="#F6F1EA"
+                                Background="{StaticResource SurfaceMuted}"
                                 CornerRadius="16"
                                 Padding="12"
                                 Visibility="Collapsed">
