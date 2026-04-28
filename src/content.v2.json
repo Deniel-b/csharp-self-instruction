@@ -145,7 +145,7 @@
                   "type": "code",
                   "title": "Практика: Вывод сообщения",
                   "prompt": "Напишите программу, которая выводит строку 'Hello, World!' в консоль.",
-                  "starterCode": "using System;\n\npublic class Solution\n{\n    public static void Main()\n    {\n        Console.WriteLine(\"Hello, World!\");\n    }\n}",
+                  "starterCode": "using System;\n\npublic class Solution\n{\n    public static void Main()\n    {\n        // TODO: выведите строку \"Hello, World!\"\n    }\n}",
                   "entryPoint": {
                     "class": "Solution",
                     "method": "Main",
@@ -337,7 +337,7 @@
                   "type": "code",
                   "title": "Практика: Объявление переменных",
                   "prompt": "Объявите переменную целого типа x, установите её значение на 42 и выведите в консоль.",
-                  "starterCode": "using System;\n\npublic class Solution\n{\n    public static void Main()\n    {\n        int x = 42;\n        Console.WriteLine(x);\n    }\n}",
+                  "starterCode": "using System;\n\npublic class Solution\n{\n    public static void Main()\n    {\n        // TODO: объявите переменную x со значением 42\n        // TODO: выведите x\n    }\n}",
                   "entryPoint": {
                     "class": "Solution",
                     "method": "Main",
@@ -518,7 +518,7 @@
                   "type": "code",
                   "title": "Практика: Работа с типами данных",
                   "prompt": "Напишите метод, который принимает два целых числа и возвращает их среднее арифметическое (как double).",
-                  "starterCode": "using System;\n\npublic class Solution\n{\n    public static double CalculateAverage(int a, int b)\n    {\n        return (a + b) / 2.0;\n    }\n    \n    public static void Main()\n    {\n        string[] args = System.Console.In.ReadToEnd().Split();\n        int a = int.Parse(args[0]);\n        int b = int.Parse(args[1]);\n        Console.WriteLine(CalculateAverage(a, b));\n    }\n}",
+                  "starterCode": "using System;\n\npublic class Solution\n{\n    public static double CalculateAverage(int a, int b)\n    {\n        // TODO: верните среднее значение двух чисел\n        throw new NotImplementedException();\n    }\n\n    public static void Main()\n    {\n        // Необязательный локальный запуск\n    }\n}",
                   "entryPoint": {
                     "class": "Solution",
                     "method": "CalculateAverage",
@@ -730,7 +730,7 @@
                   "type": "code",
                   "title": "Практика: Вызов метода",
                   "prompt": "Напишите метод Add, который складывает два числа и выводит результат в консоль.",
-                  "starterCode": "using System;\n\npublic class Solution\n{\n    public static void Add(int a, int b)\n    {\n        Console.WriteLine(a + b);\n    }\n    \n    public static void Main()\n    {\n        string[] args = System.Console.In.ReadToEnd().Split();\n        int a = int.Parse(args[0]);\n        int b = int.Parse(args[1]);\n        Add(a, b);\n    }\n}",
+                  "starterCode": "using System;\n\npublic class Solution\n{\n    public static void Add(int a, int b)\n    {\n        // TODO: выведите сумму a и b\n    }\n\n    public static void Main()\n    {\n        // Необязательный локальный запуск\n    }\n}",
                   "entryPoint": {
                     "class": "Solution",
                     "method": "Add",
@@ -929,7 +929,7 @@
                   "type": "code",
                   "title": "Практика: Создание класса",
                   "prompt": "Создайте класс Person с полем Name и методом GetInfo(), который возвращает строку '{name} is a person'.",
-                  "starterCode": "using System;\n\npublic class Person\n{\n    public string Name { get; set; }\n    \n    public string GetInfo()\n    {\n        return $\"{Name} is a person\";\n    }\n}\n\npublic class Solution\n{\n    public static void Main()\n    {\n        string name = System.Console.In.ReadLine();\n        var person = new Person { Name = name };\n        Console.WriteLine(person.GetInfo());\n    }\n}",
+                  "starterCode": "using System;\n\npublic class Person\n{\n    public string Name { get; set; } = string.Empty;\n\n    public string GetInfo()\n    {\n        // TODO: верните строку в формате \"{Name} is a person\"\n        throw new NotImplementedException();\n    }\n}\n\npublic class Solution\n{\n    public static void Main()\n    {\n        // Необязательный локальный запуск\n    }\n}",
                   "entryPoint": {
                     "class": "Person",
                     "method": "GetInfo",
@@ -1140,7 +1140,7 @@
                   "type": "code",
                   "title": "Практика: Конструктор класса",
                   "prompt": "Создайте класс Rectangle с конструктором, принимающим ширину и высоту, и методом Area(), возвращающим площадь.",
-                  "starterCode": "using System;\n\npublic class Rectangle\n{\n    private double width;\n    private double height;\n    \n    public Rectangle(double w, double h)\n    {\n        width = w;\n        height = h;\n    }\n    \n    public double Area()\n    {\n        return width * height;\n    }\n}\n\npublic class Solution\n{\n    public static void Main()\n    {\n        string[] args = System.Console.In.ReadToEnd().Split();\n        double w = double.Parse(args[0]);\n        double h = double.Parse(args[1]);\n        var rect = new Rectangle(w, h);\n        Console.WriteLine(rect.Area());\n    }\n}",
+                  "starterCode": "using System;\n\npublic class Rectangle\n{\n    private double width;\n    private double height;\n\n    public Rectangle(double w, double h)\n    {\n        // TODO: инициализируйте width и height\n    }\n\n    public double Area()\n    {\n        // TODO: верните площадь прямоугольника\n        throw new NotImplementedException();\n    }\n}\n\npublic class Solution\n{\n    public static void Main()\n    {\n        // Необязательный локальный запуск\n    }\n}",
                   "entryPoint": {
                     "class": "Rectangle",
                     "method": "Area",
@@ -1339,7 +1339,7 @@
                   "type": "code",
                   "title": "Практика: Использование пространств имён",
                   "prompt": "Используя System.Collections, напишите код, который работает с коллекциями из данного пространства имён.",
-                  "starterCode": "using System;\nusing System.Collections;\n\npublic class Solution\n{\n    public static void Main()\n    {\n        ArrayList list = new ArrayList();\n        list.Add(\"item1\");\n        list.Add(\"item2\");\n        Console.WriteLine(\"Program executed successfully\");\n    }\n}",
+                  "starterCode": "using System;\nusing System.Collections;\n\npublic class Solution\n{\n    public static void Main()\n    {\n        // TODO: используйте коллекцию из System.Collections\n        // TODO: выведите \"Program executed successfully\"\n    }\n}",
                   "entryPoint": {
                     "class": "Solution",
                     "method": "Main",
@@ -1532,7 +1532,7 @@
                   "type": "code",
                   "title": "Практика: Модификаторы доступа",
                   "prompt": "Создайте класс BankAccount с приватными полями для баланса и публичным методом GetBalance().",
-                  "starterCode": "using System;\n\npublic class BankAccount\n{\n    private decimal balance;\n    \n    public BankAccount(decimal initialBalance)\n    {\n        balance = initialBalance;\n    }\n    \n    public decimal GetBalance()\n    {\n        return balance;\n    }\n}\n\npublic class Solution\n{\n    public static void Main()\n    {\n        decimal initial = decimal.Parse(System.Console.In.ReadLine());\n        var account = new BankAccount(initial);\n        Console.WriteLine(account.GetBalance());\n    }\n}",
+                  "starterCode": "using System;\n\npublic class BankAccount\n{\n    private decimal balance;\n\n    public BankAccount(decimal initialBalance)\n    {\n        // TODO: инициализируйте balance\n    }\n\n    public decimal GetBalance()\n    {\n        // TODO: верните текущий баланс\n        throw new NotImplementedException();\n    }\n}\n\npublic class Solution\n{\n    public static void Main()\n    {\n        // Необязательный локальный запуск\n    }\n}",
                   "entryPoint": {
                     "class": "BankAccount",
                     "method": "GetBalance",
@@ -1737,7 +1737,7 @@
                   "type": "code",
                   "title": "Практика: Структура (Struct)",
                   "prompt": "Создайте структуру Point с полями X и Y, и методом Distance(), вычисляющим расстояние от начала координат.",
-                  "starterCode": "using System;\n\npublic struct Point\n{\n    public double X;\n    public double Y;\n    \n    public double Distance()\n    {\n        return System.Math.Sqrt(X * X + Y * Y);\n    }\n}\n\npublic class Solution\n{\n    public static void Main()\n    {\n        string[] args = System.Console.In.ReadToEnd().Split();\n        double x = double.Parse(args[0]);\n        double y = double.Parse(args[1]);\n        var point = new Point { X = x, Y = y };\n        Console.WriteLine(point.Distance());\n    }\n}",
+                  "starterCode": "using System;\n\npublic struct Point\n{\n    public double X;\n    public double Y;\n\n    public double Distance()\n    {\n        // TODO: верните расстояние от начала координат\n        throw new NotImplementedException();\n    }\n}\n\npublic class Solution\n{\n    public static void Main()\n    {\n        // Необязательный локальный запуск\n    }\n}",
                   "entryPoint": {
                     "class": "Point",
                     "method": "Distance",
@@ -1948,7 +1948,7 @@
                   "type": "code",
                   "title": "Практика: Типы значений vs ссылочные типы",
                   "prompt": "Напишите код, демонстрирующий разницу между типами значений и ссылочными типами при присваивании.",
-                  "starterCode": "using System;\n\npublic class Solution\n{\n    public static void Main()\n    {\n        // Тип значения (struct)\n        int a = 10;\n        int b = a;\n        b = 20;\n        // a == 10, b == 20 (независимые копии)\n        \n        // Ссылочный тип (class)\n        string s1 = \"hello\";\n        string s2 = s1;\n        // s1 и s2 указывают на одну строку\n        \n        Console.WriteLine(\"Value type and reference type behavior demonstrated\");\n    }\n}",
+                  "starterCode": "using System;\n\npublic class Solution\n{\n    public static string Compare()\n    {\n        // TODO: объясните разницу value и reference типов\n        throw new NotImplementedException();\n    }\n\n    public static void Main()\n    {\n        // Необязательный локальный запуск\n    }\n}",
                   "entryPoint": {
                     "class": "Solution",
                     "method": "Compare",

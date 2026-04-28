@@ -679,6 +679,8 @@ public sealed record CodeRunResult(bool Success, string Summary, IReadOnlyList<T
     {
         var sb = new StringBuilder();
         var allPassed = true;
+        var publicCounter = 0;
+        var hiddenCounter = 0;
 
         foreach (var test in results)
         {
@@ -686,8 +688,20 @@ public sealed record CodeRunResult(bool Success, string Summary, IReadOnlyList<T
             var isPublic = string.Equals(test.Visibility, "public", StringComparison.OrdinalIgnoreCase);
             allPassed &= passed;
 
-            var visibilityLabel = isPublic ? string.Empty : " (\u0441\u043a\u0440\u044b\u0442\u044b\u0439)";
-            sb.AppendLine($"{test.TestId}: {(passed ? "\u041e\u041a" : "\u041f\u0440\u043e\u0432\u0430\u043b")}{visibilityLabel}");
+            var status = passed ? "пройден" : "не пройден";
+            string testLabel;
+            if (isPublic)
+            {
+                publicCounter++;
+                testLabel = $"Публичный тест {publicCounter}";
+            }
+            else
+            {
+                hiddenCounter++;
+                testLabel = $"Скрытый тест {hiddenCounter}";
+            }
+
+            sb.AppendLine($"{testLabel}: {status}.");
 
             if (!passed)
             {
