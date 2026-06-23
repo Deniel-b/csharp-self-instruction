@@ -3,6 +3,22 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# Project-local files
+.vscode/
+.gitattributes
+.gitatributes
+
+# Local backups, archives and generated notes
+*.bak
+*.bak.*
+*.old
+src/**/*.bak
+src/**/*.zip
+*_REPORT.md
+CODE_*_GUIDE.md
+CODE_*_FIX.md
+TEMPLATE_EXAMPLES.md
+
 # User-specific files
 *.rsuser
 *.suo

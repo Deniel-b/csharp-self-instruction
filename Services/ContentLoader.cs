@@ -1,4 +1,5 @@
 using System.IO;
+using System.Text;
 using Newtonsoft.Json;
 using kursachFile;
 
@@ -43,7 +44,7 @@ public sealed class ContentLoader
 
         try
         {
-            var json = File.ReadAllText(contentPath);
+            var json = File.ReadAllText(contentPath, Encoding.UTF8);
             var course = JsonConvert.DeserializeObject<CourseContent>(json);
 
             if (course is null)
