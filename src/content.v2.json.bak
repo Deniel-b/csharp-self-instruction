@@ -1,0 +1,366 @@
+﻿{
+  "version": "2.0.0",
+  "language": "ru-RU",
+  "title": "Самоучитель по C#",
+  "description": "Пошаговый курс по основам языка C# с заданиями и практикой.",
+  "authors": [
+    {
+      "name": "Команда самоучителя",
+      "role": "author"
+    }
+  ],
+  "chapters": [
+    {
+      "id": "chapter-introduction",
+      "order": 1,
+      "title": "Введение в C#",
+      "summary": "История появления C#, экосистема .NET и установка инструментов.",
+      "sections": [
+        {
+          "id": "chapter-introduction-section-1",
+          "order": 1,
+          "title": "Раздел 1",
+          "summary": "История появления C#, экосистема .NET и установка инструментов.",
+          "pages": [
+            {
+              "id": "intro-overview",
+              "order": 1,
+              "title": "Что такое C#",
+              "estimatedTimeMinutes": 10,
+              "content": {
+                "format": "richText",
+                "source": "texts/Introduction/introduction1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "intro-hello-world-quiz",
+              "order": 2,
+              "title": "Проверь себя: Hello World",
+              "kind": "quiz",
+              "estimatedTimeMinutes": 5,
+              "tasks": [
+                {
+                  "id": "intro-quiz-hello-world",
+                  "type": "quiz",
+                  "selection": "single",
+                  "question": "Какой метод выводит строку в консоль и переносит курсор на новую строку?",
+                  "scoring": {
+                    "points": 2,
+                    "partial": false
+                  },
+                  "options": [
+                    {
+                      "id": "option-console-write-line",
+                      "text": "Console.WriteLine();",
+                      "isCorrect": true,
+                      "feedback": "Именно Console.WriteLine выводит строку и завершает её переводом строки."
+                    },
+                    {
+                      "id": "option-system-print",
+                      "text": "System.Print();",
+                      "isCorrect": false,
+                      "feedback": "Такого метода в .NET нет."
+                    },
+                    {
+                      "id": "option-console-log",
+                      "text": "Console.Log();",
+                      "isCorrect": false,
+                      "feedback": "Console.Log — метод из JavaScript, но не из C#."
+                    },
+                    {
+                      "id": "option-debug-write-line",
+                      "text": "Debug.WriteLine();",
+                      "isCorrect": false,
+                      "feedback": "Debug.WriteLine выводит в окно отладчика, а не в стандартную консоль."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "option-console-write-line"
+                    ],
+                    "explanation": "Console.WriteLine выводит строку и завершает её символом новой строки."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Вспомните класс Console и его методы.",
+                    "Метод должен завершаться переводом строки."
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "intro-hello-world-code",
+              "order": 3,
+              "title": "Практика: Hello World",
+              "kind": "code",
+              "estimatedTimeMinutes": 10,
+              "tasks": [
+                {
+                  "id": "intro-code-hello-world",
+                  "type": "code",
+                  "title": "Приветствие пользователя",
+                  "prompt": "Считайте из консоли имя и выведите \"Hello, <name>!\". Имя может содержать пробелы.",
+                  "starterCode": "using System;\n\npublic static class Solution\n{\n    public static void Solve()\n    {\n        // TODO: считайте имя пользователя и выведите приветствие\n    }\n}\n",
+                  "entryPoint": {
+                    "class": "Solution",
+                    "method": "Solve",
+                    "signature": "public static void Solve()"
+                  },
+                  "constraints": {
+                    "timeLimitMs": 2000,
+                    "memoryLimitMb": 128,
+                    "disallow": [
+                      "Environment.Exit",
+                      "Process.Start"
+                    ]
+                  },
+                  "scoring": {
+                    "points": 5,
+                    "partial": true
+                  },
+                  "options": [],
+                  "tests": [
+                    {
+                      "id": "sample-1",
+                      "visibility": "public",
+                      "input": "Alice\n",
+                      "expectedOutput": "Hello, Alice!\n",
+                      "explanation": "Пользователь вводит имя Alice."
+                    },
+                    {
+                      "id": "sample-2",
+                      "visibility": "public",
+                      "input": "Bob\n",
+                      "expectedOutput": "Hello, Bob!\n"
+                    },
+                    {
+                      "id": "hidden-1",
+                      "visibility": "hidden",
+                      "input": "C# Learner\n",
+                      "expectedOutput": "Hello, C# Learner!\n"
+                    }
+                  ],
+                  "hints": [
+                    "Используйте Console.ReadLine и интерполяцию строк.",
+                    "Не забывайте про символ новой строки в ответе."
+                  ]
+                }
+              ],
+              "resources": []
+            },
+            {
+              "id": "intro-hello-world",
+              "order": 4,
+              "title": "Первая программа",
+              "estimatedTimeMinutes": 15,
+              "content": {
+                "format": "richText",
+                "source": "texts/Introduction/introduction2.rtf"
+              },
+              "tasks": [],
+              "resources": [
+                {
+                  "type": "externalLink",
+                  "title": "Документация: Console.WriteLine",
+                  "url": "https://learn.microsoft.com/dotnet/api/system.console.writeline"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chapter-variables",
+      "order": 2,
+      "title": "Переменные и типы данных",
+      "summary": "Объявление переменных, базовые типы и преобразования.",
+      "sections": [
+        {
+          "id": "chapter-variables-section-1",
+          "order": 1,
+          "title": "Раздел 1",
+          "summary": "Объявление переменных, базовые типы и преобразования.",
+          "pages": [
+            {
+              "id": "variables-basics",
+              "order": 1,
+              "title": "Объявление переменных",
+              "estimatedTimeMinutes": 12,
+              "content": {
+                "format": "richText",
+                "source": "texts/Chapter One/Chapter One1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "variables-basics-quiz",
+              "order": 2,
+              "title": "Проверь себя: переменные",
+              "kind": "quiz",
+              "estimatedTimeMinutes": 5,
+              "tasks": [
+                {
+                  "id": "variables-quiz-basic",
+                  "type": "quiz",
+                  "selection": "multiple",
+                  "question": "Выберите корректные объявления переменных в C#.",
+                  "scoring": {
+                    "points": 3,
+                    "partial": true
+                  },
+                  "options": [
+                    {
+                      "id": "option-1",
+                      "text": "int count = 10;",
+                      "isCorrect": true,
+                      "feedback": "Корректное объявление целочисленной переменной."
+                    },
+                    {
+                      "id": "option-2",
+                      "text": "var name;",
+                      "isCorrect": false,
+                      "feedback": "var требует обязательной инициализации."
+                    },
+                    {
+                      "id": "option-3",
+                      "text": "string title = \"Intro\";",
+                      "isCorrect": true,
+                      "feedback": "Строка инициализирована корректно."
+                    },
+                    {
+                      "id": "option-4",
+                      "text": "decimal price = \"9.99\";",
+                      "isCorrect": false,
+                      "feedback": "Строку нельзя присвоить decimal без явного преобразования."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "option-1",
+                      "option-3"
+                    ],
+                    "explanation": "var требует инициализации, а decimal не принимает строку без преобразования."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Помните про вывод типа при использовании var.",
+                    "Сравните типы выражений с типами переменных."
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "variables-operations",
+              "order": 3,
+              "title": "Арифметика и приведения",
+              "estimatedTimeMinutes": 20,
+              "content": {
+                "format": "richText",
+                "source": "texts/Chapter One/Chapter One2.rtf"
+              }
+            },
+            {
+              "id": "variables-operations-code",
+              "order": 4,
+              "title": "Практика: среднее арифметическое",
+              "kind": "code",
+              "estimatedTimeMinutes": 10,
+              "tasks": [
+                {
+                  "id": "variables-code-average",
+                  "type": "code",
+                  "title": "Среднее арифметическое",
+                  "prompt": "Считайте три целых числа и выведите их среднее арифметическое с точностью до двух знаков после запятой.",
+                  "starterCode": "using System;\nusing System.Globalization;\n\npublic static class Solution\n{\n    public static void Solve()\n    {\n        // Подсказка: используйте decimal или double и ToString(\"F2\")\n    }\n}\n",
+                  "entryPoint": {
+                    "class": "Solution",
+                    "method": "Solve",
+                    "signature": "public static void Solve()"
+                  },
+                  "constraints": {
+                    "timeLimitMs": 2000,
+                    "memoryLimitMb": 128,
+                    "disallow": []
+                  },
+                  "scoring": {
+                    "points": 6,
+                    "partial": true
+                  },
+                  "options": [],
+                  "tests": [
+                    {
+                      "id": "sample-1",
+                      "visibility": "public",
+                      "input": "1 2 3\n",
+                      "expectedOutput": "2.00\n",
+                      "explanation": "1 + 2 + 3 = 6, 6 / 3 = 2.00"
+                    },
+                    {
+                      "id": "sample-2",
+                      "visibility": "public",
+                      "input": "5 10 15\n",
+                      "expectedOutput": "10.00\n"
+                    },
+                    {
+                      "id": "hidden-1",
+                      "visibility": "hidden",
+                      "input": "-10 0 10\n",
+                      "expectedOutput": "0.00\n"
+                    },
+                    {
+                      "id": "hidden-2",
+                      "visibility": "hidden",
+                      "input": "100 200 101\n",
+                      "expectedOutput": "133.67\n"
+                    }
+                  ],
+                  "hints": [
+                    "Сумма трёх целых чисел может быть нецелой при делении.",
+                    "Используйте CultureInfo.InvariantCulture для вывода."
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "variables-summary",
+              "order": 5,
+              "title": "Итоги главы",
+              "estimatedTimeMinutes": 8,
+              "content": {
+                "format": "richText",
+                "source": "texts/Chapter One/Chapter One3.rtf"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chapter-091c1b25b5aa",
+      "order": 3,
+      "title": "хуй",
+      "sections": []
+    }
+  ],
+  "glossary": [
+    {
+      "term": "Скомпилированный язык",
+      "definition": "Язык, исходный код которого перед выполнением переводится в машинный код."
+    },
+    {
+      "term": "RTF",
+      "definition": "Rich Text Format — формат текста с поддержкой форматирования."
+    }
+  ],
+  "resources": [
+    {
+      "type": "externalLink",
+      "title": "Документация Microsoft по C#",
+      "url": "https://learn.microsoft.com/dotnet/csharp/"
+    }
+  ]
+}

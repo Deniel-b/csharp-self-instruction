@@ -1,0 +1,1073 @@
+﻿<Window x:Class="kursach.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:kursach"
+        xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+        mc:Ignorable="d"
+        Title="Самоучитель по C#"
+        Height="760"
+        Width="1240"
+        MinHeight="680"
+        MinWidth="1040"
+        Background="{DynamicResource AppBackground}"
+        FontFamily="Bahnschrift">
+    <Window.Resources>
+        <LinearGradientBrush po:Freeze="False" x:Key="AppBackground" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#F7F2EA" Offset="0"/>
+            <GradientStop Color="#E6EDF6" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush po:Freeze="False" x:Key="HeroBrush" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#202B36" Offset="0"/>
+            <GradientStop Color="#2C3A48" Offset="1"/>
+        </LinearGradientBrush>
+
+        <SolidColorBrush po:Freeze="False" x:Key="SidebarBackground" Color="#0F1520"/>
+        <SolidColorBrush po:Freeze="False" x:Key="SidebarSurface" Color="#18222D"/>
+        <SolidColorBrush po:Freeze="False" x:Key="SidebarBorder" Color="#243245"/>
+        <SolidColorBrush po:Freeze="False" x:Key="SidebarText" Color="#E8EEF6"/>
+        <SolidColorBrush po:Freeze="False" x:Key="SidebarMuted" Color="#93A4B6"/>
+
+        <SolidColorBrush po:Freeze="False" x:Key="SurfaceCard" Color="#FFFFFF"/>
+        <SolidColorBrush po:Freeze="False" x:Key="SurfaceMuted" Color="#F6F1EA"/>
+        <SolidColorBrush po:Freeze="False" x:Key="SurfaceBorder" Color="#E5EAF0"/>
+        <SolidColorBrush po:Freeze="False" x:Key="TextPrimary" Color="#1C212B"/>
+        <SolidColorBrush po:Freeze="False" x:Key="TextSecondary" Color="#657281"/>
+
+        <SolidColorBrush po:Freeze="False" x:Key="InputBackground" Color="#101926"/>
+        <SolidColorBrush po:Freeze="False" x:Key="InputForeground" Color="#E8EEF6"/>
+        <SolidColorBrush po:Freeze="False" x:Key="InputBorder" Color="#253243"/>
+
+        <SolidColorBrush po:Freeze="False" x:Key="Accent" Color="#FF7A3D"/>
+        <SolidColorBrush po:Freeze="False" x:Key="AccentDark" Color="#D65F2E"/>
+        <SolidColorBrush po:Freeze="False" x:Key="AccentMuted" Color="#FFE2D0"/>
+        <SolidColorBrush po:Freeze="False" x:Key="ControlBorder" Color="#D7DEE8"/>
+        <SolidColorBrush po:Freeze="False" x:Key="ControlHoverBackground" Color="#FFF3EB"/>
+        <SolidColorBrush po:Freeze="False" x:Key="ControlHoverBorder" Color="#FFC8A8"/>
+        <SolidColorBrush po:Freeze="False" x:Key="ControlPressedBackground" Color="#FFE3D2"/>
+        <SolidColorBrush po:Freeze="False" x:Key="HeroCaption" Color="#C7D4E3"/>
+        <SolidColorBrush po:Freeze="False" x:Key="HeroTitle" Color="#FFFFFF"/>
+        <SolidColorBrush po:Freeze="False" x:Key="ContextPanelBackground" Color="#F2F5F9"/>
+        <SolidColorBrush po:Freeze="False" x:Key="ContextInnerBackground" Color="#FFFFFF"/>
+        <SolidColorBrush po:Freeze="False" x:Key="TaskCardBackground" Color="#FFFFFF"/>
+        <SolidColorBrush po:Freeze="False" x:Key="TaskCodeBackground" Color="#F7FAFF"/>
+        <SolidColorBrush po:Freeze="False" x:Key="TaskCardBorder" Color="#D8E1EE"/>
+        <SolidColorBrush po:Freeze="False" x:Key="TaskHintText" Color="#6C7787"/>
+        <SolidColorBrush po:Freeze="False" x:Key="StatusInfo" Color="#6B7C93"/>
+        <SolidColorBrush po:Freeze="False" x:Key="StatusWarning" Color="#B7792C"/>
+        <SolidColorBrush po:Freeze="False" x:Key="StatusSuccess" Color="#2D8A53"/>
+        <SolidColorBrush po:Freeze="False" x:Key="StatusError" Color="#BF4747"/>
+        <SolidColorBrush po:Freeze="False" x:Key="ShadowColor" Color="#1D2735"/>
+
+        <Style TargetType="Button">
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+            <Setter Property="Background" Value="{StaticResource SurfaceCard}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ControlBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="14,8"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="ButtonBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="12">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="{StaticResource ControlHoverBackground}"/>
+                                <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="{StaticResource ControlHoverBorder}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="{StaticResource ControlPressedBackground}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.55"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Background" Value="{StaticResource Accent}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource AccentDark}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="ButtonBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="12">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="#FF8E55"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="#E66A33"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.55"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="NavButtonStyle" TargetType="Button">
+            <Setter Property="Foreground" Value="{StaticResource SidebarText}"/>
+            <Setter Property="Background" Value="{StaticResource SidebarSurface}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource SidebarBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="14,10"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="12">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.55"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="StepperButtonStyle" TargetType="Button">
+            <Setter Property="Foreground" Value="{StaticResource SidebarText}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.55"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="{StaticResource InputBackground}"/>
+            <Setter Property="Foreground" Value="{StaticResource InputForeground}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource InputBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="10">
+                            <ScrollViewer x:Name="PART_ContentHost"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Background" Value="{StaticResource InputBackground}"/>
+            <Setter Property="Foreground" Value="{StaticResource InputForeground}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource InputBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="6,4"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+
+        <Style x:Key="AdminTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Background" Value="{StaticResource ContextInnerBackground}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ControlBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8">
+                            <ScrollViewer x:Name="PART_ContentHost"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="AdminComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Background" Value="{StaticResource ContextInnerBackground}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ControlBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="6,4"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+
+        <Style x:Key="AdminComboBoxItemStyle" TargetType="ComboBoxItem">
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+            <Setter Property="Background" Value="{StaticResource ContextInnerBackground}"/>
+        </Style>
+
+        <Style x:Key="AdminListBoxStyle" TargetType="ListBox">
+            <Setter Property="Background" Value="{StaticResource ContextInnerBackground}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ControlBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+
+        <Style x:Key="AdminListBoxItemStyle" TargetType="ListBoxItem">
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="6,4"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border x:Name="ItemBorder"
+                                Background="{TemplateBinding Background}"
+                                Padding="{TemplateBinding Padding}"
+                                CornerRadius="6">
+                            <ContentPresenter/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="ItemBorder" Property="Background" Value="{StaticResource AccentMuted}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ItemBorder" Property="Background" Value="{StaticResource ControlHoverBackground}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="ToggleButton">
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+            <Setter Property="Background" Value="{StaticResource SurfaceCard}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ControlBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border x:Name="ToggleBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ToggleBorder" Property="Background" Value="{StaticResource ControlHoverBackground}"/>
+                                <Setter TargetName="ToggleBorder" Property="BorderBrush" Value="{StaticResource ControlHoverBorder}"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="ToggleBorder" Property="Background" Value="{StaticResource Accent}"/>
+                                <Setter TargetName="ToggleBorder" Property="BorderBrush" Value="{StaticResource AccentDark}"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.55"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="RichTextBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="16"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="290"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Row="0"
+                Grid.ColumnSpan="2"
+                Background="Transparent"
+                Padding="24,14,24,10">
+            <DockPanel LastChildFill="False">
+                <StackPanel DockPanel.Dock="Left" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
+                               FontSize="19"
+                               FontWeight="SemiBold"
+                               Foreground="{StaticResource TextPrimary}"/>
+                    <TextBlock Text="Интерактивный курс с практикой"
+                               FontSize="12"
+                               Foreground="{StaticResource TextSecondary}"/>
+                </StackPanel>
+                <StackPanel DockPanel.Dock="Right"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center">
+                    <ToggleButton x:Name="ThemeToggle"
+                                  Content="Темная тема"
+                                  Margin="0,0,10,0"
+                                  Checked="ThemeToggle_Checked"
+                                  Unchecked="ThemeToggle_Unchecked"/>
+                    <ToggleButton x:Name="AdminToggle"
+                                  Content="Админ"
+                                  Margin="0,0,10,0"
+                                  Checked="AdminToggle_Checked"
+                                  Unchecked="AdminToggle_Unchecked"/>
+                    <Border Background="{StaticResource AccentMuted}"
+                            CornerRadius="12"
+                            Padding="10,4"
+                            Margin="0,0,10,0">
+                        <TextBlock Text="v2"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"
+                                   Foreground="{StaticResource AccentDark}"/>
+                    </Border>
+                    <Border Background="{StaticResource SurfaceCard}"
+                            CornerRadius="12"
+                            Padding="10,4"
+                            BorderBrush="{StaticResource SurfaceBorder}"
+                            BorderThickness="1">
+                        <TextBlock Text="Офлайн"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextSecondary}"/>
+                    </Border>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <Border Grid.Row="1"
+                Grid.Column="0"
+                Margin="24,0,16,24"
+                Background="{StaticResource SidebarBackground}"
+                CornerRadius="20">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="20"
+                                  ShadowDepth="6"
+                                  Opacity="0.22"
+                                  Color="Black"/>
+                </Border.Effect>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Margin="18,18,18,10">
+                    <TextBlock Text="Маршрут обучения"
+                               FontSize="14"
+                               FontWeight="SemiBold"
+                               Foreground="{StaticResource SidebarText}"/>
+                    <TextBlock Text="Главы и шаги"
+                               FontSize="12"
+                               Foreground="{StaticResource SidebarMuted}"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Margin="18,0,18,12">
+                    <TextBlock Text="Фильтр"
+                               FontSize="12"
+                               Foreground="{StaticResource SidebarMuted}"
+                               Margin="2,0,0,6"/>
+                    <TextBox Text="" />
+                </StackPanel>
+
+                <ScrollViewer Grid.Row="2"
+                              Margin="8,0,8,12"
+                              VerticalScrollBarVisibility="Auto"
+                              Background="Transparent">
+                    <StackPanel x:Name="ChaptersPanel"
+                                Orientation="Vertical"
+                                Margin="0"
+                                Background="Transparent"/>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1"
+              Grid.Column="1"
+              Margin="0,0,24,24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0"
+                    Background="{StaticResource HeroBrush}"
+                    CornerRadius="22"
+                    Padding="22"
+                    Margin="0,0,0,16">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="18"
+                                      ShadowDepth="6"
+                                      Opacity="0.18"
+                                      Color="Black"/>
+                </Border.Effect>
+                <Grid>
+                    <Canvas>
+                        <Ellipse Width="140" Height="140"
+                                 Canvas.Right="-40"
+                                 Canvas.Top="-30"
+                                 Fill="{StaticResource AccentMuted}"
+                                 Opacity="0.18"/>
+                        <Ellipse Width="90" Height="90"
+                                 Canvas.Right="40"
+                                 Canvas.Top="40"
+                                 Fill="{StaticResource AccentMuted}"
+                                 Opacity="0.12"/>
+                    </Canvas>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Margin="0,0,20,0">
+                            <TextBlock Text="Текущая тема"
+                                      FontSize="12"
+                                       Foreground="{StaticResource HeroCaption}"
+                                       Margin="0,0,0,6"/>
+                            <TextBlock x:Name="SectionTitleBlock"
+                                       FontSize="26"
+                                       FontWeight="SemiBold"
+                                       Foreground="{StaticResource HeroTitle}"
+                                       TextWrapping="Wrap"/>
+                            <TextBlock Text="Материал и практика"
+                                       FontSize="12"
+                                       Foreground="{StaticResource HeroCaption}"
+                                       Margin="0,8,0,0"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center">
+                            <TextBlock Text="Навигация"
+                                       FontSize="12"
+                                       Foreground="{StaticResource HeroCaption}"
+                                       Margin="0,0,0,6"
+                                       HorizontalAlignment="Right"/>
+                            <WrapPanel x:Name="PageStepperPanel"
+                                       HorizontalAlignment="Right"/>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <Border x:Name="ContentCard"
+                    Grid.Row="1"
+                    Background="{StaticResource SurfaceCard}"
+                    CornerRadius="22"
+                    Opacity="0">
+                <Border.RenderTransform>
+                    <TranslateTransform Y="10"/>
+                </Border.RenderTransform>
+                <Border.Triggers>
+                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                 To="1"
+                                                 Duration="0:0:0.35"/>
+                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                                                 To="0"
+                                                 Duration="0:0:0.35"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Border.Triggers>
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="16"
+                                      ShadowDepth="6"
+                                      Opacity="0.12"
+                                      Color="Black"/>
+                </Border.Effect>
+                <Grid Margin="20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="280"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Row="0"
+                            Grid.Column="0"
+                            Background="{StaticResource SurfaceMuted}"
+                            CornerRadius="16"
+                            Padding="12"
+                            Margin="0,0,16,0">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock x:Name="PageTitleBlock"
+                                       Grid.Row="0"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"
+                                       Foreground="{StaticResource TextPrimary}"
+                                       Margin="4,0,0,12"
+                                       TextWrapping="Wrap"/>
+                            <Grid Grid.Row="1">
+                                <RichTextBox x:Name="myRichBox"
+                                             IsReadOnly="True"
+                                             VerticalScrollBarVisibility="Auto"/>
+                                <ScrollViewer x:Name="TasksScrollViewer"
+                                              Margin="0"
+                                              VerticalScrollBarVisibility="Auto"
+                                              HorizontalScrollBarVisibility="Disabled"
+                                              Visibility="Collapsed">
+                                    <StackPanel x:Name="TasksPanel"
+                                                Margin="8"/>
+                                </ScrollViewer>
+                            </Grid>
+                        </Grid>
+                    </Border>
+
+                    <Grid Grid.Row="0"
+                          Grid.Column="1">
+                        <Border x:Name="ContextPanel"
+                                Background="{StaticResource ContextPanelBackground}"
+                                CornerRadius="16"
+                                Padding="16">
+                            <StackPanel>
+                                <TextBlock Text="Контекст"
+                                           FontSize="13"
+                                           FontWeight="SemiBold"
+                                           Foreground="{StaticResource TextPrimary}"/>
+                                <TextBlock Text="Подсказки и ресурсы будут появляться здесь."
+                                           FontSize="12"
+                                           Foreground="{StaticResource TextSecondary}"
+                                           Margin="0,6,0,12"
+                                           TextWrapping="Wrap"/>
+                                <Border Background="{StaticResource ContextInnerBackground}"
+                                        CornerRadius="12"
+                                        Padding="12"
+                                        BorderBrush="{StaticResource ControlBorder}"
+                                        BorderThickness="1">
+                                    <StackPanel>
+                                        <TextBlock Text="Совет"
+                                                   FontSize="12"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{StaticResource TextPrimary}"/>
+                                        <TextBlock Text="Используйте панель слева, чтобы быстро переключаться между шагами."
+                                                   FontSize="12"
+                                                   Foreground="{StaticResource TextSecondary}"
+                                                   TextWrapping="Wrap"
+                                                   Margin="0,6,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </Border>
+
+                        <Border x:Name="AdminPanel"
+                                Background="{StaticResource SurfaceMuted}"
+                                CornerRadius="16"
+                                Padding="12"
+                                Visibility="Collapsed">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel>
+                                    <TextBlock Text="Администрирование"
+                                               FontSize="14"
+                                               FontWeight="SemiBold"
+                                               Foreground="{StaticResource TextPrimary}"/>
+                                    <TextBlock Text="Добавление и редактирование контента"
+                                               FontSize="11"
+                                               Foreground="{StaticResource TextSecondary}"
+                                               Margin="0,2,0,10"/>
+
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                        <Button x:Name="AdminSaveButton"
+                                                Content="Сохранить"
+                                                Click="AdminSave_Click"
+                                                Margin="0,0,8,0"/>
+                                        <Button x:Name="AdminReloadButton"
+                                                Content="Перезагрузить"
+                                                Click="AdminReload_Click"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                        <Button x:Name="AdminUndoButton"
+                                                Content="Отмена"
+                                                Click="AdminUndo_Click"
+                                                Margin="0,0,8,0"/>
+                                        <Button x:Name="AdminRedoButton"
+                                                Content="Повтор"
+                                                Click="AdminRedo_Click"/>
+                                    </StackPanel>
+                                    <TextBlock Text="История изменений"
+                                               FontSize="11"
+                                               Foreground="{StaticResource TextSecondary}"
+                                               Margin="0,0,0,4"/>
+                                    <ListBox x:Name="AdminHistoryList"
+                                             Style="{StaticResource AdminListBoxStyle}"
+                                             Height="90"/>
+
+                                    <TextBlock Text="Глава" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource TextPrimary}"/>
+                                    <ComboBox x:Name="AdminChapterCombo"
+                                              Style="{StaticResource AdminComboBoxStyle}"
+                                              ItemContainerStyle="{StaticResource AdminComboBoxItemStyle}"
+                                              DisplayMemberPath="Title"
+                                              SelectionChanged="AdminChapterCombo_SelectionChanged"/>
+                                    <TextBox x:Name="AdminChapterTitle"
+                                             Margin="0,6,0,0"
+                                             Style="{StaticResource AdminTextBoxStyle}"
+                                             ToolTip="Название главы"/>
+                                    <StackPanel Orientation="Horizontal" Margin="0,6,0,10">
+                                        <Button x:Name="AdminChapterAddButton"
+                                                Content="Добавить"
+                                                Click="AdminChapterAdd_Click"
+                                                Margin="0,0,6,0"/>
+                                        <Button x:Name="AdminChapterDeleteButton"
+                                                Content="Удалить"
+                                                Click="AdminChapterDelete_Click"
+                                                Margin="0,0,6,0"/>
+                                        <Button x:Name="AdminChapterApplyButton"
+                                                Content="Применить"
+                                                Click="AdminChapterApply_Click"/>
+                                    </StackPanel>
+
+                                    <TextBlock Text="Раздел" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource TextPrimary}"/>
+                                    <ComboBox x:Name="AdminSectionCombo"
+                                              Style="{StaticResource AdminComboBoxStyle}"
+                                              ItemContainerStyle="{StaticResource AdminComboBoxItemStyle}"
+                                              DisplayMemberPath="Title"
+                                              SelectionChanged="AdminSectionCombo_SelectionChanged"/>
+                                    <TextBox x:Name="AdminSectionTitle"
+                                             Margin="0,6,0,0"
+                                             Style="{StaticResource AdminTextBoxStyle}"
+                                             ToolTip="Название раздела"/>
+                                    <StackPanel Orientation="Horizontal" Margin="0,6,0,10">
+                                        <Button x:Name="AdminSectionAddButton"
+                                                Content="Добавить"
+                                                Click="AdminSectionAdd_Click"
+                                                Margin="0,0,6,0"/>
+                                        <Button x:Name="AdminSectionDeleteButton"
+                                                Content="Удалить"
+                                                Click="AdminSectionDelete_Click"
+                                                Margin="0,0,6,0"/>
+                                        <Button x:Name="AdminSectionApplyButton"
+                                                Content="Применить"
+                                                Click="AdminSectionApply_Click"/>
+                                    </StackPanel>
+
+                                    <TextBlock Text="Страницы" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource TextPrimary}"/>
+                                    <ListBox x:Name="AdminPageList"
+                                             Height="110"
+                                             Style="{StaticResource AdminListBoxStyle}"
+                                             ItemContainerStyle="{StaticResource AdminListBoxItemStyle}"
+                                             DisplayMemberPath="Title"
+                                             SelectionChanged="AdminPageList_SelectionChanged"
+                                             AllowDrop="True"
+                                             PreviewMouseLeftButtonDown="AdminList_PreviewMouseLeftButtonDown"
+                                             PreviewMouseMove="AdminPageList_PreviewMouseMove"
+                                             DragOver="AdminList_DragOver"
+                                             Drop="AdminPageList_Drop"/>
+                                    <StackPanel Orientation="Horizontal" Margin="0,6,0,10">
+                                        <Button x:Name="AdminPageAddButton"
+                                                Content="Добавить"
+                                                Click="AdminPageAdd_Click"
+                                                Margin="0,0,6,0"/>
+                                        <Button x:Name="AdminPageDeleteButton"
+                                                Content="Удалить"
+                                                Click="AdminPageDelete_Click"
+                                                Margin="0,0,6,0"/>
+                                        <Button x:Name="AdminPageUpButton"
+                                                Content="↑"
+                                                Click="AdminPageMoveUp_Click"
+                                                Margin="0,0,6,0"/>
+                                        <Button x:Name="AdminPageDownButton"
+                                                Content="↓"
+                                                Click="AdminPageMoveDown_Click"/>
+                                    </StackPanel>
+
+                                    <TextBlock Text="Параметры страницы"
+                                               FontSize="12"
+                                               FontWeight="SemiBold"
+                                               Foreground="{StaticResource TextPrimary}"/>
+                                    <TextBox x:Name="AdminPageTitle"
+                                             Margin="0,6,0,0"
+                                             Style="{StaticResource AdminTextBoxStyle}"
+                                             ToolTip="Заголовок страницы"/>
+                                    <ComboBox x:Name="AdminPageKind"
+                                              Margin="0,6,0,0"
+                                              Style="{StaticResource AdminComboBoxStyle}"
+                                              ItemContainerStyle="{StaticResource AdminComboBoxItemStyle}">
+                                        <ComboBoxItem Content="Теория" Tag="reading"/>
+                                        <ComboBoxItem Content="Тест" Tag="quiz"/>
+                                        <ComboBoxItem Content="Код" Tag="code"/>
+                                        <ComboBoxItem Content="Оценка" Tag="assessment"/>
+                                        <ComboBoxItem Content="Практика" Tag="tasks"/>
+                                    </ComboBox>
+                                    <TextBox x:Name="AdminPageTime"
+                                             Margin="0,6,0,0"
+                                             Style="{StaticResource AdminTextBoxStyle}"
+                                             ToolTip="Время (мин)"/>
+                                    <ComboBox x:Name="AdminPageContentFormat"
+                                              Margin="0,6,0,0"
+                                              Style="{StaticResource AdminComboBoxStyle}"
+                                              ItemContainerStyle="{StaticResource AdminComboBoxItemStyle}">
+                                        <ComboBoxItem Content="Текст" Tag="richText"/>
+                                        <ComboBoxItem Content="Нет" Tag="none"/>
+                                    </ComboBox>
+                                    <TextBox x:Name="AdminPageContentSource"
+                                             Margin="0,6,0,0"
+                                             Style="{StaticResource AdminTextBoxStyle}"
+                                             ToolTip="Путь к файлу контента"/>
+
+                                    <TextBlock Text="Задания"
+                                               FontSize="12"
+                                               FontWeight="SemiBold"
+                                               Foreground="{StaticResource TextPrimary}"
+                                               Margin="0,10,0,4"/>
+                                    <ListBox x:Name="AdminTaskList"
+                                             Height="110"
+                                             Style="{StaticResource AdminListBoxStyle}"
+                                             ItemContainerStyle="{StaticResource AdminListBoxItemStyle}"
+                                             DisplayMemberPath="Title"
+                                             SelectionChanged="AdminTaskList_SelectionChanged"
+                                             AllowDrop="True"
+                                             PreviewMouseLeftButtonDown="AdminList_PreviewMouseLeftButtonDown"
+                                             PreviewMouseMove="AdminTaskList_PreviewMouseMove"
+                                             DragOver="AdminList_DragOver"
+                                             Drop="AdminTaskList_Drop"/>
+                                    <StackPanel Orientation="Horizontal" Margin="0,6,0,10">
+                                        <Button Content="+ Тест"
+                                                Click="AdminTaskAddQuiz_Click"
+                                                Margin="0,0,6,0"/>
+                                        <Button Content="+ Код"
+                                                Click="AdminTaskAddCode_Click"
+                                                Margin="0,0,6,0"/>
+                                        <Button Content="Удалить"
+                                                Click="AdminTaskDelete_Click"
+                                                Margin="0,0,6,0"/>
+                                        <Button Content="↑"
+                                                Click="AdminTaskMoveUp_Click"
+                                                Margin="0,0,6,0"/>
+                                        <Button Content="↓"
+                                                Click="AdminTaskMoveDown_Click"/>
+                                    </StackPanel>
+
+                                    <TextBlock Text="Параметры задания"
+                                               FontSize="12"
+                                               FontWeight="SemiBold"
+                                               Foreground="{StaticResource TextPrimary}"
+                                               Margin="0,0,0,4"/>
+                                    <ComboBox x:Name="AdminTaskType"
+                                              Style="{StaticResource AdminComboBoxStyle}"
+                                              ItemContainerStyle="{StaticResource AdminComboBoxItemStyle}"
+                                              SelectionChanged="AdminTaskType_SelectionChanged">
+                                        <ComboBoxItem Content="Тест" Tag="quiz"/>
+                                        <ComboBoxItem Content="Код" Tag="code"/>
+                                    </ComboBox>
+                                    <TextBox x:Name="AdminTaskTitle"
+                                             Margin="0,6,0,0"
+                                             Style="{StaticResource AdminTextBoxStyle}"
+                                             ToolTip="Название задания"/>
+                                    <TextBox x:Name="AdminTaskPoints"
+                                             Margin="0,6,0,0"
+                                             Style="{StaticResource AdminTextBoxStyle}"
+                                             ToolTip="Баллы"/>
+                                    <CheckBox x:Name="AdminTaskPartial"
+                                              Content="Частичный зачёт"
+                                              Margin="0,6,0,0"/>
+                                    <TextBlock Text="Подсказки (каждая с новой строки)"
+                                               FontSize="11"
+                                               Foreground="{StaticResource TextSecondary}"
+                                               Margin="0,6,0,4"/>
+                                    <TextBox x:Name="AdminTaskHints"
+                                             AcceptsReturn="True"
+                                             TextWrapping="Wrap"
+                                             Style="{StaticResource AdminTextBoxStyle}"
+                                             Height="70"/>
+
+                                    <StackPanel x:Name="AdminQuizPanel" Margin="0,10,0,0">
+                                        <TextBlock Text="Тест"
+                                                   FontSize="12"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{StaticResource TextPrimary}"/>
+                                        <TextBox x:Name="AdminQuizQuestion"
+                                                 Margin="0,6,0,0"
+                                                 Style="{StaticResource AdminTextBoxStyle}"
+                                                 ToolTip="Вопрос"/>
+                                        <ComboBox x:Name="AdminQuizSelection"
+                                                  Margin="0,6,0,0"
+                                                  Style="{StaticResource AdminComboBoxStyle}"
+                                                  ItemContainerStyle="{StaticResource AdminComboBoxItemStyle}">
+                                            <ComboBoxItem Content="Один вариант" Tag="single"/>
+                                            <ComboBoxItem Content="Несколько вариантов" Tag="multiple"/>
+                                        </ComboBox>
+
+                                        <TextBlock Text="Варианты ответа"
+                                                   FontSize="11"
+                                                   Foreground="{StaticResource TextSecondary}"
+                                                   Margin="0,8,0,4"/>
+                                        <ListBox x:Name="AdminOptionList"
+                                                 Height="90"
+                                                 Style="{StaticResource AdminListBoxStyle}"
+                                                 ItemContainerStyle="{StaticResource AdminListBoxItemStyle}"
+                                                 DisplayMemberPath="Text"
+                                                 SelectionChanged="AdminOptionList_SelectionChanged"/>
+                                        <StackPanel Orientation="Horizontal" Margin="0,6,0,6">
+                                            <Button Content="+"
+                                                    Click="AdminOptionAdd_Click"
+                                                    Margin="0,0,6,0"/>
+                                            <Button Content="Удалить"
+                                                    Click="AdminOptionDelete_Click"/>
+                                        </StackPanel>
+                                        <TextBox x:Name="AdminOptionText"
+                                                 Margin="0,0,0,0"
+                                                 Style="{StaticResource AdminTextBoxStyle}"
+                                                 ToolTip="Текст варианта"/>
+                                        <CheckBox x:Name="AdminOptionIsCorrect"
+                                                  Content="Правильный"
+                                                  Margin="0,6,0,0"/>
+                                        <TextBox x:Name="AdminOptionFeedback"
+                                                 Margin="0,6,0,0"
+                                                 Style="{StaticResource AdminTextBoxStyle}"
+                                                 ToolTip="Обратная связь"/>
+                                        <Button x:Name="AdminOptionApplyButton"
+                                                Content="Применить вариант"
+                                                Click="AdminOptionApply_Click"
+                                                Margin="0,8,0,0"/>
+                                    </StackPanel>
+
+                                    <StackPanel x:Name="AdminCodePanel" Margin="0,10,0,0">
+                                        <TextBlock Text="Код"
+                                                   FontSize="12"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{StaticResource TextPrimary}"/>
+                                        <TextBox x:Name="AdminCodePrompt"
+                                                 Margin="0,6,0,0"
+                                                 Style="{StaticResource AdminTextBoxStyle}"
+                                                 ToolTip="Описание задания"
+                                                 AcceptsReturn="True"
+                                                 TextWrapping="Wrap"
+                                                 Height="70"/>
+                                        <TextBox x:Name="AdminCodeStarter"
+                                                 Margin="0,6,0,0"
+                                                 Style="{StaticResource AdminTextBoxStyle}"
+                                                 ToolTip="Стартовый код"
+                                                 AcceptsReturn="True"
+                                                 TextWrapping="Wrap"
+                                                 FontFamily="Consolas"
+                                                 Height="90"/>
+                                        <TextBlock Text="Точка входа"
+                                                   FontSize="11"
+                                                   Foreground="{StaticResource TextSecondary}"
+                                                   Margin="0,8,0,4"/>
+                                        <TextBox x:Name="AdminCodeClass"
+                                                 Style="{StaticResource AdminTextBoxStyle}"
+                                                 ToolTip="Класс"/>
+                                        <TextBox x:Name="AdminCodeMethod"
+                                                 Margin="0,6,0,0"
+                                                 Style="{StaticResource AdminTextBoxStyle}"
+                                                 ToolTip="Метод"/>
+                                        <TextBox x:Name="AdminCodeSignature"
+                                                 Margin="0,6,0,0"
+                                                 Style="{StaticResource AdminTextBoxStyle}"
+                                                 ToolTip="Сигнатура"/>
+
+                                        <TextBlock Text="Тесты"
+                                                   FontSize="11"
+                                                   Foreground="{StaticResource TextSecondary}"
+                                                   Margin="0,8,0,4"/>
+                                        <ListBox x:Name="AdminTestList"
+                                                 Height="90"
+                                                 Style="{StaticResource AdminListBoxStyle}"
+                                                 ItemContainerStyle="{StaticResource AdminListBoxItemStyle}"
+                                                 DisplayMemberPath="Id"
+                                                 SelectionChanged="AdminTestList_SelectionChanged"/>
+                                        <StackPanel Orientation="Horizontal" Margin="0,6,0,6">
+                                            <Button Content="+"
+                                                    Click="AdminTestAdd_Click"
+                                                    Margin="0,0,6,0"/>
+                                            <Button Content="Удалить"
+                                                    Click="AdminTestDelete_Click"/>
+                                        </StackPanel>
+                                        <TextBox x:Name="AdminTestId"
+                                                 Style="{StaticResource AdminTextBoxStyle}"
+                                                 ToolTip="ID теста"/>
+                                        <ComboBox x:Name="AdminTestVisibility"
+                                                  Margin="0,6,0,0"
+                                                  Style="{StaticResource AdminComboBoxStyle}"
+                                                  ItemContainerStyle="{StaticResource AdminComboBoxItemStyle}">
+                                            <ComboBoxItem Content="Публичный" Tag="public"/>
+                                            <ComboBoxItem Content="Скрытый" Tag="hidden"/>
+                                        </ComboBox>
+                                        <TextBox x:Name="AdminTestInput"
+                                                 Margin="0,6,0,0"
+                                                 Style="{StaticResource AdminTextBoxStyle}"
+                                                 ToolTip="Входные данные"
+                                                 AcceptsReturn="True"
+                                                 TextWrapping="Wrap"
+                                                 Height="60"/>
+                                        <TextBox x:Name="AdminTestExpected"
+                                                 Margin="0,6,0,0"
+                                                 Style="{StaticResource AdminTextBoxStyle}"
+                                                 ToolTip="Ожидаемый вывод"
+                                                 AcceptsReturn="True"
+                                                 TextWrapping="Wrap"
+                                                 Height="60"/>
+                                        <TextBox x:Name="AdminTestExplanation"
+                                                 Margin="0,6,0,0"
+                                                 Style="{StaticResource AdminTextBoxStyle}"
+                                                 ToolTip="Пояснение"
+                                                 AcceptsReturn="True"
+                                                 TextWrapping="Wrap"
+                                                 Height="60"/>
+                                        <Button x:Name="AdminTestApplyButton"
+                                                Content="Применить тест"
+                                                Click="AdminTestApply_Click"
+                                                Margin="0,8,0,0"/>
+                                    </StackPanel>
+
+                                    <Button x:Name="AdminTaskApplyButton"
+                                            Content="Применить задание"
+                                            Click="AdminTaskApply_Click"
+                                            Margin="0,10,0,0"/>
+
+                                    <TextBlock Text="Ресурсы"
+                                               FontSize="11"
+                                               Foreground="{StaticResource TextSecondary}"
+                                               Margin="0,8,0,4"/>
+                                    <ListBox x:Name="AdminResourceList"
+                                             Margin="0,0,0,6"
+                                             Style="{StaticResource AdminListBoxStyle}"
+                                             ItemContainerStyle="{StaticResource AdminListBoxItemStyle}"
+                                             DisplayMemberPath="Title"
+                                             SelectionChanged="AdminResourceList_SelectionChanged"/>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                        <Button Content="+ Ресурс"
+                                                Click="AdminResourceAdd_Click"
+                                                Margin="0,0,6,0"/>
+                                        <Button Content="Удалить"
+                                                Click="AdminResourceDelete_Click"/>
+                                    </StackPanel>
+                                    <ComboBox x:Name="AdminResourceType"
+                                              Style="{StaticResource AdminComboBoxStyle}"
+                                              ItemContainerStyle="{StaticResource AdminComboBoxItemStyle}"
+                                              IsEditable="True"
+                                              Margin="0,0,0,6">
+                                        <ComboBoxItem Content="Внешняя ссылка" Tag="externalLink"/>
+                                        <ComboBoxItem Content="Видео" Tag="video"/>
+                                        <ComboBoxItem Content="Статья" Tag="article"/>
+                                        <ComboBoxItem Content="Документация" Tag="docs"/>
+                                        <ComboBoxItem Content="Другое" Tag="other"/>
+                                    </ComboBox>
+                                    <TextBox x:Name="AdminResourceTitle"
+                                             Margin="0,0,0,6"
+                                             Style="{StaticResource AdminTextBoxStyle}"
+                                             ToolTip="Название ресурса"/>
+                                    <TextBox x:Name="AdminResourceUrl"
+                                             Margin="0,0,0,6"
+                                             Style="{StaticResource AdminTextBoxStyle}"
+                                             ToolTip="URL ресурса"/>
+                                    <Button x:Name="AdminResourceApplyButton"
+                                            Content="Применить ресурс"
+                                            Click="AdminResourceApply_Click"
+                                            Margin="0,0,0,4"/>
+
+                                    <Button x:Name="AdminPageApplyButton"
+                                            Content="Применить страницу"
+                                            Click="AdminPageApply_Click"
+                                            Margin="0,10,0,0"/>
+
+                                    <TextBlock x:Name="AdminStatusText"
+                                               FontSize="11"
+                                               Foreground="{StaticResource TextSecondary}"
+                                               Margin="0,6,0,0"
+                                               TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </Border>
+                    </Grid>
+
+                    <Border Grid.Row="1"
+                            Grid.ColumnSpan="2"
+                            Background="Transparent"
+                            Margin="0,16,0,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button x:Name="backButton"
+                                    Grid.Column="0"
+                                    Click="Page_Back">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="←" Margin="0,0,6,0"/>
+                                    <TextBlock Text="Назад"/>
+                                </StackPanel>
+                            </Button>
+
+                            <Button x:Name="nextButton"
+                                    Grid.Column="2"
+                                    Style="{StaticResource PrimaryButtonStyle}"
+                                    Click="Page_Next">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Далее" Margin="0,0,6,0"/>
+                                    <TextBlock Text="→"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>
