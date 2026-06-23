@@ -11,7 +11,7 @@ namespace kursach.ViewModels;
 public sealed record CourseLoadState(
     bool Success,
     string? ErrorMessage,
-    IReadOnlyList<ContentIssue> Issues,
+    IList<ContentIssue> Issues,
     int ErrorCount,
     int WarningCount);
 
@@ -27,15 +27,15 @@ public sealed class MainWindowViewModel
     }
 
     public CourseContentModel? Course { get; private set; }
-    public IReadOnlyList<ChapterModel> Chapters { get; private set; } = Array.Empty<ChapterModel>();
+    public IList<ChapterModel> Chapters { get; private set; } = new ChapterModel[0];
     public CourseNavigator? Navigator { get; private set; }
     public string? CourseTitle => Course?.Title;
 
-    public IReadOnlyList<SectionModel> CurrentSections =>
-        Navigator?.CurrentChapterSections ?? Array.Empty<SectionModel>();
+    public IList<SectionModel> CurrentSections =>
+        Navigator?.CurrentChapterSections ?? new SectionModel[0];
 
-    public IReadOnlyList<PageModel> CurrentPages =>
-        Navigator?.CurrentSectionPages ?? Array.Empty<PageModel>();
+    public IList<PageModel> CurrentPages =>
+        Navigator?.CurrentSectionPages ?? new PageModel[0];
 
     public int CurrentPageIndex => Navigator?.CurrentPageIndex ?? -1;
     public ChapterModel? CurrentChapter => Navigator?.CurrentChapter;
@@ -47,7 +47,7 @@ public sealed class MainWindowViewModel
         var loadResult = _contentLoader.Load(contentPath);
         if (!loadResult.Success)
         {
-            return new CourseLoadState(false, loadResult.Message, Array.Empty<ContentIssue>(), 0, 0);
+            return new CourseLoadState(false, loadResult.Message, new ContentIssue[0], 0, 0);
         }
 
         var course = loadResult.Course!;
@@ -148,7 +148,9 @@ public sealed class MainWindowViewModel
             return false;
         }
 
-        var index = Math.Clamp(pageIndex, 0, section.OrderedPages.Count - 1);
+        var index = Compatibility.Clamp(pageIndex, 0, section.OrderedPages.Count - 1);
         return NavigateToPage(chapter.Id, section.Id, index).Success;
     }
 }
+
+

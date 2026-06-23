@@ -13,7 +13,7 @@ public sealed record ContentIssue(ContentIssueSeverity Severity, string Message)
 
 public sealed class ContentValidator
 {
-    public IReadOnlyList<ContentIssue> Validate(CourseContent course, string assetsRoot)
+    public IList<ContentIssue> Validate(CourseContent course, string assetsRoot)
     {
         var issues = new List<ContentIssue>();
 
@@ -104,3 +104,4 @@ public sealed class ContentValidator
         return issues;
     }
 }
+

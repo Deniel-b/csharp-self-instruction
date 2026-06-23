@@ -1,3 +1,4 @@
+#if !NET40
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -830,3 +831,4 @@ public sealed record CodeRunResult(bool Success, string Summary, IReadOnlyList<T
 }
 
 public sealed record TestRunResult(string TestId, bool Passed, string? Message, string? Input, string? Output, string? Expected, string Visibility);
+#endif

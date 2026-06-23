@@ -574,7 +574,7 @@ public partial class MainWindow : Window
         var tasks = page.Tasks ?? new List<LearningTaskModel>();
         if (tasks.Count == 0)
         {
-            RenderTasks(Array.Empty<LearningTaskModel>(), showPlaceholder: true);
+            RenderTasks(new LearningTaskModel[0], showPlaceholder: true);
         }
         else
         {
@@ -614,7 +614,7 @@ public partial class MainWindow : Window
         return page.IsTaskPage ? PageDisplayMode.Tasks : PageDisplayMode.Reading;
     }
 
-    private void RenderTasks(IReadOnlyList<LearningTaskModel>? tasks, bool showPlaceholder = false)
+    private void RenderTasks(IList<LearningTaskModel>? tasks, bool showPlaceholder = false)
     {
         TasksPanel.Children.Clear();
 
@@ -1054,7 +1054,7 @@ public partial class MainWindow : Window
         context.FeedbackBlock.Foreground = ResolveBrush("StatusInfo", Brushes.Gray);
     }
 
-    private async void RunCodeTask_Click(object sender, RoutedEventArgs e)
+    private void RunCodeTask_Click(object sender, RoutedEventArgs e)
     {
         if (sender is not Button button || button.Tag is not CodeTaskContext context)
         {
@@ -1068,15 +1068,37 @@ public partial class MainWindow : Window
         var code = context.CodeEditor.Text ?? string.Empty;
         var task = context.Task;
         var tests = task.Tests ?? new List<TaskTestCaseModel>();
-        var result = await _codeTaskRunner.RunAsync(code, task.EntryPoint, task.Constraints, tests);
+        _codeTaskRunner.RunAsync(code, task.EntryPoint, task.Constraints, tests)
+            .ContinueWith(runTask =>
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    try
+                    {
+                        if (runTask.IsFaulted)
+                        {
+                            var error = runTask.Exception != null && runTask.Exception.InnerException != null
+                                ? runTask.Exception.InnerException.Message
+                                : "Неизвестная ошибка.";
+                            context.FeedbackBlock.Text = "Ошибка запуска: " + error;
+                            context.FeedbackBlock.Foreground = ResolveBrush("StatusError", Brushes.Firebrick);
+                            return;
+                        }
 
-        context.FeedbackBlock.Text = string.IsNullOrWhiteSpace(result.Summary)
-            ? (result.Success ? "Все тесты пройдены." : "Тесты не пройдены.")
-            : result.Summary;
-        context.FeedbackBlock.Foreground = result.Success
-            ? ResolveBrush("StatusSuccess", Brushes.ForestGreen)
-            : ResolveBrush("StatusError", Brushes.Firebrick);
-        button.IsEnabled = true;
+                        var result = runTask.Result;
+                        context.FeedbackBlock.Text = string.IsNullOrWhiteSpace(result.Summary)
+                            ? (result.Success ? "Все тесты пройдены." : "Тесты не пройдены.")
+                            : result.Summary;
+                        context.FeedbackBlock.Foreground = result.Success
+                            ? ResolveBrush("StatusSuccess", Brushes.ForestGreen)
+                            : ResolveBrush("StatusError", Brushes.Firebrick);
+                    }
+                    finally
+                    {
+                        button.IsEnabled = true;
+                    }
+                }));
+            });
     }
 
     private void ResetCodeTask_Click(object sender, RoutedEventArgs e)
@@ -1091,7 +1113,7 @@ public partial class MainWindow : Window
         context.FeedbackBlock.Foreground = ResolveBrush("StatusInfo", Brushes.Gray);
     }
 
-    private void UpdateNavigationButtons(IReadOnlyList<PageModel>? pages = null)
+    private void UpdateNavigationButtons(IList<PageModel>? pages = null)
     {
         if (_viewModel.Navigator is null || pages is null || pages.Count == 0)
         {
@@ -1579,7 +1601,7 @@ public partial class MainWindow : Window
         RefreshAdminPageList();
         if (_adminSection.Pages.Count > 0)
         {
-            AdminPageList.SelectedIndex = Math.Clamp(index, 0, _adminSection.Pages.Count - 1);
+            AdminPageList.SelectedIndex = Compatibility.Clamp(index, 0, _adminSection.Pages.Count - 1);
         }
         RefreshNavigationAfterEdit(CurrentChapter?.Id, _adminSection.Id, AdminPageList.SelectedIndex);
         ShowAdminStatus("Страница удалена.");
@@ -1727,7 +1749,7 @@ public partial class MainWindow : Window
         RefreshAdminTaskList();
         if (_adminPage.Tasks.Count > 0)
         {
-            AdminTaskList.SelectedIndex = Math.Clamp(index, 0, _adminPage.Tasks.Count - 1);
+            AdminTaskList.SelectedIndex = Compatibility.Clamp(index, 0, _adminPage.Tasks.Count - 1);
         }
 
         ShowAdminStatus("Задание удалено.");
@@ -1848,7 +1870,7 @@ public partial class MainWindow : Window
         AdminOptionList.ItemsSource = _adminTask.Options;
         if (_adminTask.Options.Count > 0)
         {
-            AdminOptionList.SelectedIndex = Math.Clamp(index, 0, _adminTask.Options.Count - 1);
+            AdminOptionList.SelectedIndex = Compatibility.Clamp(index, 0, _adminTask.Options.Count - 1);
         }
         UpdateAdminOptionSelection();
         RecordHistory("Вариант удален");
@@ -1906,7 +1928,7 @@ public partial class MainWindow : Window
         AdminTestList.ItemsSource = _adminTask.Tests;
         if (_adminTask.Tests.Count > 0)
         {
-            AdminTestList.SelectedIndex = Math.Clamp(index, 0, _adminTask.Tests.Count - 1);
+            AdminTestList.SelectedIndex = Compatibility.Clamp(index, 0, _adminTask.Tests.Count - 1);
         }
         UpdateAdminTestSelection();
         RecordHistory("Тест удален");
@@ -2415,7 +2437,7 @@ private sealed class SectionButtonInfo
 
     private sealed class QuizTaskContext
     {
-        public QuizTaskContext(LearningTaskModel task, IReadOnlyList<ToggleButton> optionButtons, TextBlock feedbackBlock)
+        public QuizTaskContext(LearningTaskModel task, IList<ToggleButton> optionButtons, TextBlock feedbackBlock)
         {
             Task = task;
             OptionButtons = optionButtons;
@@ -2423,7 +2445,7 @@ private sealed class SectionButtonInfo
         }
 
         public LearningTaskModel Task { get; }
-        public IReadOnlyList<ToggleButton> OptionButtons { get; }
+        public IList<ToggleButton> OptionButtons { get; }
         public TextBlock FeedbackBlock { get; }
     }
 
@@ -2443,5 +2465,7 @@ private sealed class SectionButtonInfo
         public string StarterCode { get; }
     }
 }
+
+
 
 

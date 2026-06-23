@@ -11,8 +11,8 @@ public partial class MainWindow
 {
     private readonly MainWindowViewModel _viewModel = new();
 
-    private IReadOnlyList<SectionModel> CurrentSections => _viewModel.CurrentSections;
-    private IReadOnlyList<PageModel> CurrentPages => _viewModel.CurrentPages;
+    private IList<SectionModel> CurrentSections => _viewModel.CurrentSections;
+    private IList<PageModel> CurrentPages => _viewModel.CurrentPages;
     private int CurrentPageIndex => _viewModel.CurrentPageIndex;
     private ChapterModel? CurrentChapter => _viewModel.CurrentChapter;
     private SectionModel? CurrentSection => _viewModel.CurrentSection;
@@ -165,3 +165,4 @@ public partial class MainWindow
         return _viewModel.TryNavigateTo(chapterId, sectionId, pageIndex);
     }
 }
+
