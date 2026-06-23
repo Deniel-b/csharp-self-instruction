@@ -28,8 +28,6 @@ namespace kursach;
 
 public partial class MainWindow : Window
 {
-    private const string ContentPath = "src/content.v2.json";
-    private const string AssetsRoot = "src";
     private static readonly Thickness TaskContainerMargin = new(0, 0, 0, 15);
     private static readonly Thickness OptionMargin = new(0, 6, 0, 0);
     private SolidColorBrush _pageButtonForeground = new(Color.FromRgb(0xD6, 0xE0, 0xEC));
@@ -527,8 +525,7 @@ public partial class MainWindow : Window
             return;
         }
 
-        var relativePath = page.Content.Source.Replace('/', Path.DirectorySeparatorChar);
-        var filePath = Path.Combine(AssetsRoot, relativePath);
+        var filePath = RuntimePaths.ResolveContentAssetPath(page.Content.Source);
         Trace.WriteLine($"Загрузка страницы: {filePath}");
 
         try
@@ -2349,12 +2346,12 @@ public partial class MainWindow : Window
     }
     private static string ResolveContentPath()
     {
-        return Path.GetFullPath(ContentPath);
+        return RuntimePaths.ResolveContentPath();
     }
 
     private static string ResolveAssetsRoot()
     {
-        return Path.GetFullPath(AssetsRoot);
+        return RuntimePaths.ResolveContentRoot();
     }
 
     private static void LogValidationIssues(IEnumerable<ContentIssue> issues)

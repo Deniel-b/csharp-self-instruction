@@ -24,10 +24,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="src\**\*">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <CourseContentFiles Include="src\**\*" />
   </ItemGroup>
+
+  <Target Name="CopyCourseContent" AfterTargets="Build">
+    <Copy SourceFiles="@(CourseContentFiles)"
+          DestinationFiles="@(CourseContentFiles->'$(OutDir)content\%(RecursiveDir)%(Filename)%(Extension)')"
+          SkipUnchangedFiles="true" />
+  </Target>
 
   <ItemGroup>
     <Compile Remove="tests\**\*.cs" />

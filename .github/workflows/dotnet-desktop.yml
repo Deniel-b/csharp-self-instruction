@@ -38,3 +38,13 @@ jobs:
 
       - name: Test
         run: dotnet test csharp-self-instruction.sln -c Release --no-restore --verbosity minimal
+
+      - name: Publish release packages
+        shell: pwsh
+        run: ./build/publish.ps1
+
+      - name: Upload release packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-packages
+          path: artifacts/releases/*.zip

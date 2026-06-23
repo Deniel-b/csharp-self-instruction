@@ -6,7 +6,7 @@ namespace kursach.Services;
 public static class AppLogger
 {
     private static readonly object SyncRoot = new();
-    private static readonly string LogDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs");
+    private static readonly string LogDirectory = RuntimePaths.ResolveLogDirectory();
     private static readonly string LogFilePath = Path.Combine(LogDirectory, "app.log");
 
     public static void Info(string message) => Write("INFO", message);

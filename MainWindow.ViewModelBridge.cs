@@ -19,7 +19,7 @@ public partial class MainWindow
 
     private void LoadContent()
     {
-        var state = _viewModel.LoadCourse(ContentPath, AssetsRoot);
+        var state = _viewModel.LoadCourse(ResolveContentPath(), ResolveAssetsRoot());
         if (state.Issues.Count > 0)
         {
             LogValidationIssues(state.Issues);
