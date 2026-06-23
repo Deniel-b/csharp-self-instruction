@@ -186,9 +186,9 @@ public sealed class ContentEditingService
             return;
         }
 
-        page.Content ??= new PageContentModel();
-        page.Content.Format = string.IsNullOrWhiteSpace(contentFormat) ? "richText" : contentFormat;
-        page.Content.Source = normalizedSource;
+        var content = page.Content ??= new PageContentModel();
+        content.Format = string.IsNullOrWhiteSpace(contentFormat) ? "richText" : contentFormat!;
+        content.Source = normalizedSource;
     }
 
     public void AddPage(SectionModel section, PageModel page)

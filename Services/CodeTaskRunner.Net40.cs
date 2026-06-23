@@ -351,7 +351,7 @@ public static class Runner
                     return new TestRunResult(string.Empty, false, "\u041d\u0435 \u0443\u0434\u0430\u043b\u043e\u0441\u044c \u0437\u0430\u043f\u0443\u0441\u0442\u0438\u0442\u044c \u043f\u0440\u043e\u0446\u0435\u0441\u0441.", input, string.Empty, expected, "hidden");
                 }
 
-                JobObject job = null;
+                JobObject? job = null;
                 if (memoryLimitMb.HasValue && memoryLimitMb.Value > 0)
                 {
                     job = JobObject.TryCreateAndAssign(process, memoryLimitMb.Value);
@@ -473,7 +473,7 @@ public static class Runner
             return string.Empty;
         }
 
-        var normalized = value.Replace("\r\n", "\n").TrimEnd();
+        var normalized = value!.Replace("\r\n", "\n").TrimEnd();
         return normalized.Length <= LogFieldLimit
             ? normalized
             : normalized.Substring(0, LogFieldLimit) + "... (\u043e\u0431\u0440\u0435\u0437\u0430\u043d\u043e)";
@@ -481,12 +481,12 @@ public static class Runner
 
     private static string NormalizeOutput(string? value)
     {
-        return string.IsNullOrEmpty(value) ? string.Empty : value.Replace("\r\n", "\n").TrimEnd();
+        return string.IsNullOrEmpty(value) ? string.Empty : value!.Replace("\r\n", "\n").TrimEnd();
     }
 
     private sealed class JobObject : IDisposable
     {
-        public static JobObject TryCreateAndAssign(Process process, int memoryLimitMb)
+        public static JobObject? TryCreateAndAssign(Process process, int memoryLimitMb)
         {
             return null;
         }
@@ -620,14 +620,14 @@ public sealed record CodeRunResult(bool Success, string Summary, IList<TestRunRe
 
     private static string NormalizeOutput(string? value)
     {
-        return string.IsNullOrEmpty(value) ? string.Empty : value.Replace("\r\n", "\n").TrimEnd();
+        return string.IsNullOrEmpty(value) ? string.Empty : value!.Replace("\r\n", "\n").TrimEnd();
     }
 
     private static string EscapeOutput(string? value)
     {
         return string.IsNullOrEmpty(value)
             ? "<пусто>"
-            : value.Replace("\r", "\\r").Replace("\n", "\\n").Replace("\t", "\\t").Replace(" ", "\u00b7");
+            : value!.Replace("\r", "\\r").Replace("\n", "\\n").Replace("\t", "\\t").Replace(" ", "\u00b7");
     }
 }
 

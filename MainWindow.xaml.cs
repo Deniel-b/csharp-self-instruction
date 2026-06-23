@@ -2254,7 +2254,7 @@ public partial class MainWindow : Window
 
         if (!string.IsNullOrWhiteSpace(chapterId) && !string.IsNullOrWhiteSpace(sectionId))
         {
-            NavigateToPage(chapterId, sectionId, Math.Max(0, pageIndex));
+            NavigateToPage(chapterId!, sectionId!, Math.Max(0, pageIndex));
             return;
         }
 
