@@ -145,9 +145,10 @@ public partial class MainWindow
         _suppressHistory = true;
         _viewModel.SetCourse(course);
 
-        if (!string.IsNullOrWhiteSpace(_viewModel.Course?.Title))
+        var courseTitle = _viewModel.Course?.Title;
+        if (!string.IsNullOrWhiteSpace(courseTitle))
         {
-            Title = _viewModel.Course.Title;
+            Title = courseTitle;
         }
 
         RenderNavigation();

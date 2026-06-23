@@ -199,7 +199,7 @@ public sealed class Page
         {
             if (!string.IsNullOrWhiteSpace(Kind))
             {
-                return Kind.Trim().ToLowerInvariant();
+                return Kind!.Trim().ToLowerInvariant();
             }
 
             var inferred = InferKindFromTasks();
