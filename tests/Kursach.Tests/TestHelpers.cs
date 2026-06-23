@@ -9,7 +9,7 @@ internal static class TestHelpers
         var dir = new DirectoryInfo(AppContext.BaseDirectory);
         while (dir is not null)
         {
-            var projectPath = Path.Combine(dir.FullName, "kursach.csproj");
+            var projectPath = Path.Combine(dir.FullName, "selfinstruction.csproj");
             if (File.Exists(projectPath))
             {
                 return dir.FullName;

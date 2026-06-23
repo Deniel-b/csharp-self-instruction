@@ -39,11 +39,11 @@ public sealed class CourseNavigator
     public int CurrentSectionIndex { get; private set; } = -1;
     public int CurrentPageIndex { get; private set; } = -1;
 
-    public IReadOnlyList<SectionModel> CurrentChapterSections =>
-        CurrentChapter?.OrderedSections ?? Array.Empty<SectionModel>();
+    public IList<SectionModel> CurrentChapterSections =>
+        CurrentChapter?.OrderedSections ?? new SectionModel[0];
 
-    public IReadOnlyList<PageModel> CurrentSectionPages =>
-        CurrentSection?.OrderedPages ?? Array.Empty<PageModel>();
+    public IList<PageModel> CurrentSectionPages =>
+        CurrentSection?.OrderedPages ?? new PageModel[0];
 
     public bool CanMoveNext => HasNextPage();
     public bool CanMovePrevious => HasPreviousPage();
@@ -91,7 +91,7 @@ public sealed class CourseNavigator
                 $"В разделе \"{section.Title}\" нет страниц.");
         }
 
-        CurrentPageIndex = Math.Clamp(pageIndex, 0, pages.Count - 1);
+        CurrentPageIndex = Compatibility.Clamp(pageIndex, 0, pages.Count - 1);
         CurrentPage = pages[CurrentPageIndex];
         return NavigationResult.Ok();
     }
@@ -193,7 +193,7 @@ public sealed class CourseNavigator
             "Это первая страница.");
     }
 
-    private static int FindSectionIndex(IReadOnlyList<SectionModel> sections, string sectionId)
+    private static int FindSectionIndex(IList<SectionModel> sections, string sectionId)
     {
         for (var index = 0; index < sections.Count; index++)
         {
@@ -266,3 +266,5 @@ public sealed class CourseNavigator
         return false;
     }
 }
+
+

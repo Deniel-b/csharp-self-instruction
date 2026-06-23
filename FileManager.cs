@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using Newtonsoft.Json;
 
 namespace kursachFile;
@@ -30,7 +30,7 @@ public sealed class CourseContent
     public List<ResourceLink> Resources { get; set; } = new();
 
     [JsonIgnore]
-    public IReadOnlyList<Chapter> OrderedChapters =>
+    public IList<Chapter> OrderedChapters =>
         Chapters
             .OrderBy(chapter => chapter.Order)
             .ThenBy(chapter => chapter.Title, StringComparer.CurrentCultureIgnoreCase)
@@ -78,7 +78,7 @@ public sealed class Chapter
     public List<Section> Sections { get; set; } = new();
 
     [JsonIgnore]
-    public IReadOnlyList<Section> OrderedSections =>
+    public IList<Section> OrderedSections =>
         Sections
             .OrderBy(section => section.Order)
             .ThenBy(section => section.Title, StringComparer.CurrentCultureIgnoreCase)
@@ -117,7 +117,7 @@ public sealed class Section
     public List<Page> Pages { get; set; } = new();
 
     [JsonIgnore]
-    public IReadOnlyList<Page> OrderedPages =>
+    public IList<Page> OrderedPages =>
         Pages
             .OrderBy(page => page.Order)
             .ThenBy(page => page.Title, StringComparer.CurrentCultureIgnoreCase)
@@ -179,12 +179,12 @@ public sealed class Page
     public List<PageResource>? Resources { get; set; }
 
     [JsonIgnore]
-    public IReadOnlyList<LearningTask> TasksOrEmpty =>
-        Tasks ?? (IReadOnlyList<LearningTask>)Array.Empty<LearningTask>();
+    public IList<LearningTask> TasksOrEmpty =>
+        Tasks ?? (IList<LearningTask>)new LearningTask[0];
 
     [JsonIgnore]
-    public IReadOnlyList<PageResource> ResourcesOrEmpty =>
-        Resources ?? (IReadOnlyList<PageResource>)Array.Empty<PageResource>();
+    public IList<PageResource> ResourcesOrEmpty =>
+        Resources ?? (IList<PageResource>)new PageResource[0];
 
     [JsonIgnore]
     public bool HasContent => Content is not null && !string.IsNullOrWhiteSpace(Content.Source);
@@ -395,3 +395,5 @@ public sealed class ResourceLink
     [JsonProperty("url")]
     public string Url { get; set; } = string.Empty;
 }
+
+

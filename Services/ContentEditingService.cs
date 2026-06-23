@@ -55,7 +55,9 @@ public sealed class ContentEditingService
             return false;
         }
 
-        (section.Pages[targetIndex], section.Pages[index]) = (section.Pages[index], section.Pages[targetIndex]);
+        var pageToMove = section.Pages[index];
+        section.Pages[index] = section.Pages[targetIndex];
+        section.Pages[targetIndex] = pageToMove;
         newIndex = targetIndex;
         return true;
     }
@@ -69,7 +71,7 @@ public sealed class ContentEditingService
             return false;
         }
 
-        var newIndex = Math.Clamp(requestedIndex, 0, section.Pages.Count - 1);
+        var newIndex = Compatibility.Clamp(requestedIndex, 0, section.Pages.Count - 1);
         if (oldIndex == newIndex)
         {
             return false;
@@ -101,7 +103,9 @@ public sealed class ContentEditingService
             return false;
         }
 
-        (tasks[targetIndex], tasks[index]) = (tasks[index], tasks[targetIndex]);
+        var taskToMove = tasks[index];
+        tasks[index] = tasks[targetIndex];
+        tasks[targetIndex] = taskToMove;
         newIndex = targetIndex;
         return true;
     }
@@ -115,7 +119,7 @@ public sealed class ContentEditingService
             return false;
         }
 
-        var newIndex = Math.Clamp(requestedIndex, 0, tasks.Count - 1);
+        var newIndex = Compatibility.Clamp(requestedIndex, 0, tasks.Count - 1);
         if (oldIndex == newIndex)
         {
             return false;
@@ -202,7 +206,7 @@ public sealed class ContentEditingService
         string title,
         int? points,
         bool partial,
-        IReadOnlyList<string> hints,
+        IList<string> hints,
         string type)
     {
         task.Title = title;
@@ -334,3 +338,4 @@ public sealed class ContentEditingService
         }
     }
 }
+

@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\kursach.csproj" />
+    <ProjectReference Include="..\..\selfinstruction.csproj" />
   </ItemGroup>
 
 </Project>
