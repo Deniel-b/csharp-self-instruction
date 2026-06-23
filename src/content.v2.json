@@ -1,0 +1,3626 @@
+{
+  "version": "2.0.0",
+  "language": "ru-RU",
+  "title": "Самоучитель по C#",
+  "description": "Пошаговый курс по основам языка C# с заданиями и практикой.",
+  "authors": [
+    {
+      "name": "Команда самоучителя",
+      "role": "author"
+    }
+  ],
+  "chapters": [
+    {
+      "id": "chapter-1",
+      "order": 1,
+      "title": "Общая структура программы",
+      "summary": "Теория главы 1",
+      "sections": [
+        {
+          "id": "chapter-1-section-1",
+          "order": 1,
+          "title": "Общая структура программы",
+          "summary": "Общая структура программы",
+          "pages": [
+            {
+              "id": "chapter-1-section-1-page-1",
+              "order": 1,
+              "title": "Общая структура программы - часть 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/1_1_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-1-section-1-quiz-page-1",
+              "order": 2,
+              "title": "Проверь себя: Общая структура программы",
+              "kind": "quiz",
+              "estimatedTimeMinutes": 6,
+              "tasks": [
+                {
+                  "id": "chapter-1-section-1-quiz-1-single",
+                  "type": "quiz",
+                  "selection": "single",
+                  "title": "Основные компоненты программы",
+                  "question": "Какой метод является точкой входа для консольного приложения?",
+                  "scoring": {
+                    "points": 2,
+                    "partial": false
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-1-section-1-quiz-1-a",
+                      "text": "Метод Main",
+                      "isCorrect": true,
+                      "feedback": "Верно: Main — это точка входа программы."
+                    },
+                    {
+                      "id": "chapter-1-section-1-quiz-1-b",
+                      "text": "Метод Begin",
+                      "isCorrect": false,
+                      "feedback": "Неверно: такого метода нет в C#."
+                    },
+                    {
+                      "id": "chapter-1-section-1-quiz-1-c",
+                      "text": "Метод Start",
+                      "isCorrect": false,
+                      "feedback": "Неверно: Start используется в других фреймворках."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-1-section-1-quiz-1-a"
+                    ],
+                    "explanation": "В C# точка входа программы — это публичный статический метод Main."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Ориентируйтесь на ключевые термины раздела.",
+                    "Вспомните, как тема используется в примерах кода."
+                  ]
+                },
+                {
+                  "id": "chapter-1-section-1-quiz-2-multiple",
+                  "type": "quiz",
+                  "selection": "multiple",
+                  "title": "Структура кода",
+                  "question": "Какие утверждения верны о структуре программы на C#?",
+                  "scoring": {
+                    "points": 3,
+                    "partial": true
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-1-section-1-quiz-2-a",
+                      "text": "Программа должна содержать класс Program с методом Main",
+                      "isCorrect": true,
+                      "feedback": "Верно: это обязательная структура."
+                    },
+                    {
+                      "id": "chapter-1-section-1-quiz-2-b",
+                      "text": "Пространство имен System автоматически подключается",
+                      "isCorrect": false,
+                      "feedback": "Неверно: нужно явно указать using System."
+                    },
+                    {
+                      "id": "chapter-1-section-1-quiz-2-c",
+                      "text": "Все инструкции должны быть заключены в класс",
+                      "isCorrect": true,
+                      "feedback": "Верно: весь код должен быть организован в классы."
+                    },
+                    {
+                      "id": "chapter-1-section-1-quiz-2-d",
+                      "text": "Можно обойтись без класса и писать код прямо в файле",
+                      "isCorrect": false,
+                      "feedback": "Неверно: в C# весь код должен быть внутри класса."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-1-section-1-quiz-2-a",
+                      "chapter-1-section-1-quiz-2-c"
+                    ],
+                    "explanation": "В C# код обязательно организуется в классы, а программа начинает выполнение с метода Main."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Выбирайте утверждения, которые улучшают понимание и качество кода."
+                  ]
+                }
+              ],
+              "resources": []
+            },
+            {
+              "id": "chapter-1-section-1-code-page-1",
+              "order": 5,
+              "title": "Практика: Вывод сообщения",
+              "estimatedTimeMinutes": 15,
+              "tasks": [
+                {
+                  "id": "chapter-1-section-1-code-1",
+                  "type": "code",
+                  "title": "Практика: Вывод сообщения",
+                  "prompt": "Напишите программу, которая выводит строку 'Hello, World!' в консоль.",
+                  "starterCode": "using System;\n\npublic class Solution\n{\n    public static void Main()\n    {\n        // TODO: выведите строку \"Hello, World!\"\n    }\n}",
+                  "entryPoint": {
+                    "class": "Solution",
+                    "method": "Main",
+                    "signature": ""
+                  },
+                  "constraints": {
+                    "timeLimitMs": 5000,
+                    "memoryLimitMb": 128,
+                    "disallow": []
+                  },
+                  "scoring": {
+                    "points": 5,
+                    "partial": false
+                  },
+                  "tests": [
+                    {
+                      "id": "chapter-1-section-1-code-1-test-1",
+                      "visibility": "visible",
+                      "input": "",
+                      "expectedOutput": "Hello, World!"
+                    }
+                  ],
+                  "hints": [
+                    "Начните с написания основного кода.",
+                    "Убедитесь, что ваш код обрабатывает все тестовые случаи.",
+                    "Проверьте, правильно ли выглядит вывод."
+                  ],
+                  "options": [],
+                  "solution": {
+                    "correctOptionIds": [],
+                    "explanation": "Выполняется автоматическим тестированием."
+                  }
+                }
+              ],
+              "resources": []
+            },
+            {
+              "id": "chapter-1-section-1-page-2",
+              "order": 3,
+              "title": "Общая структура программы - часть 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/1_1_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-1-section-1-page-3",
+              "order": 4,
+              "title": "Общая структура программы - часть 3",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/1_1_3.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-1-section-2",
+          "order": 2,
+          "title": "Переменные и константы",
+          "summary": "Переменные и константы",
+          "pages": [
+            {
+              "id": "chapter-1-section-2-page-1",
+              "order": 1,
+              "title": "Переменные и константы - часть 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/1_2_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-1-section-2-quiz-page-1",
+              "order": 2,
+              "title": "Проверь себя: Переменные и константы",
+              "kind": "quiz",
+              "estimatedTimeMinutes": 6,
+              "tasks": [
+                {
+                  "id": "chapter-1-section-2-quiz-1-single",
+                  "type": "quiz",
+                  "selection": "single",
+                  "title": "Различие между переменной и константой",
+                  "question": "Какая главная разница между переменной и константой в C#?",
+                  "scoring": {
+                    "points": 2,
+                    "partial": false
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-1-section-2-quiz-1-a",
+                      "text": "Константа не может изменяться после инициализации",
+                      "isCorrect": true,
+                      "feedback": "Верно: констант неизменяемы."
+                    },
+                    {
+                      "id": "chapter-1-section-2-quiz-1-b",
+                      "text": "Переменная занимает больше памяти",
+                      "isCorrect": false,
+                      "feedback": "Неверно: размер не отличается."
+                    },
+                    {
+                      "id": "chapter-1-section-2-quiz-1-c",
+                      "text": "Константа видна только внутри метода",
+                      "isCorrect": false,
+                      "feedback": "Неверно: область видимости не связана с типом хранилища."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-1-section-2-quiz-1-a"
+                    ],
+                    "explanation": "Главное отличие: константу можно установить только один раз, а переменную можно менять много раз."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Ориентируйтесь на ключевые термины раздела.",
+                    "Вспомните, как тема используется в примерах кода."
+                  ]
+                },
+                {
+                  "id": "chapter-1-section-2-quiz-2-multiple",
+                  "type": "quiz",
+                  "selection": "multiple",
+                  "title": "Объявление переменных и констант",
+                  "question": "Выберите верные утверждения о переменных и константах:",
+                  "scoring": {
+                    "points": 3,
+                    "partial": true
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-1-section-2-quiz-2-a",
+                      "text": "Переменную можно объявить с ключевым словом const",
+                      "isCorrect": false,
+                      "feedback": "Неверно: const используется только для констант."
+                    },
+                    {
+                      "id": "chapter-1-section-2-quiz-2-b",
+                      "text": "Константа требует явной инициализации при объявлении",
+                      "isCorrect": true,
+                      "feedback": "Верно: const всегда должна быть инициализирована."
+                    },
+                    {
+                      "id": "chapter-1-section-2-quiz-2-c",
+                      "text": "Переменная может быть объявлена без инициализации",
+                      "isCorrect": true,
+                      "feedback": "Верно: переменную можно инициализировать позже."
+                    },
+                    {
+                      "id": "chapter-1-section-2-quiz-2-d",
+                      "text": "const string name; — валидное объявление",
+                      "isCorrect": false,
+                      "feedback": "Неверно: константа должна быть инициализирована."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-1-section-2-quiz-2-b",
+                      "chapter-1-section-2-quiz-2-c"
+                    ],
+                    "explanation": "Переменные гибче в использовании и могут быть инициализированы позже, константы должны быть установлены сразу."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Выбирайте утверждения, которые улучшают понимание и качество кода."
+                  ]
+                }
+              ],
+              "resources": []
+            },
+            {
+              "id": "chapter-1-section-2-code-page-1",
+              "order": 4,
+              "title": "Практика: Объявление переменных",
+              "estimatedTimeMinutes": 15,
+              "tasks": [
+                {
+                  "id": "chapter-1-section-2-code-1",
+                  "type": "code",
+                  "title": "Практика: Объявление переменных",
+                  "prompt": "Объявите переменную целого типа x, установите её значение на 42 и выведите в консоль.",
+                  "starterCode": "using System;\n\npublic class Solution\n{\n    public static void Main()\n    {\n        // TODO: объявите переменную x со значением 42\n        // TODO: выведите x\n    }\n}",
+                  "entryPoint": {
+                    "class": "Solution",
+                    "method": "Main",
+                    "signature": ""
+                  },
+                  "constraints": {
+                    "timeLimitMs": 5000,
+                    "memoryLimitMb": 128,
+                    "disallow": []
+                  },
+                  "scoring": {
+                    "points": 5,
+                    "partial": false
+                  },
+                  "tests": [
+                    {
+                      "id": "chapter-1-section-2-code-1-test-1",
+                      "visibility": "visible",
+                      "input": "",
+                      "expectedOutput": "42"
+                    }
+                  ],
+                  "hints": [
+                    "Начните с написания основного кода.",
+                    "Убедитесь, что ваш код обрабатывает все тестовые случаи.",
+                    "Проверьте, правильно ли выглядит вывод."
+                  ],
+                  "options": [],
+                  "solution": {
+                    "correctOptionIds": [],
+                    "explanation": "Выполняется автоматическим тестированием."
+                  }
+                }
+              ],
+              "resources": []
+            },
+            {
+              "id": "chapter-1-section-2-page-2",
+              "order": 3,
+              "title": "Переменные и константы - часть 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/1_2_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-1-section-3",
+          "order": 3,
+          "title": "Типы данных",
+          "summary": "Типы данных",
+          "pages": [
+            {
+              "id": "chapter-1-section-3-page-1",
+              "order": 1,
+              "title": "Типы данных - часть 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/1_3_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-1-section-3-quiz-page-1",
+              "order": 2,
+              "title": "Проверь себя: Типы данных",
+              "kind": "quiz",
+              "estimatedTimeMinutes": 6,
+              "tasks": [
+                {
+                  "id": "chapter-1-section-3-quiz-1-single",
+                  "type": "quiz",
+                  "selection": "single",
+                  "title": "Числовые типы данных",
+                  "question": "Какой тип данных используется для целых чисел со знаком?",
+                  "scoring": {
+                    "points": 2,
+                    "partial": false
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-1-section-3-quiz-1-a",
+                      "text": "int",
+                      "isCorrect": true,
+                      "feedback": "Верно: int — основной тип для целых чисел."
+                    },
+                    {
+                      "id": "chapter-1-section-3-quiz-1-b",
+                      "text": "float",
+                      "isCorrect": false,
+                      "feedback": "Неверно: float — для дробных чисел."
+                    },
+                    {
+                      "id": "chapter-1-section-3-quiz-1-c",
+                      "text": "bool",
+                      "isCorrect": false,
+                      "feedback": "Неверно: bool — для логических значений."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-1-section-3-quiz-1-a"
+                    ],
+                    "explanation": "int может хранить целые числа в диапазоне от -2,147,483,648 до 2,147,483,647."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Ориентируйтесь на ключевые термины раздела.",
+                    "Вспомните, как тема используется в примерах кода."
+                  ]
+                },
+                {
+                  "id": "chapter-1-section-3-quiz-2-multiple",
+                  "type": "quiz",
+                  "selection": "multiple",
+                  "title": "Типы данных и их применение",
+                  "question": "Какие утверждения верны о типах данных в C#?",
+                  "scoring": {
+                    "points": 3,
+                    "partial": true
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-1-section-3-quiz-2-a",
+                      "text": "double используется для дробных чисел с высокой точностью",
+                      "isCorrect": true,
+                      "feedback": "Верно: double обеспечивает точность до 15-17 знаков."
+                    },
+                    {
+                      "id": "chapter-1-section-3-quiz-2-b",
+                      "text": "string может содержать только буквы",
+                      "isCorrect": false,
+                      "feedback": "Неверно: string может содержать любые символы."
+                    },
+                    {
+                      "id": "chapter-1-section-3-quiz-2-c",
+                      "text": "bool может содержать значения true или false",
+                      "isCorrect": true,
+                      "feedback": "Верно: это единственные значения для bool."
+                    },
+                    {
+                      "id": "chapter-1-section-3-quiz-2-d",
+                      "text": "decimal предназначен для денежных операций",
+                      "isCorrect": true,
+                      "feedback": "Верно: decimal идеален для финансовых расчётов."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-1-section-3-quiz-2-a",
+                      "chapter-1-section-3-quiz-2-c",
+                      "chapter-1-section-3-quiz-2-d"
+                    ],
+                    "explanation": "Выбор типа данных важен для эффективности программы и точности вычислений."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Выбирайте утверждения, которые улучшают понимание и качество кода."
+                  ]
+                }
+              ],
+              "resources": []
+            },
+            {
+              "id": "chapter-1-section-3-code-page-1",
+              "order": 4,
+              "title": "Практика: Работа с типами данных",
+              "estimatedTimeMinutes": 15,
+              "tasks": [
+                {
+                  "id": "chapter-1-section-3-code-1",
+                  "type": "code",
+                  "title": "Практика: Работа с типами данных",
+                  "prompt": "Напишите метод, который принимает два целых числа и возвращает их среднее арифметическое (как double).",
+                  "starterCode": "using System;\n\npublic class Solution\n{\n    public static double CalculateAverage(int a, int b)\n    {\n        // TODO: верните среднее значение двух чисел\n        throw new NotImplementedException();\n    }\n\n    public static void Main()\n    {\n        // Необязательный локальный запуск\n    }\n}",
+                  "entryPoint": {
+                    "class": "Solution",
+                    "method": "CalculateAverage",
+                    "signature": ""
+                  },
+                  "constraints": {
+                    "timeLimitMs": 5000,
+                    "memoryLimitMb": 128,
+                    "disallow": []
+                  },
+                  "scoring": {
+                    "points": 5,
+                    "partial": false
+                  },
+                  "tests": [
+                    {
+                      "id": "chapter-1-section-3-code-1-test-1",
+                      "visibility": "visible",
+                      "input": "10 20",
+                      "expectedOutput": "15"
+                    },
+                    {
+                      "id": "chapter-1-section-3-code-1-test-2",
+                      "visibility": "visible",
+                      "input": "5 15",
+                      "expectedOutput": "10"
+                    },
+                    {
+                      "id": "chapter-1-section-3-code-1-test-3",
+                      "visibility": "hidden",
+                      "input": "100 200",
+                      "expectedOutput": "150"
+                    }
+                  ],
+                  "hints": [
+                    "Начните с написания основного кода.",
+                    "Убедитесь, что ваш код обрабатывает все тестовые случаи.",
+                    "Проверьте, правильно ли выглядит вывод."
+                  ],
+                  "options": [],
+                  "solution": {
+                    "correctOptionIds": [],
+                    "explanation": "Выполняется автоматическим тестированием."
+                  }
+                }
+              ],
+              "resources": []
+            },
+            {
+              "id": "chapter-1-section-3-page-2",
+              "order": 3,
+              "title": "Типы данных - часть 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/1_3_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-1-section-3-page-3",
+              "order": 4,
+              "title": "Типы данных - часть 3",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/1_3_3.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chapter-2",
+      "order": 2,
+      "title": "Классы и методы",
+      "summary": "Теория главы 2",
+      "sections": [
+        {
+          "id": "chapter-2-section-1",
+          "order": 1,
+          "title": "Классы и методы (Program Main)",
+          "summary": "Классы и методы (Program Main)",
+          "pages": [
+            {
+              "id": "chapter-2-section-1-page-1",
+              "order": 1,
+              "title": "Классы и методы (Program Main) - часть 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_1_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-1-quiz-page-1",
+              "order": 2,
+              "title": "Проверь себя: Классы и методы (Program Main)",
+              "kind": "quiz",
+              "estimatedTimeMinutes": 6,
+              "tasks": [
+                {
+                  "id": "chapter-2-section-1-quiz-1-single",
+                  "type": "quiz",
+                  "selection": "single",
+                  "title": "Метод Main и точка входа",
+                  "question": "Почему метод Main объявляется как static?",
+                  "scoring": {
+                    "points": 2,
+                    "partial": false
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-2-section-1-quiz-1-a",
+                      "text": "Чтобы его можно было вызвать без создания экземпляра класса",
+                      "isCorrect": true,
+                      "feedback": "Верно: static методы принадлежат классу, а не объекту."
+                    },
+                    {
+                      "id": "chapter-2-section-1-quiz-1-b",
+                      "text": "Для экономии памяти",
+                      "isCorrect": false,
+                      "feedback": "Неверно: это не влияет на память."
+                    },
+                    {
+                      "id": "chapter-2-section-1-quiz-1-c",
+                      "text": "Потому что это требование языка",
+                      "isCorrect": true,
+                      "feedback": "Верно: .NET требует static Main как точку входа."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-2-section-1-quiz-1-a"
+                    ],
+                    "explanation": "Main должен быть static, чтобы среда выполнения могла вызвать его без создания объекта программы."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Ориентируйтесь на ключевые термины раздела.",
+                    "Вспомните, как тема используется в примерах кода."
+                  ]
+                },
+                {
+                  "id": "chapter-2-section-1-quiz-2-multiple",
+                  "type": "quiz",
+                  "selection": "multiple",
+                  "title": "Параметры Main и void",
+                  "question": "Выберите верные утверждения о методе Main:",
+                  "scoring": {
+                    "points": 3,
+                    "partial": true
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-2-section-1-quiz-2-a",
+                      "text": "Main может принимать параметр string[] args",
+                      "isCorrect": true,
+                      "feedback": "Верно: это массив аргументов командной строки."
+                    },
+                    {
+                      "id": "chapter-2-section-1-quiz-2-b",
+                      "text": "Main всегда должен возвращать int",
+                      "isCorrect": false,
+                      "feedback": "Неверно: Main может возвращать void или int."
+                    },
+                    {
+                      "id": "chapter-2-section-1-quiz-2-c",
+                      "text": "Main может быть приватным методом",
+                      "isCorrect": false,
+                      "feedback": "Неверно: Main должен быть public."
+                    },
+                    {
+                      "id": "chapter-2-section-1-quiz-2-d",
+                      "text": "Из Main можно вызывать другие методы",
+                      "isCorrect": true,
+                      "feedback": "Верно: Main — это просто метод, может вызывать другие методы."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-2-section-1-quiz-2-a",
+                      "chapter-2-section-1-quiz-2-d"
+                    ],
+                    "explanation": "Main — это главный метод, вызываемый при запуске программы."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Выбирайте утверждения, которые улучшают понимание и качество кода."
+                  ]
+                }
+              ],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-1-code-page-1",
+              "order": 3,
+              "title": "Практика: Вызов метода",
+              "estimatedTimeMinutes": 15,
+              "tasks": [
+                {
+                  "id": "chapter-2-section-1-code-1",
+                  "type": "code",
+                  "title": "Практика: Вызов метода",
+                  "prompt": "Напишите метод Add, который складывает два числа и выводит результат в консоль.",
+                  "starterCode": "using System;\n\npublic class Solution\n{\n    public static void Add(int a, int b)\n    {\n        // TODO: выведите сумму a и b\n    }\n\n    public static void Main()\n    {\n        // Необязательный локальный запуск\n    }\n}",
+                  "entryPoint": {
+                    "class": "Solution",
+                    "method": "Add",
+                    "signature": ""
+                  },
+                  "constraints": {
+                    "timeLimitMs": 5000,
+                    "memoryLimitMb": 128,
+                    "disallow": []
+                  },
+                  "scoring": {
+                    "points": 5,
+                    "partial": false
+                  },
+                  "tests": [
+                    {
+                      "id": "chapter-2-section-1-code-1-test-1",
+                      "visibility": "visible",
+                      "input": "5 3",
+                      "expectedOutput": "8"
+                    },
+                    {
+                      "id": "chapter-2-section-1-code-1-test-2",
+                      "visibility": "hidden",
+                      "input": "10 20",
+                      "expectedOutput": "30"
+                    }
+                  ],
+                  "hints": [
+                    "Начните с написания основного кода.",
+                    "Убедитесь, что ваш код обрабатывает все тестовые случаи.",
+                    "Проверьте, правильно ли выглядит вывод."
+                  ],
+                  "options": [],
+                  "solution": {
+                    "correctOptionIds": [],
+                    "explanation": "Выполняется автоматическим тестированием."
+                  }
+                }
+              ],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-1-page-2",
+              "order": 3,
+              "title": "Классы и методы (Program Main) - часть 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_1_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-2-section-2",
+          "order": 2,
+          "title": "Классы и объекты",
+          "summary": "Классы и объекты",
+          "pages": [
+            {
+              "id": "chapter-2-section-2-page-1",
+              "order": 1,
+              "title": "Классы и объекты - часть 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_2_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-2-page-2",
+              "order": 2,
+              "title": "Классы и объекты - часть 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_2_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-2-quiz-page-1",
+              "order": 3,
+              "title": "Проверь себя: Классы и объекты",
+              "kind": "quiz",
+              "estimatedTimeMinutes": 6,
+              "tasks": [
+                {
+                  "id": "chapter-2-section-2-quiz-1-single",
+                  "type": "quiz",
+                  "selection": "single",
+                  "title": "Классы и объекты",
+                  "question": "Что такое объект в отношении к классу?",
+                  "scoring": {
+                    "points": 2,
+                    "partial": false
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-2-section-2-quiz-1-a",
+                      "text": "Экземпляр класса, созданный с помощью ключевого слова new",
+                      "isCorrect": true,
+                      "feedback": "Верно: объект — это конкретный экземпляр класса."
+                    },
+                    {
+                      "id": "chapter-2-section-2-quiz-1-b",
+                      "text": "Синоним класса",
+                      "isCorrect": false,
+                      "feedback": "Неверно: класс — это описание, объект — экземпляр."
+                    },
+                    {
+                      "id": "chapter-2-section-2-quiz-1-c",
+                      "text": "Часть класса, которая содержит только методы",
+                      "isCorrect": false,
+                      "feedback": "Неверно: объект содержит и данные, и методы."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-2-section-2-quiz-1-a"
+                    ],
+                    "explanation": "Класс — это шаблон, объект — конкретный экземпляр этого шаблона."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Ориентируйтесь на ключевые термины раздела.",
+                    "Вспомните, как тема используется в примерах кода."
+                  ]
+                },
+                {
+                  "id": "chapter-2-section-2-quiz-2-multiple",
+                  "type": "quiz",
+                  "selection": "multiple",
+                  "title": "Создание и использование объектов",
+                  "question": "Выберите верные утверждения об объектах:",
+                  "scoring": {
+                    "points": 3,
+                    "partial": true
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-2-section-2-quiz-2-a",
+                      "text": "Объект создаётся с помощью оператора new",
+                      "isCorrect": true,
+                      "feedback": "Верно: new выделяет память и инициализирует объект."
+                    },
+                    {
+                      "id": "chapter-2-section-2-quiz-2-b",
+                      "text": "Один класс может создать только один объект",
+                      "isCorrect": false,
+                      "feedback": "Неверно: из класса можно создать множество объектов."
+                    },
+                    {
+                      "id": "chapter-2-section-2-quiz-2-c",
+                      "text": "Каждый объект имеет свои экземплярные переменные",
+                      "isCorrect": true,
+                      "feedback": "Верно: каждый объект имеет независимые данные."
+                    },
+                    {
+                      "id": "chapter-2-section-2-quiz-2-d",
+                      "text": "Объект автоматически удаляется из памяти",
+                      "isCorrect": true,
+                      "feedback": "Верно: сборщик мусора в .NET автоматически очищает память."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-2-section-2-quiz-2-a",
+                      "chapter-2-section-2-quiz-2-c",
+                      "chapter-2-section-2-quiz-2-d"
+                    ],
+                    "explanation": "Объекты — основные единицы объектно-ориентированного программирования."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Выбирайте утверждения, которые улучшают понимание и качество кода."
+                  ]
+                }
+              ],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-2-code-page-1",
+              "order": 5,
+              "title": "Практика: Создание класса",
+              "estimatedTimeMinutes": 15,
+              "tasks": [
+                {
+                  "id": "chapter-2-section-2-code-1",
+                  "type": "code",
+                  "title": "Практика: Создание класса",
+                  "prompt": "Создайте класс Person с полем Name и методом GetInfo(), который возвращает строку '{name} is a person'.",
+                  "starterCode": "using System;\n\npublic class Person\n{\n    public string Name { get; set; } = string.Empty;\n\n    public string GetInfo()\n    {\n        // TODO: верните строку в формате \"{Name} is a person\"\n        throw new NotImplementedException();\n    }\n}\n\npublic class Solution\n{\n    public static void Main()\n    {\n        // Необязательный локальный запуск\n    }\n}",
+                  "entryPoint": {
+                    "class": "Person",
+                    "method": "GetInfo",
+                    "signature": ""
+                  },
+                  "constraints": {
+                    "timeLimitMs": 5000,
+                    "memoryLimitMb": 128,
+                    "disallow": []
+                  },
+                  "scoring": {
+                    "points": 5,
+                    "partial": false
+                  },
+                  "tests": [
+                    {
+                      "id": "chapter-2-section-2-code-1-test-1",
+                      "visibility": "visible",
+                      "input": "Alice",
+                      "expectedOutput": "Alice is a person"
+                    },
+                    {
+                      "id": "chapter-2-section-2-code-1-test-2",
+                      "visibility": "hidden",
+                      "input": "Bob",
+                      "expectedOutput": "Bob is a person"
+                    }
+                  ],
+                  "hints": [
+                    "Начните с написания основного кода.",
+                    "Убедитесь, что ваш код обрабатывает все тестовые случаи.",
+                    "Проверьте, правильно ли выглядит вывод."
+                  ],
+                  "options": [],
+                  "solution": {
+                    "correctOptionIds": [],
+                    "explanation": "Выполняется автоматическим тестированием."
+                  }
+                }
+              ],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-2-page-3",
+              "order": 4,
+              "title": "Классы и объекты - часть 3",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_2_3.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-2-page-4",
+              "order": 5,
+              "title": "Классы и объекты - часть 4",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_2_4.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-2-section-3",
+          "order": 3,
+          "title": "Конструкторы",
+          "summary": "Конструкторы",
+          "pages": [
+            {
+              "id": "chapter-2-section-3-page-1",
+              "order": 1,
+              "title": "Конструкторы - часть 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_3_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-3-page-2",
+              "order": 2,
+              "title": "Конструкторы - часть 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_3_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-3-quiz-page-1",
+              "order": 3,
+              "title": "Проверь себя: Конструкторы",
+              "kind": "quiz",
+              "estimatedTimeMinutes": 6,
+              "tasks": [
+                {
+                  "id": "chapter-2-section-3-quiz-1-single",
+                  "type": "quiz",
+                  "selection": "single",
+                  "title": "Назначение конструктора",
+                  "question": "Для чего предназначен конструктор класса?",
+                  "scoring": {
+                    "points": 2,
+                    "partial": false
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-2-section-3-quiz-1-a",
+                      "text": "Для инициализации полей объекта при его создании",
+                      "isCorrect": true,
+                      "feedback": "Верно: конструктор инициализирует объект."
+                    },
+                    {
+                      "id": "chapter-2-section-3-quiz-1-b",
+                      "text": "Для удаления объекта из памяти",
+                      "isCorrect": false,
+                      "feedback": "Неверно: это делает деструктор или сборщик мусора."
+                    },
+                    {
+                      "id": "chapter-2-section-3-quiz-1-c",
+                      "text": "Для создания файлов на диске",
+                      "isCorrect": false,
+                      "feedback": "Неверно: конструктор работает с памятью."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-2-section-3-quiz-1-a"
+                    ],
+                    "explanation": "Конструктор вызывается автоматически когда создаётся новый объект класса."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Ориентируйтесь на ключевые термины раздела.",
+                    "Вспомните, как тема используется в примерах кода."
+                  ]
+                },
+                {
+                  "id": "chapter-2-section-3-quiz-2-multiple",
+                  "type": "quiz",
+                  "selection": "multiple",
+                  "title": "Конструкторы и их типы",
+                  "question": "Выберите верные утверждения о конструкторах:",
+                  "scoring": {
+                    "points": 3,
+                    "partial": true
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-2-section-3-quiz-2-a",
+                      "text": "Конструктор по умолчанию не имеет параметров",
+                      "isCorrect": true,
+                      "feedback": "Верно: default constructor создаётся автоматически."
+                    },
+                    {
+                      "id": "chapter-2-section-3-quiz-2-b",
+                      "text": "Класс может иметь несколько конструкторов с разными параметрами",
+                      "isCorrect": true,
+                      "feedback": "Верно: это называется перегрузка конструктора."
+                    },
+                    {
+                      "id": "chapter-2-section-3-quiz-2-c",
+                      "text": "Конструктор обязательно должен возвращать значение",
+                      "isCorrect": false,
+                      "feedback": "Неверно: конструктор ничего не возвращает."
+                    },
+                    {
+                      "id": "chapter-2-section-3-quiz-2-d",
+                      "text": "Имя конструктора совпадает с именем класса",
+                      "isCorrect": true,
+                      "feedback": "Верно: конструктор всегда имеет имя класса."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-2-section-3-quiz-2-a",
+                      "chapter-2-section-3-quiz-2-b",
+                      "chapter-2-section-3-quiz-2-d"
+                    ],
+                    "explanation": "Конструкторы позволяют установить начальное состояние объектов."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Выбирайте утверждения, которые улучшают понимание и качество кода."
+                  ]
+                }
+              ],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-3-code-page-1",
+              "order": 3,
+              "title": "Практика: Конструктор класса",
+              "estimatedTimeMinutes": 15,
+              "tasks": [
+                {
+                  "id": "chapter-2-section-3-code-1",
+                  "type": "code",
+                  "title": "Практика: Конструктор класса",
+                  "prompt": "Создайте класс Rectangle с конструктором, принимающим ширину и высоту, и методом Area(), возвращающим площадь.",
+                  "starterCode": "using System;\n\npublic class Rectangle\n{\n    private double width;\n    private double height;\n\n    public Rectangle(double w, double h)\n    {\n        // TODO: инициализируйте width и height\n    }\n\n    public double Area()\n    {\n        // TODO: верните площадь прямоугольника\n        throw new NotImplementedException();\n    }\n}\n\npublic class Solution\n{\n    public static void Main()\n    {\n        // Необязательный локальный запуск\n    }\n}",
+                  "entryPoint": {
+                    "class": "Rectangle",
+                    "method": "Area",
+                    "signature": ""
+                  },
+                  "constraints": {
+                    "timeLimitMs": 5000,
+                    "memoryLimitMb": 128,
+                    "disallow": []
+                  },
+                  "scoring": {
+                    "points": 5,
+                    "partial": false
+                  },
+                  "tests": [
+                    {
+                      "id": "chapter-2-section-3-code-1-test-1",
+                      "visibility": "visible",
+                      "input": "5 4",
+                      "expectedOutput": "20"
+                    },
+                    {
+                      "id": "chapter-2-section-3-code-1-test-2",
+                      "visibility": "hidden",
+                      "input": "10 3",
+                      "expectedOutput": "30"
+                    }
+                  ],
+                  "hints": [
+                    "Начните с написания основного кода.",
+                    "Убедитесь, что ваш код обрабатывает все тестовые случаи.",
+                    "Проверьте, правильно ли выглядит вывод."
+                  ],
+                  "options": [],
+                  "solution": {
+                    "correctOptionIds": [],
+                    "explanation": "Выполняется автоматическим тестированием."
+                  }
+                }
+              ],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-3-page-3",
+              "order": 4,
+              "title": "Конструкторы - часть 3",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_3_3.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-3-page-4",
+              "order": 5,
+              "title": "Конструкторы - часть 4",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_3_4.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-2-section-4",
+          "order": 4,
+          "title": "Пространство имен",
+          "summary": "Пространство имен",
+          "pages": [
+            {
+              "id": "chapter-2-section-4-page-1",
+              "order": 1,
+              "title": "Пространство имен - часть 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_4_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-4-quiz-page-1",
+              "order": 2,
+              "title": "Проверь себя: Пространство имен",
+              "kind": "quiz",
+              "estimatedTimeMinutes": 6,
+              "tasks": [
+                {
+                  "id": "chapter-2-section-4-quiz-1-single",
+                  "type": "quiz",
+                  "selection": "single",
+                  "title": "Пространства имён и организация кода",
+                  "question": "Какова главная цель использования пространств имён?",
+                  "scoring": {
+                    "points": 2,
+                    "partial": false
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-2-section-4-quiz-1-a",
+                      "text": "Избежать конфликтов имён и организовать код по смыслу",
+                      "isCorrect": true,
+                      "feedback": "Верно: namespace предотвращает коллизии имён."
+                    },
+                    {
+                      "id": "chapter-2-section-4-quiz-1-b",
+                      "text": "Ускорить компиляцию программы",
+                      "isCorrect": false,
+                      "feedback": "Неверно: никак не влияет на скорость."
+                    },
+                    {
+                      "id": "chapter-2-section-4-quiz-1-c",
+                      "text": "Уменьшить размер памяти",
+                      "isCorrect": false,
+                      "feedback": "Неверно: это не связано с памятью."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-2-section-4-quiz-1-a"
+                    ],
+                    "explanation": "Пространства имён группируют связанный код и предотвращают конфликты имён классов."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Ориентируйтесь на ключевые термины раздела.",
+                    "Вспомните, как тема используется в примерах кода."
+                  ]
+                },
+                {
+                  "id": "chapter-2-section-4-quiz-2-multiple",
+                  "type": "quiz",
+                  "selection": "multiple",
+                  "title": "Using и импорт типов",
+                  "question": "Выберите верные утверждения о using и пространствах имён:",
+                  "scoring": {
+                    "points": 3,
+                    "partial": true
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-2-section-4-quiz-2-a",
+                      "text": "using позволяет использовать типы без полного имени",
+                      "isCorrect": true,
+                      "feedback": "Верно: используя using, можно писать Console вместо System.Console."
+                    },
+                    {
+                      "id": "chapter-2-section-4-quiz-2-b",
+                      "text": "Можно создавать вложенные пространства имён",
+                      "isCorrect": true,
+                      "feedback": "Верно: например System.Collections.Generic."
+                    },
+                    {
+                      "id": "chapter-2-section-4-quiz-2-c",
+                      "text": "using System должна быть в двойных кавычках",
+                      "isCorrect": false,
+                      "feedback": "Неверно: using не использует кавычки."
+                    },
+                    {
+                      "id": "chapter-2-section-4-quiz-2-d",
+                      "text": "Класс может принадлежать только одному пространству имён",
+                      "isCorrect": true,
+                      "feedback": "Верно: класс определяется в одном namespace."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-2-section-4-quiz-2-a",
+                      "chapter-2-section-4-quiz-2-b",
+                      "chapter-2-section-4-quiz-2-d"
+                    ],
+                    "explanation": "Пространства имён организуют код иерархически, улучшая читаемость и масштабируемость."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Выбирайте утверждения, которые улучшают понимание и качество кода."
+                  ]
+                }
+              ],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-4-code-page-1",
+              "order": 2,
+              "title": "Практика: Использование пространств имён",
+              "estimatedTimeMinutes": 15,
+              "tasks": [
+                {
+                  "id": "chapter-2-section-4-code-1",
+                  "type": "code",
+                  "title": "Практика: Использование пространств имён",
+                  "prompt": "Используя System.Collections, напишите код, который работает с коллекциями из данного пространства имён.",
+                  "starterCode": "using System;\nusing System.Collections;\n\npublic class Solution\n{\n    public static void Main()\n    {\n        // TODO: используйте коллекцию из System.Collections\n        // TODO: выведите \"Program executed successfully\"\n    }\n}",
+                  "entryPoint": {
+                    "class": "Solution",
+                    "method": "Main",
+                    "signature": ""
+                  },
+                  "constraints": {
+                    "timeLimitMs": 5000,
+                    "memoryLimitMb": 128,
+                    "disallow": []
+                  },
+                  "scoring": {
+                    "points": 5,
+                    "partial": false
+                  },
+                  "tests": [
+                    {
+                      "id": "chapter-2-section-4-code-1-test-1",
+                      "visibility": "visible",
+                      "input": "",
+                      "expectedOutput": "Program executed successfully"
+                    }
+                  ],
+                  "hints": [
+                    "Начните с написания основного кода.",
+                    "Убедитесь, что ваш код обрабатывает все тестовые случаи.",
+                    "Проверьте, правильно ли выглядит вывод."
+                  ],
+                  "options": [],
+                  "solution": {
+                    "correctOptionIds": [],
+                    "explanation": "Выполняется автоматическим тестированием."
+                  }
+                }
+              ],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-4-page-2",
+              "order": 3,
+              "title": "Пространство имен - часть 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_4_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-2-section-5",
+          "order": 5,
+          "title": "Модификаторы доступа",
+          "summary": "Модификаторы доступа",
+          "pages": [
+            {
+              "id": "chapter-2-section-5-page-1",
+              "order": 1,
+              "title": "Модификаторы доступа - часть 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_5_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-5-page-2",
+              "order": 2,
+              "title": "Модификаторы доступа - часть 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_5_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-5-quiz-page-1",
+              "order": 3,
+              "title": "Проверь себя: Модификаторы доступа",
+              "kind": "quiz",
+              "estimatedTimeMinutes": 6,
+              "tasks": [
+                {
+                  "id": "chapter-2-section-5-quiz-1-single",
+                  "type": "quiz",
+                  "selection": "single",
+                  "title": "Основные модификаторы доступа",
+                  "question": "Какой модификатор доступа разрешает доступ только из того же класса?",
+                  "scoring": {
+                    "points": 2,
+                    "partial": false
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-2-section-5-quiz-1-a",
+                      "text": "private",
+                      "isCorrect": true,
+                      "feedback": "Верно: private ограничивает доступ только классом."
+                    },
+                    {
+                      "id": "chapter-2-section-5-quiz-1-b",
+                      "text": "public",
+                      "isCorrect": false,
+                      "feedback": "Неверно: public доступен везде."
+                    },
+                    {
+                      "id": "chapter-2-section-5-quiz-1-c",
+                      "text": "protected",
+                      "isCorrect": false,
+                      "feedback": "Неверно: protected доступен и производным классам."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-2-section-5-quiz-1-a"
+                    ],
+                    "explanation": "private — самый ограничивающий модификатор, используется для внутренних данных класса."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Ориентируйтесь на ключевые термины раздела.",
+                    "Вспомните, как тема используется в примерах кода."
+                  ]
+                },
+                {
+                  "id": "chapter-2-section-5-quiz-2-multiple",
+                  "type": "quiz",
+                  "selection": "multiple",
+                  "title": "Уровни доступа",
+                  "question": "Выберите верные утверждения о модификаторах доступа:",
+                  "scoring": {
+                    "points": 3,
+                    "partial": true
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-2-section-5-quiz-2-a",
+                      "text": "public — доступен из любого места в коде",
+                      "isCorrect": true,
+                      "feedback": "Верно: это самый открытый уровень."
+                    },
+                    {
+                      "id": "chapter-2-section-5-quiz-2-b",
+                      "text": "protected позволяет доступ производным классам",
+                      "isCorrect": true,
+                      "feedback": "Верно: protected работает для наследников."
+                    },
+                    {
+                      "id": "chapter-2-section-5-quiz-2-c",
+                      "text": "internal ограничивает доступ только одним файлом",
+                      "isCorrect": false,
+                      "feedback": "Неверно: internal открыт для всей сборки."
+                    },
+                    {
+                      "id": "chapter-2-section-5-quiz-2-d",
+                      "text": "Если не указан модификатор, то по умолчанию private",
+                      "isCorrect": true,
+                      "feedback": "Верно: по умолчанию члены приватны."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-2-section-5-quiz-2-a",
+                      "chapter-2-section-5-quiz-2-b",
+                      "chapter-2-section-5-quiz-2-d"
+                    ],
+                    "explanation": "Модификаторы доступа контролируют видимость членов класса и обеспечивают инкапсуляцию."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Выбирайте утверждения, которые улучшают понимание и качество кода."
+                  ]
+                }
+              ],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-5-code-page-1",
+              "order": 3,
+              "title": "Практика: Модификаторы доступа",
+              "estimatedTimeMinutes": 15,
+              "tasks": [
+                {
+                  "id": "chapter-2-section-5-code-1",
+                  "type": "code",
+                  "title": "Практика: Модификаторы доступа",
+                  "prompt": "Создайте класс BankAccount с приватными полями для баланса и публичным методом GetBalance().",
+                  "starterCode": "using System;\n\npublic class BankAccount\n{\n    private decimal balance;\n\n    public BankAccount(decimal initialBalance)\n    {\n        // TODO: инициализируйте balance\n    }\n\n    public decimal GetBalance()\n    {\n        // TODO: верните текущий баланс\n        throw new NotImplementedException();\n    }\n}\n\npublic class Solution\n{\n    public static void Main()\n    {\n        // Необязательный локальный запуск\n    }\n}",
+                  "entryPoint": {
+                    "class": "BankAccount",
+                    "method": "GetBalance",
+                    "signature": ""
+                  },
+                  "constraints": {
+                    "timeLimitMs": 5000,
+                    "memoryLimitMb": 128,
+                    "disallow": []
+                  },
+                  "scoring": {
+                    "points": 5,
+                    "partial": false
+                  },
+                  "tests": [
+                    {
+                      "id": "chapter-2-section-5-code-1-test-1",
+                      "visibility": "visible",
+                      "input": "1000",
+                      "expectedOutput": "1000"
+                    }
+                  ],
+                  "hints": [
+                    "Начните с написания основного кода.",
+                    "Убедитесь, что ваш код обрабатывает все тестовые случаи.",
+                    "Проверьте, правильно ли выглядит вывод."
+                  ],
+                  "options": [],
+                  "solution": {
+                    "correctOptionIds": [],
+                    "explanation": "Выполняется автоматическим тестированием."
+                  }
+                }
+              ],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-5-page-3",
+              "order": 4,
+              "title": "Модификаторы доступа - часть 3",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_5_3.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-5-page-4",
+              "order": 5,
+              "title": "Модификаторы доступа - часть 4",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_5_4.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-2-section-6",
+          "order": 6,
+          "title": "Структуры",
+          "summary": "Структуры",
+          "pages": [
+            {
+              "id": "chapter-2-section-6-page-1",
+              "order": 1,
+              "title": "Структуры - часть 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_6_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-6-page-2",
+              "order": 2,
+              "title": "Структуры - часть 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_6_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-6-quiz-page-1",
+              "order": 3,
+              "title": "Проверь себя: Структуры",
+              "kind": "quiz",
+              "estimatedTimeMinutes": 6,
+              "tasks": [
+                {
+                  "id": "chapter-2-section-6-quiz-1-single",
+                  "type": "quiz",
+                  "selection": "single",
+                  "title": "Структуры в C#",
+                  "question": "Чем структура отличается от класса?",
+                  "scoring": {
+                    "points": 2,
+                    "partial": false
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-2-section-6-quiz-1-a",
+                      "text": "Структура — это тип значения, класс — тип ссылки",
+                      "isCorrect": true,
+                      "feedback": "Верно: struct — value type, class — reference type."
+                    },
+                    {
+                      "id": "chapter-2-section-6-quiz-1-b",
+                      "text": "Структура не может иметь методов",
+                      "isCorrect": false,
+                      "feedback": "Неверно: структура может содержать методы."
+                    },
+                    {
+                      "id": "chapter-2-section-6-quiz-1-c",
+                      "text": "Скорость работы структур выше",
+                      "isCorrect": true,
+                      "feedback": "Верно: структуры работают быстрее благодаря размещению в стеке."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-2-section-6-quiz-1-a"
+                    ],
+                    "explanation": "Структуры хранятся в стеке, классы — в куче, что влияет на производительность и поведение."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Ориентируйтесь на ключевые термины раздела.",
+                    "Вспомните, как тема используется в примерах кода."
+                  ]
+                },
+                {
+                  "id": "chapter-2-section-6-quiz-2-multiple",
+                  "type": "quiz",
+                  "selection": "multiple",
+                  "title": "Структуры и их использование",
+                  "question": "Выберите верные утверждения о структурах:",
+                  "scoring": {
+                    "points": 3,
+                    "partial": true
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-2-section-6-quiz-2-a",
+                      "text": "Структура может наследоваться от другой структуры",
+                      "isCorrect": false,
+                      "feedback": "Неверно: struct не поддерживает наследование."
+                    },
+                    {
+                      "id": "chapter-2-section-6-quiz-2-b",
+                      "text": "Структура может реализовать интерфейс",
+                      "isCorrect": true,
+                      "feedback": "Верно: struct может реализовывать интерфейсы."
+                    },
+                    {
+                      "id": "chapter-2-section-6-quiz-2-c",
+                      "text": "Переменная структуры содержит данные, а не ссылку",
+                      "isCorrect": true,
+                      "feedback": "Верно: это ключевая разница от классов."
+                    },
+                    {
+                      "id": "chapter-2-section-6-quiz-2-d",
+                      "text": "При передаче структуры в метод создаётся копия",
+                      "isCorrect": true,
+                      "feedback": "Верно: структуры передаются по значению."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-2-section-6-quiz-2-b",
+                      "chapter-2-section-6-quiz-2-c",
+                      "chapter-2-section-6-quiz-2-d"
+                    ],
+                    "explanation": "Структуры полезны для простых типов данных, требующих высокой производительности."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Выбирайте утверждения, которые улучшают понимание и качество кода."
+                  ]
+                }
+              ],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-6-code-page-1",
+              "order": 3,
+              "title": "Практика: Структура (Struct)",
+              "estimatedTimeMinutes": 15,
+              "tasks": [
+                {
+                  "id": "chapter-2-section-6-code-1",
+                  "type": "code",
+                  "title": "Практика: Структура (Struct)",
+                  "prompt": "Создайте структуру Point с полями X и Y, и методом Distance(), вычисляющим расстояние от начала координат.",
+                  "starterCode": "using System;\n\npublic struct Point\n{\n    public double X;\n    public double Y;\n\n    public double Distance()\n    {\n        // TODO: верните расстояние от начала координат\n        throw new NotImplementedException();\n    }\n}\n\npublic class Solution\n{\n    public static void Main()\n    {\n        // Необязательный локальный запуск\n    }\n}",
+                  "entryPoint": {
+                    "class": "Point",
+                    "method": "Distance",
+                    "signature": ""
+                  },
+                  "constraints": {
+                    "timeLimitMs": 5000,
+                    "memoryLimitMb": 128,
+                    "disallow": []
+                  },
+                  "scoring": {
+                    "points": 5,
+                    "partial": false
+                  },
+                  "tests": [
+                    {
+                      "id": "chapter-2-section-6-code-1-test-1",
+                      "visibility": "visible",
+                      "input": "3 4",
+                      "expectedOutput": "5"
+                    },
+                    {
+                      "id": "chapter-2-section-6-code-1-test-2",
+                      "visibility": "hidden",
+                      "input": "0 0",
+                      "expectedOutput": "0"
+                    }
+                  ],
+                  "hints": [
+                    "Начните с написания основного кода.",
+                    "Убедитесь, что ваш код обрабатывает все тестовые случаи.",
+                    "Проверьте, правильно ли выглядит вывод."
+                  ],
+                  "options": [],
+                  "solution": {
+                    "correctOptionIds": [],
+                    "explanation": "Выполняется автоматическим тестированием."
+                  }
+                }
+              ],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-6-page-3",
+              "order": 4,
+              "title": "Структуры - часть 3",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_6_3.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-6-page-4",
+              "order": 5,
+              "title": "Структуры - часть 4",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_6_4.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-2-section-7",
+          "order": 7,
+          "title": "Типы значений и ссылочные типы",
+          "summary": "Типы значений и ссылочные типы",
+          "pages": [
+            {
+              "id": "chapter-2-section-7-page-1",
+              "order": 1,
+              "title": "Типы значений и ссылочные типы - часть 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_7_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-7-page-2",
+              "order": 2,
+              "title": "Типы значений и ссылочные типы - часть 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_7_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-7-quiz-page-1",
+              "order": 3,
+              "title": "Проверь себя: Типы значений и ссылочные типы",
+              "kind": "quiz",
+              "estimatedTimeMinutes": 6,
+              "tasks": [
+                {
+                  "id": "chapter-2-section-7-quiz-1-single",
+                  "type": "quiz",
+                  "selection": "single",
+                  "title": "Типы значений и ссылочные типы",
+                  "question": "Где в памяти хранятся типы значений в C#?",
+                  "scoring": {
+                    "points": 2,
+                    "partial": false
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-2-section-7-quiz-1-a",
+                      "text": "В стеке",
+                      "isCorrect": true,
+                      "feedback": "Верно: value types хранятся в стеке."
+                    },
+                    {
+                      "id": "chapter-2-section-7-quiz-1-b",
+                      "text": "В куче",
+                      "isCorrect": false,
+                      "feedback": "Неверно: в куче хранятся reference types."
+                    },
+                    {
+                      "id": "chapter-2-section-7-quiz-1-c",
+                      "text": "В специальной памяти для типов",
+                      "isCorrect": false,
+                      "feedback": "Неверно: это не так."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-2-section-7-quiz-1-a"
+                    ],
+                    "explanation": "int, double, struct и enum — типы значений, они хранятся в стеке и передаются по значению."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Ориентируйтесь на ключевые термины раздела.",
+                    "Вспомните, как тема используется в примерах кода."
+                  ]
+                },
+                {
+                  "id": "chapter-2-section-7-quiz-2-multiple",
+                  "type": "quiz",
+                  "selection": "multiple",
+                  "title": "Поведение типов при передаче",
+                  "question": "Выберите верные утверждения:",
+                  "scoring": {
+                    "points": 3,
+                    "partial": true
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-2-section-7-quiz-2-a",
+                      "text": "При передаче типа значения копируется всё значение",
+                      "isCorrect": true,
+                      "feedback": "Верно: происходит полное копирование."
+                    },
+                    {
+                      "id": "chapter-2-section-7-quiz-2-b",
+                      "text": "При передаче ссылочного типа копируется ссылка",
+                      "isCorrect": true,
+                      "feedback": "Верно: передаётся только ссылка на объект."
+                    },
+                    {
+                      "id": "chapter-2-section-7-quiz-2-c",
+                      "text": "string — это ссылочный тип",
+                      "isCorrect": true,
+                      "feedback": "Верно: string относится к reference types."
+                    },
+                    {
+                      "id": "chapter-2-section-7-quiz-2-d",
+                      "text": "null можно присвоить типу значения",
+                      "isCorrect": false,
+                      "feedback": "Неверно: value types не могут быть null (кроме nullable<T>)."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-2-section-7-quiz-2-a",
+                      "chapter-2-section-7-quiz-2-b",
+                      "chapter-2-section-7-quiz-2-c"
+                    ],
+                    "explanation": "Разница между типами значений и ссылочными заметна при передаче параметров и присваивании."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Выбирайте утверждения, которые улучшают понимание и качество кода."
+                  ]
+                }
+              ],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-7-code-page-1",
+              "order": 3,
+              "title": "Практика: Типы значений vs ссылочные типы",
+              "estimatedTimeMinutes": 15,
+              "tasks": [
+                {
+                  "id": "chapter-2-section-7-code-1",
+                  "type": "code",
+                  "title": "Практика: Типы значений vs ссылочные типы",
+                  "prompt": "Напишите код, демонстрирующий разницу между типами значений и ссылочными типами при присваивании.",
+                  "starterCode": "using System;\n\npublic class Solution\n{\n    public static string Compare()\n    {\n        // TODO: объясните разницу value и reference типов\n        throw new NotImplementedException();\n    }\n\n    public static void Main()\n    {\n        // Необязательный локальный запуск\n    }\n}",
+                  "entryPoint": {
+                    "class": "Solution",
+                    "method": "Compare",
+                    "signature": ""
+                  },
+                  "constraints": {
+                    "timeLimitMs": 5000,
+                    "memoryLimitMb": 128,
+                    "disallow": []
+                  },
+                  "scoring": {
+                    "points": 5,
+                    "partial": false
+                  },
+                  "tests": [
+                    {
+                      "id": "chapter-2-section-7-code-1-test-1",
+                      "visibility": "visible",
+                      "input": "",
+                      "expectedOutput": "Value type and reference type behavior demonstrated"
+                    }
+                  ],
+                  "hints": [
+                    "Начните с написания основного кода.",
+                    "Убедитесь, что ваш код обрабатывает все тестовые случаи.",
+                    "Проверьте, правильно ли выглядит вывод."
+                  ],
+                  "options": [],
+                  "solution": {
+                    "correctOptionIds": [],
+                    "explanation": "Выполняется автоматическим тестированием."
+                  }
+                }
+              ],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-7-page-3",
+              "order": 4,
+              "title": "Типы значений и ссылочные типы - часть 3",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_7_3.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-7-page-4",
+              "order": 5,
+              "title": "Типы значений и ссылочные типы - часть 4",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_7_4.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-2-section-8",
+          "order": 8,
+          "title": "Методы",
+          "summary": "Методы",
+          "pages": [
+            {
+              "id": "chapter-2-section-8-page-1",
+              "order": 1,
+              "title": "Методы - часть 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_8_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-8-quiz-page-1",
+              "order": 2,
+              "title": "Проверь себя: Методы",
+              "kind": "quiz",
+              "estimatedTimeMinutes": 6,
+              "tasks": [
+                {
+                  "id": "chapter-2-section-8-quiz-1-single",
+                  "type": "quiz",
+                  "selection": "single",
+                  "title": "Ключевая идея раздела",
+                  "question": "Выберите верное утверждение по теме раздела «Методы».",
+                  "scoring": {
+                    "points": 2,
+                    "partial": false
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-2-section-8-quiz-1-a",
+                      "text": "Материал раздела нужно уметь применять на практике.",
+                      "isCorrect": true,
+                      "feedback": "Верно: теория закрепляется практикой."
+                    },
+                    {
+                      "id": "chapter-2-section-8-quiz-1-b",
+                      "text": "Тему можно изучать без примеров и проверки кода.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: примеры и проверка помогают понять тему."
+                    },
+                    {
+                      "id": "chapter-2-section-8-quiz-1-c",
+                      "text": "Раздел не содержит важных понятий для разработки.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: раздел содержит базовые понятия темы."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-2-section-8-quiz-1-a"
+                    ],
+                    "explanation": "Важная цель раздела — понимать концепции и применять их в коде."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Ориентируйтесь на ключевые термины раздела.",
+                    "Вспомните, как тема используется в примерах кода."
+                  ]
+                },
+                {
+                  "id": "chapter-2-section-8-quiz-2-multiple",
+                  "type": "quiz",
+                  "selection": "multiple",
+                  "title": "Практика и понимание",
+                  "question": "Выберите все верные утверждения.",
+                  "scoring": {
+                    "points": 3,
+                    "partial": true
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-2-section-8-quiz-2-a",
+                      "text": "Нужно учитывать синтаксис и контекст применения конструкций.",
+                      "isCorrect": true,
+                      "feedback": "Верно: контекст использования важен."
+                    },
+                    {
+                      "id": "chapter-2-section-8-quiz-2-b",
+                      "text": "Можно пропустить проверку программы на тестовых примерах.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: проверка на примерах обязательна."
+                    },
+                    {
+                      "id": "chapter-2-section-8-quiz-2-c",
+                      "text": "Регулярная практика помогает закрепить теоретический материал.",
+                      "isCorrect": true,
+                      "feedback": "Верно: практика закрепляет знания."
+                    },
+                    {
+                      "id": "chapter-2-section-8-quiz-2-d",
+                      "text": "Достаточно просто прочитать текст без анализа кода.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: нужен анализ и выполнение кода."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-2-section-8-quiz-2-a",
+                      "chapter-2-section-8-quiz-2-c"
+                    ],
+                    "explanation": "Лучший результат дает сочетание теории, анализа примеров и практики."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Выбирайте утверждения, которые улучшают понимание и качество кода."
+                  ]
+                }
+              ],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-8-page-2",
+              "order": 3,
+              "title": "Методы - часть 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_8_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-2-section-9",
+          "order": 9,
+          "title": "Параметры методов",
+          "summary": "Параметры методов",
+          "pages": [
+            {
+              "id": "chapter-2-section-9-page-1",
+              "order": 1,
+              "title": "Параметры методов - часть 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_9_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-9-quiz-page-1",
+              "order": 2,
+              "title": "Проверь себя: Параметры методов",
+              "kind": "quiz",
+              "estimatedTimeMinutes": 6,
+              "tasks": [
+                {
+                  "id": "chapter-2-section-9-quiz-1-single",
+                  "type": "quiz",
+                  "selection": "single",
+                  "title": "Ключевая идея раздела",
+                  "question": "Выберите верное утверждение по теме раздела «Параметры методов».",
+                  "scoring": {
+                    "points": 2,
+                    "partial": false
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-2-section-9-quiz-1-a",
+                      "text": "Материал раздела нужно уметь применять на практике.",
+                      "isCorrect": true,
+                      "feedback": "Верно: теория закрепляется практикой."
+                    },
+                    {
+                      "id": "chapter-2-section-9-quiz-1-b",
+                      "text": "Тему можно изучать без примеров и проверки кода.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: примеры и проверка помогают понять тему."
+                    },
+                    {
+                      "id": "chapter-2-section-9-quiz-1-c",
+                      "text": "Раздел не содержит важных понятий для разработки.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: раздел содержит базовые понятия темы."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-2-section-9-quiz-1-a"
+                    ],
+                    "explanation": "Важная цель раздела — понимать концепции и применять их в коде."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Ориентируйтесь на ключевые термины раздела.",
+                    "Вспомните, как тема используется в примерах кода."
+                  ]
+                },
+                {
+                  "id": "chapter-2-section-9-quiz-2-multiple",
+                  "type": "quiz",
+                  "selection": "multiple",
+                  "title": "Практика и понимание",
+                  "question": "Выберите все верные утверждения.",
+                  "scoring": {
+                    "points": 3,
+                    "partial": true
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-2-section-9-quiz-2-a",
+                      "text": "Нужно учитывать синтаксис и контекст применения конструкций.",
+                      "isCorrect": true,
+                      "feedback": "Верно: контекст использования важен."
+                    },
+                    {
+                      "id": "chapter-2-section-9-quiz-2-b",
+                      "text": "Можно пропустить проверку программы на тестовых примерах.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: проверка на примерах обязательна."
+                    },
+                    {
+                      "id": "chapter-2-section-9-quiz-2-c",
+                      "text": "Регулярная практика помогает закрепить теоретический материал.",
+                      "isCorrect": true,
+                      "feedback": "Верно: практика закрепляет знания."
+                    },
+                    {
+                      "id": "chapter-2-section-9-quiz-2-d",
+                      "text": "Достаточно просто прочитать текст без анализа кода.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: нужен анализ и выполнение кода."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-2-section-9-quiz-2-a",
+                      "chapter-2-section-9-quiz-2-c"
+                    ],
+                    "explanation": "Лучший результат дает сочетание теории, анализа примеров и практики."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Выбирайте утверждения, которые улучшают понимание и качество кода."
+                  ]
+                }
+              ],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-9-page-2",
+              "order": 3,
+              "title": "Параметры методов - часть 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_9_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-9-page-3",
+              "order": 4,
+              "title": "Параметры методов - часть 3",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_9_3.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-2-section-10",
+          "order": 10,
+          "title": "Свойства",
+          "summary": "Свойства",
+          "pages": [
+            {
+              "id": "chapter-2-section-10-page-1",
+              "order": 1,
+              "title": "Свойства - часть 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_10_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-10-page-2",
+              "order": 2,
+              "title": "Свойства - часть 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_10_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-10-quiz-page-1",
+              "order": 3,
+              "title": "Проверь себя: Свойства",
+              "kind": "quiz",
+              "estimatedTimeMinutes": 6,
+              "tasks": [
+                {
+                  "id": "chapter-2-section-10-quiz-1-single",
+                  "type": "quiz",
+                  "selection": "single",
+                  "title": "Ключевая идея раздела",
+                  "question": "Выберите верное утверждение по теме раздела «Свойства».",
+                  "scoring": {
+                    "points": 2,
+                    "partial": false
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-2-section-10-quiz-1-a",
+                      "text": "Материал раздела нужно уметь применять на практике.",
+                      "isCorrect": true,
+                      "feedback": "Верно: теория закрепляется практикой."
+                    },
+                    {
+                      "id": "chapter-2-section-10-quiz-1-b",
+                      "text": "Тему можно изучать без примеров и проверки кода.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: примеры и проверка помогают понять тему."
+                    },
+                    {
+                      "id": "chapter-2-section-10-quiz-1-c",
+                      "text": "Раздел не содержит важных понятий для разработки.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: раздел содержит базовые понятия темы."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-2-section-10-quiz-1-a"
+                    ],
+                    "explanation": "Важная цель раздела — понимать концепции и применять их в коде."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Ориентируйтесь на ключевые термины раздела.",
+                    "Вспомните, как тема используется в примерах кода."
+                  ]
+                },
+                {
+                  "id": "chapter-2-section-10-quiz-2-multiple",
+                  "type": "quiz",
+                  "selection": "multiple",
+                  "title": "Практика и понимание",
+                  "question": "Выберите все верные утверждения.",
+                  "scoring": {
+                    "points": 3,
+                    "partial": true
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-2-section-10-quiz-2-a",
+                      "text": "Нужно учитывать синтаксис и контекст применения конструкций.",
+                      "isCorrect": true,
+                      "feedback": "Верно: контекст использования важен."
+                    },
+                    {
+                      "id": "chapter-2-section-10-quiz-2-b",
+                      "text": "Можно пропустить проверку программы на тестовых примерах.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: проверка на примерах обязательна."
+                    },
+                    {
+                      "id": "chapter-2-section-10-quiz-2-c",
+                      "text": "Регулярная практика помогает закрепить теоретический материал.",
+                      "isCorrect": true,
+                      "feedback": "Верно: практика закрепляет знания."
+                    },
+                    {
+                      "id": "chapter-2-section-10-quiz-2-d",
+                      "text": "Достаточно просто прочитать текст без анализа кода.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: нужен анализ и выполнение кода."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-2-section-10-quiz-2-a",
+                      "chapter-2-section-10-quiz-2-c"
+                    ],
+                    "explanation": "Лучший результат дает сочетание теории, анализа примеров и практики."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Выбирайте утверждения, которые улучшают понимание и качество кода."
+                  ]
+                }
+              ],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-10-page-3",
+              "order": 4,
+              "title": "Свойства - часть 3",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_10_3.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-10-page-4",
+              "order": 5,
+              "title": "Свойства - часть 4",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_10_4.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-10-page-5",
+              "order": 6,
+              "title": "Свойства - часть 5",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_10_5.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-2-section-11",
+          "order": 11,
+          "title": "Исключения",
+          "summary": "Исключения",
+          "pages": [
+            {
+              "id": "chapter-2-section-11-page-1",
+              "order": 1,
+              "title": "Исключения - часть 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_11_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-11-quiz-page-1",
+              "order": 2,
+              "title": "Проверь себя: Исключения",
+              "kind": "quiz",
+              "estimatedTimeMinutes": 6,
+              "tasks": [
+                {
+                  "id": "chapter-2-section-11-quiz-1-single",
+                  "type": "quiz",
+                  "selection": "single",
+                  "title": "Ключевая идея раздела",
+                  "question": "Выберите верное утверждение по теме раздела «Исключения».",
+                  "scoring": {
+                    "points": 2,
+                    "partial": false
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-2-section-11-quiz-1-a",
+                      "text": "Материал раздела нужно уметь применять на практике.",
+                      "isCorrect": true,
+                      "feedback": "Верно: теория закрепляется практикой."
+                    },
+                    {
+                      "id": "chapter-2-section-11-quiz-1-b",
+                      "text": "Тему можно изучать без примеров и проверки кода.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: примеры и проверка помогают понять тему."
+                    },
+                    {
+                      "id": "chapter-2-section-11-quiz-1-c",
+                      "text": "Раздел не содержит важных понятий для разработки.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: раздел содержит базовые понятия темы."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-2-section-11-quiz-1-a"
+                    ],
+                    "explanation": "Важная цель раздела — понимать концепции и применять их в коде."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Ориентируйтесь на ключевые термины раздела.",
+                    "Вспомните, как тема используется в примерах кода."
+                  ]
+                },
+                {
+                  "id": "chapter-2-section-11-quiz-2-multiple",
+                  "type": "quiz",
+                  "selection": "multiple",
+                  "title": "Практика и понимание",
+                  "question": "Выберите все верные утверждения.",
+                  "scoring": {
+                    "points": 3,
+                    "partial": true
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-2-section-11-quiz-2-a",
+                      "text": "Нужно учитывать синтаксис и контекст применения конструкций.",
+                      "isCorrect": true,
+                      "feedback": "Верно: контекст использования важен."
+                    },
+                    {
+                      "id": "chapter-2-section-11-quiz-2-b",
+                      "text": "Можно пропустить проверку программы на тестовых примерах.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: проверка на примерах обязательна."
+                    },
+                    {
+                      "id": "chapter-2-section-11-quiz-2-c",
+                      "text": "Регулярная практика помогает закрепить теоретический материал.",
+                      "isCorrect": true,
+                      "feedback": "Верно: практика закрепляет знания."
+                    },
+                    {
+                      "id": "chapter-2-section-11-quiz-2-d",
+                      "text": "Достаточно просто прочитать текст без анализа кода.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: нужен анализ и выполнение кода."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-2-section-11-quiz-2-a",
+                      "chapter-2-section-11-quiz-2-c"
+                    ],
+                    "explanation": "Лучший результат дает сочетание теории, анализа примеров и практики."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Выбирайте утверждения, которые улучшают понимание и качество кода."
+                  ]
+                }
+              ],
+              "resources": []
+            },
+            {
+              "id": "chapter-2-section-11-page-2",
+              "order": 3,
+              "title": "Исключения - часть 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/2_11_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chapter-3",
+      "order": 3,
+      "title": "Операторы C#",
+      "summary": "Теория главы 3",
+      "sections": [
+        {
+          "id": "chapter-3-section-1",
+          "order": 1,
+          "title": "Вывод",
+          "summary": "Вывод",
+          "pages": [
+            {
+              "id": "chapter-3-section-1-page-1",
+              "order": 1,
+              "title": "Вывод - часть 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/3_1_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-1-quiz-page-1",
+              "order": 2,
+              "title": "Проверь себя: Вывод",
+              "kind": "quiz",
+              "estimatedTimeMinutes": 6,
+              "tasks": [
+                {
+                  "id": "chapter-3-section-1-quiz-1-single",
+                  "type": "quiz",
+                  "selection": "single",
+                  "title": "Ключевая идея раздела",
+                  "question": "Выберите верное утверждение по теме раздела «Вывод».",
+                  "scoring": {
+                    "points": 2,
+                    "partial": false
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-3-section-1-quiz-1-a",
+                      "text": "Материал раздела нужно уметь применять на практике.",
+                      "isCorrect": true,
+                      "feedback": "Верно: теория закрепляется практикой."
+                    },
+                    {
+                      "id": "chapter-3-section-1-quiz-1-b",
+                      "text": "Тему можно изучать без примеров и проверки кода.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: примеры и проверка помогают понять тему."
+                    },
+                    {
+                      "id": "chapter-3-section-1-quiz-1-c",
+                      "text": "Раздел не содержит важных понятий для разработки.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: раздел содержит базовые понятия темы."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-3-section-1-quiz-1-a"
+                    ],
+                    "explanation": "Важная цель раздела — понимать концепции и применять их в коде."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Ориентируйтесь на ключевые термины раздела.",
+                    "Вспомните, как тема используется в примерах кода."
+                  ]
+                },
+                {
+                  "id": "chapter-3-section-1-quiz-2-multiple",
+                  "type": "quiz",
+                  "selection": "multiple",
+                  "title": "Практика и понимание",
+                  "question": "Выберите все верные утверждения.",
+                  "scoring": {
+                    "points": 3,
+                    "partial": true
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-3-section-1-quiz-2-a",
+                      "text": "Нужно учитывать синтаксис и контекст применения конструкций.",
+                      "isCorrect": true,
+                      "feedback": "Верно: контекст использования важен."
+                    },
+                    {
+                      "id": "chapter-3-section-1-quiz-2-b",
+                      "text": "Можно пропустить проверку программы на тестовых примерах.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: проверка на примерах обязательна."
+                    },
+                    {
+                      "id": "chapter-3-section-1-quiz-2-c",
+                      "text": "Регулярная практика помогает закрепить теоретический материал.",
+                      "isCorrect": true,
+                      "feedback": "Верно: практика закрепляет знания."
+                    },
+                    {
+                      "id": "chapter-3-section-1-quiz-2-d",
+                      "text": "Достаточно просто прочитать текст без анализа кода.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: нужен анализ и выполнение кода."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-3-section-1-quiz-2-a",
+                      "chapter-3-section-1-quiz-2-c"
+                    ],
+                    "explanation": "Лучший результат дает сочетание теории, анализа примеров и практики."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Выбирайте утверждения, которые улучшают понимание и качество кода."
+                  ]
+                }
+              ],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-1-page-2",
+              "order": 3,
+              "title": "Вывод - часть 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/3_1_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-3-section-2",
+          "order": 2,
+          "title": "Консольный ввод",
+          "summary": "Консольный ввод",
+          "pages": [
+            {
+              "id": "chapter-3-section-2-page-1",
+              "order": 1,
+              "title": "Консольный ввод - часть 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/3_2_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-2-quiz-page-1",
+              "order": 2,
+              "title": "Проверь себя: Консольный ввод",
+              "kind": "quiz",
+              "estimatedTimeMinutes": 6,
+              "tasks": [
+                {
+                  "id": "chapter-3-section-2-quiz-1-single",
+                  "type": "quiz",
+                  "selection": "single",
+                  "title": "Ключевая идея раздела",
+                  "question": "Выберите верное утверждение по теме раздела «Консольный ввод».",
+                  "scoring": {
+                    "points": 2,
+                    "partial": false
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-3-section-2-quiz-1-a",
+                      "text": "Материал раздела нужно уметь применять на практике.",
+                      "isCorrect": true,
+                      "feedback": "Верно: теория закрепляется практикой."
+                    },
+                    {
+                      "id": "chapter-3-section-2-quiz-1-b",
+                      "text": "Тему можно изучать без примеров и проверки кода.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: примеры и проверка помогают понять тему."
+                    },
+                    {
+                      "id": "chapter-3-section-2-quiz-1-c",
+                      "text": "Раздел не содержит важных понятий для разработки.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: раздел содержит базовые понятия темы."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-3-section-2-quiz-1-a"
+                    ],
+                    "explanation": "Важная цель раздела — понимать концепции и применять их в коде."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Ориентируйтесь на ключевые термины раздела.",
+                    "Вспомните, как тема используется в примерах кода."
+                  ]
+                },
+                {
+                  "id": "chapter-3-section-2-quiz-2-multiple",
+                  "type": "quiz",
+                  "selection": "multiple",
+                  "title": "Практика и понимание",
+                  "question": "Выберите все верные утверждения.",
+                  "scoring": {
+                    "points": 3,
+                    "partial": true
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-3-section-2-quiz-2-a",
+                      "text": "Нужно учитывать синтаксис и контекст применения конструкций.",
+                      "isCorrect": true,
+                      "feedback": "Верно: контекст использования важен."
+                    },
+                    {
+                      "id": "chapter-3-section-2-quiz-2-b",
+                      "text": "Можно пропустить проверку программы на тестовых примерах.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: проверка на примерах обязательна."
+                    },
+                    {
+                      "id": "chapter-3-section-2-quiz-2-c",
+                      "text": "Регулярная практика помогает закрепить теоретический материал.",
+                      "isCorrect": true,
+                      "feedback": "Верно: практика закрепляет знания."
+                    },
+                    {
+                      "id": "chapter-3-section-2-quiz-2-d",
+                      "text": "Достаточно просто прочитать текст без анализа кода.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: нужен анализ и выполнение кода."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-3-section-2-quiz-2-a",
+                      "chapter-3-section-2-quiz-2-c"
+                    ],
+                    "explanation": "Лучший результат дает сочетание теории, анализа примеров и практики."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Выбирайте утверждения, которые улучшают понимание и качество кода."
+                  ]
+                }
+              ],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-2-page-2",
+              "order": 3,
+              "title": "Консольный ввод - часть 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/3_2_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-3-section-3",
+          "order": 3,
+          "title": "Арифметические операции и присваивание",
+          "summary": "Арифметические операции и присваивание",
+          "pages": [
+            {
+              "id": "chapter-3-section-3-page-1",
+              "order": 1,
+              "title": "Арифметические операции и присваивание - часть 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/3_3_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-3-page-2",
+              "order": 2,
+              "title": "Арифметические операции и присваивание - часть 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/3_3_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-3-quiz-page-1",
+              "order": 3,
+              "title": "Проверь себя: Арифметические операции и присваивание",
+              "kind": "quiz",
+              "estimatedTimeMinutes": 6,
+              "tasks": [
+                {
+                  "id": "chapter-3-section-3-quiz-1-single",
+                  "type": "quiz",
+                  "selection": "single",
+                  "title": "Ключевая идея раздела",
+                  "question": "Выберите верное утверждение по теме раздела «Арифметические операции и присваивание».",
+                  "scoring": {
+                    "points": 2,
+                    "partial": false
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-3-section-3-quiz-1-a",
+                      "text": "Материал раздела нужно уметь применять на практике.",
+                      "isCorrect": true,
+                      "feedback": "Верно: теория закрепляется практикой."
+                    },
+                    {
+                      "id": "chapter-3-section-3-quiz-1-b",
+                      "text": "Тему можно изучать без примеров и проверки кода.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: примеры и проверка помогают понять тему."
+                    },
+                    {
+                      "id": "chapter-3-section-3-quiz-1-c",
+                      "text": "Раздел не содержит важных понятий для разработки.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: раздел содержит базовые понятия темы."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-3-section-3-quiz-1-a"
+                    ],
+                    "explanation": "Важная цель раздела — понимать концепции и применять их в коде."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Ориентируйтесь на ключевые термины раздела.",
+                    "Вспомните, как тема используется в примерах кода."
+                  ]
+                },
+                {
+                  "id": "chapter-3-section-3-quiz-2-multiple",
+                  "type": "quiz",
+                  "selection": "multiple",
+                  "title": "Практика и понимание",
+                  "question": "Выберите все верные утверждения.",
+                  "scoring": {
+                    "points": 3,
+                    "partial": true
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-3-section-3-quiz-2-a",
+                      "text": "Нужно учитывать синтаксис и контекст применения конструкций.",
+                      "isCorrect": true,
+                      "feedback": "Верно: контекст использования важен."
+                    },
+                    {
+                      "id": "chapter-3-section-3-quiz-2-b",
+                      "text": "Можно пропустить проверку программы на тестовых примерах.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: проверка на примерах обязательна."
+                    },
+                    {
+                      "id": "chapter-3-section-3-quiz-2-c",
+                      "text": "Регулярная практика помогает закрепить теоретический материал.",
+                      "isCorrect": true,
+                      "feedback": "Верно: практика закрепляет знания."
+                    },
+                    {
+                      "id": "chapter-3-section-3-quiz-2-d",
+                      "text": "Достаточно просто прочитать текст без анализа кода.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: нужен анализ и выполнение кода."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-3-section-3-quiz-2-a",
+                      "chapter-3-section-3-quiz-2-c"
+                    ],
+                    "explanation": "Лучший результат дает сочетание теории, анализа примеров и практики."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Выбирайте утверждения, которые улучшают понимание и качество кода."
+                  ]
+                }
+              ],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-3-page-3",
+              "order": 4,
+              "title": "Арифметические операции и присваивание - часть 3",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/3_3_3.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-3-page-4",
+              "order": 5,
+              "title": "Арифметические операции и присваивание - часть 4",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/3_3_4.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-3-section-4",
+          "order": 4,
+          "title": "Условные выражения",
+          "summary": "Условные выражения",
+          "pages": [
+            {
+              "id": "chapter-3-section-4-page-1",
+              "order": 1,
+              "title": "Условные выражения - часть 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/3_4_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-4-quiz-page-1",
+              "order": 2,
+              "title": "Проверь себя: Условные выражения",
+              "kind": "quiz",
+              "estimatedTimeMinutes": 6,
+              "tasks": [
+                {
+                  "id": "chapter-3-section-4-quiz-1-single",
+                  "type": "quiz",
+                  "selection": "single",
+                  "title": "Ключевая идея раздела",
+                  "question": "Выберите верное утверждение по теме раздела «Условные выражения».",
+                  "scoring": {
+                    "points": 2,
+                    "partial": false
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-3-section-4-quiz-1-a",
+                      "text": "Материал раздела нужно уметь применять на практике.",
+                      "isCorrect": true,
+                      "feedback": "Верно: теория закрепляется практикой."
+                    },
+                    {
+                      "id": "chapter-3-section-4-quiz-1-b",
+                      "text": "Тему можно изучать без примеров и проверки кода.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: примеры и проверка помогают понять тему."
+                    },
+                    {
+                      "id": "chapter-3-section-4-quiz-1-c",
+                      "text": "Раздел не содержит важных понятий для разработки.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: раздел содержит базовые понятия темы."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-3-section-4-quiz-1-a"
+                    ],
+                    "explanation": "Важная цель раздела — понимать концепции и применять их в коде."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Ориентируйтесь на ключевые термины раздела.",
+                    "Вспомните, как тема используется в примерах кода."
+                  ]
+                },
+                {
+                  "id": "chapter-3-section-4-quiz-2-multiple",
+                  "type": "quiz",
+                  "selection": "multiple",
+                  "title": "Практика и понимание",
+                  "question": "Выберите все верные утверждения.",
+                  "scoring": {
+                    "points": 3,
+                    "partial": true
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-3-section-4-quiz-2-a",
+                      "text": "Нужно учитывать синтаксис и контекст применения конструкций.",
+                      "isCorrect": true,
+                      "feedback": "Верно: контекст использования важен."
+                    },
+                    {
+                      "id": "chapter-3-section-4-quiz-2-b",
+                      "text": "Можно пропустить проверку программы на тестовых примерах.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: проверка на примерах обязательна."
+                    },
+                    {
+                      "id": "chapter-3-section-4-quiz-2-c",
+                      "text": "Регулярная практика помогает закрепить теоретический материал.",
+                      "isCorrect": true,
+                      "feedback": "Верно: практика закрепляет знания."
+                    },
+                    {
+                      "id": "chapter-3-section-4-quiz-2-d",
+                      "text": "Достаточно просто прочитать текст без анализа кода.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: нужен анализ и выполнение кода."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-3-section-4-quiz-2-a",
+                      "chapter-3-section-4-quiz-2-c"
+                    ],
+                    "explanation": "Лучший результат дает сочетание теории, анализа примеров и практики."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Выбирайте утверждения, которые улучшают понимание и качество кода."
+                  ]
+                }
+              ],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-4-page-2",
+              "order": 3,
+              "title": "Условные выражения - часть 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/3_4_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-3-section-5",
+          "order": 5,
+          "title": "Поразрядные операции",
+          "summary": "Поразрядные операции",
+          "pages": [
+            {
+              "id": "chapter-3-section-5-page-1",
+              "order": 1,
+              "title": "Поразрядные операции - часть 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/3_5_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-5-page-2",
+              "order": 2,
+              "title": "Поразрядные операции - часть 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/3_5_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-5-quiz-page-1",
+              "order": 3,
+              "title": "Проверь себя: Поразрядные операции",
+              "kind": "quiz",
+              "estimatedTimeMinutes": 6,
+              "tasks": [
+                {
+                  "id": "chapter-3-section-5-quiz-1-single",
+                  "type": "quiz",
+                  "selection": "single",
+                  "title": "Ключевая идея раздела",
+                  "question": "Выберите верное утверждение по теме раздела «Поразрядные операции».",
+                  "scoring": {
+                    "points": 2,
+                    "partial": false
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-3-section-5-quiz-1-a",
+                      "text": "Материал раздела нужно уметь применять на практике.",
+                      "isCorrect": true,
+                      "feedback": "Верно: теория закрепляется практикой."
+                    },
+                    {
+                      "id": "chapter-3-section-5-quiz-1-b",
+                      "text": "Тему можно изучать без примеров и проверки кода.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: примеры и проверка помогают понять тему."
+                    },
+                    {
+                      "id": "chapter-3-section-5-quiz-1-c",
+                      "text": "Раздел не содержит важных понятий для разработки.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: раздел содержит базовые понятия темы."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-3-section-5-quiz-1-a"
+                    ],
+                    "explanation": "Важная цель раздела — понимать концепции и применять их в коде."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Ориентируйтесь на ключевые термины раздела.",
+                    "Вспомните, как тема используется в примерах кода."
+                  ]
+                },
+                {
+                  "id": "chapter-3-section-5-quiz-2-multiple",
+                  "type": "quiz",
+                  "selection": "multiple",
+                  "title": "Практика и понимание",
+                  "question": "Выберите все верные утверждения.",
+                  "scoring": {
+                    "points": 3,
+                    "partial": true
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-3-section-5-quiz-2-a",
+                      "text": "Нужно учитывать синтаксис и контекст применения конструкций.",
+                      "isCorrect": true,
+                      "feedback": "Верно: контекст использования важен."
+                    },
+                    {
+                      "id": "chapter-3-section-5-quiz-2-b",
+                      "text": "Можно пропустить проверку программы на тестовых примерах.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: проверка на примерах обязательна."
+                    },
+                    {
+                      "id": "chapter-3-section-5-quiz-2-c",
+                      "text": "Регулярная практика помогает закрепить теоретический материал.",
+                      "isCorrect": true,
+                      "feedback": "Верно: практика закрепляет знания."
+                    },
+                    {
+                      "id": "chapter-3-section-5-quiz-2-d",
+                      "text": "Достаточно просто прочитать текст без анализа кода.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: нужен анализ и выполнение кода."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-3-section-5-quiz-2-a",
+                      "chapter-3-section-5-quiz-2-c"
+                    ],
+                    "explanation": "Лучший результат дает сочетание теории, анализа примеров и практики."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Выбирайте утверждения, которые улучшают понимание и качество кода."
+                  ]
+                }
+              ],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-5-page-3",
+              "order": 4,
+              "title": "Поразрядные операции - часть 3",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/3_5_3.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-5-page-4",
+              "order": 5,
+              "title": "Поразрядные операции - часть 4",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/3_5_4.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-3-section-6",
+          "order": 6,
+          "title": "Условные операторы (if)",
+          "summary": "Условные операторы (if)",
+          "pages": [
+            {
+              "id": "chapter-3-section-6-page-1",
+              "order": 1,
+              "title": "Условные операторы (if) - часть 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/3_6_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-6-quiz-page-1",
+              "order": 2,
+              "title": "Проверь себя: Условные операторы (if)",
+              "kind": "quiz",
+              "estimatedTimeMinutes": 6,
+              "tasks": [
+                {
+                  "id": "chapter-3-section-6-quiz-1-single",
+                  "type": "quiz",
+                  "selection": "single",
+                  "title": "Ключевая идея раздела",
+                  "question": "Выберите верное утверждение по теме раздела «Условные операторы (if)».",
+                  "scoring": {
+                    "points": 2,
+                    "partial": false
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-3-section-6-quiz-1-a",
+                      "text": "Материал раздела нужно уметь применять на практике.",
+                      "isCorrect": true,
+                      "feedback": "Верно: теория закрепляется практикой."
+                    },
+                    {
+                      "id": "chapter-3-section-6-quiz-1-b",
+                      "text": "Тему можно изучать без примеров и проверки кода.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: примеры и проверка помогают понять тему."
+                    },
+                    {
+                      "id": "chapter-3-section-6-quiz-1-c",
+                      "text": "Раздел не содержит важных понятий для разработки.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: раздел содержит базовые понятия темы."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-3-section-6-quiz-1-a"
+                    ],
+                    "explanation": "Важная цель раздела — понимать концепции и применять их в коде."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Ориентируйтесь на ключевые термины раздела.",
+                    "Вспомните, как тема используется в примерах кода."
+                  ]
+                },
+                {
+                  "id": "chapter-3-section-6-quiz-2-multiple",
+                  "type": "quiz",
+                  "selection": "multiple",
+                  "title": "Практика и понимание",
+                  "question": "Выберите все верные утверждения.",
+                  "scoring": {
+                    "points": 3,
+                    "partial": true
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-3-section-6-quiz-2-a",
+                      "text": "Нужно учитывать синтаксис и контекст применения конструкций.",
+                      "isCorrect": true,
+                      "feedback": "Верно: контекст использования важен."
+                    },
+                    {
+                      "id": "chapter-3-section-6-quiz-2-b",
+                      "text": "Можно пропустить проверку программы на тестовых примерах.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: проверка на примерах обязательна."
+                    },
+                    {
+                      "id": "chapter-3-section-6-quiz-2-c",
+                      "text": "Регулярная практика помогает закрепить теоретический материал.",
+                      "isCorrect": true,
+                      "feedback": "Верно: практика закрепляет знания."
+                    },
+                    {
+                      "id": "chapter-3-section-6-quiz-2-d",
+                      "text": "Достаточно просто прочитать текст без анализа кода.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: нужен анализ и выполнение кода."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-3-section-6-quiz-2-a",
+                      "chapter-3-section-6-quiz-2-c"
+                    ],
+                    "explanation": "Лучший результат дает сочетание теории, анализа примеров и практики."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Выбирайте утверждения, которые улучшают понимание и качество кода."
+                  ]
+                }
+              ],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-6-page-2",
+              "order": 3,
+              "title": "Условные операторы (if) - часть 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/3_6_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        },
+        {
+          "id": "chapter-3-section-7",
+          "order": 7,
+          "title": "Циклы",
+          "summary": "Циклы",
+          "pages": [
+            {
+              "id": "chapter-3-section-7-page-1",
+              "order": 1,
+              "title": "Циклы - часть 1",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/3_7_1.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-7-page-2",
+              "order": 2,
+              "title": "Циклы - часть 2",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/3_7_2.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-7-quiz-page-1",
+              "order": 3,
+              "title": "Проверь себя: Циклы",
+              "kind": "quiz",
+              "estimatedTimeMinutes": 6,
+              "tasks": [
+                {
+                  "id": "chapter-3-section-7-quiz-1-single",
+                  "type": "quiz",
+                  "selection": "single",
+                  "title": "Ключевая идея раздела",
+                  "question": "Выберите верное утверждение по теме раздела «Циклы».",
+                  "scoring": {
+                    "points": 2,
+                    "partial": false
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-3-section-7-quiz-1-a",
+                      "text": "Материал раздела нужно уметь применять на практике.",
+                      "isCorrect": true,
+                      "feedback": "Верно: теория закрепляется практикой."
+                    },
+                    {
+                      "id": "chapter-3-section-7-quiz-1-b",
+                      "text": "Тему можно изучать без примеров и проверки кода.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: примеры и проверка помогают понять тему."
+                    },
+                    {
+                      "id": "chapter-3-section-7-quiz-1-c",
+                      "text": "Раздел не содержит важных понятий для разработки.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: раздел содержит базовые понятия темы."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-3-section-7-quiz-1-a"
+                    ],
+                    "explanation": "Важная цель раздела — понимать концепции и применять их в коде."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Ориентируйтесь на ключевые термины раздела.",
+                    "Вспомните, как тема используется в примерах кода."
+                  ]
+                },
+                {
+                  "id": "chapter-3-section-7-quiz-2-multiple",
+                  "type": "quiz",
+                  "selection": "multiple",
+                  "title": "Практика и понимание",
+                  "question": "Выберите все верные утверждения.",
+                  "scoring": {
+                    "points": 3,
+                    "partial": true
+                  },
+                  "options": [
+                    {
+                      "id": "chapter-3-section-7-quiz-2-a",
+                      "text": "Нужно учитывать синтаксис и контекст применения конструкций.",
+                      "isCorrect": true,
+                      "feedback": "Верно: контекст использования важен."
+                    },
+                    {
+                      "id": "chapter-3-section-7-quiz-2-b",
+                      "text": "Можно пропустить проверку программы на тестовых примерах.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: проверка на примерах обязательна."
+                    },
+                    {
+                      "id": "chapter-3-section-7-quiz-2-c",
+                      "text": "Регулярная практика помогает закрепить теоретический материал.",
+                      "isCorrect": true,
+                      "feedback": "Верно: практика закрепляет знания."
+                    },
+                    {
+                      "id": "chapter-3-section-7-quiz-2-d",
+                      "text": "Достаточно просто прочитать текст без анализа кода.",
+                      "isCorrect": false,
+                      "feedback": "Неверно: нужен анализ и выполнение кода."
+                    }
+                  ],
+                  "solution": {
+                    "correctOptionIds": [
+                      "chapter-3-section-7-quiz-2-a",
+                      "chapter-3-section-7-quiz-2-c"
+                    ],
+                    "explanation": "Лучший результат дает сочетание теории, анализа примеров и практики."
+                  },
+                  "tests": [],
+                  "hints": [
+                    "Выбирайте утверждения, которые улучшают понимание и качество кода."
+                  ]
+                }
+              ],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-7-page-3",
+              "order": 4,
+              "title": "Циклы - часть 3",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/3_7_3.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-7-page-4",
+              "order": 5,
+              "title": "Циклы - часть 4",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/3_7_4.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            },
+            {
+              "id": "chapter-3-section-7-page-5",
+              "order": 6,
+              "title": "Циклы - часть 5",
+              "estimatedTimeMinutes": 5,
+              "content": {
+                "format": "richText",
+                "source": "new theory/диплом 4 курс Анна/3_7_5.rtf"
+              },
+              "tasks": [],
+              "resources": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "glossary": [
+    {
+      "term": "Скомпилированный язык",
+      "definition": "Язык, исходный код которого перед выполнением переводится в машинный код."
+    },
+    {
+      "term": "RTF",
+      "definition": "Rich Text Format — формат текста с поддержкой форматирования."
+    }
+  ],
+  "resources": [
+    {
+      "type": "externalLink",
+      "title": "Документация Microsoft по C#",
+      "url": "https://learn.microsoft.com/dotnet/csharp/"
+    }
+  ]
+}
