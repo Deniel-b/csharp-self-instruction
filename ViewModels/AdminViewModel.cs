@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using kursach.Services;
 using CourseContentModel = kursachFile.CourseContent;
 using LearningTaskModel = kursachFile.LearningTask;
@@ -36,7 +36,7 @@ public sealed class AdminViewModel
     public PageResourceModel? SelectedResource { get; set; }
 
     public int HistoryIndex { get; private set; } = -1;
-    public IReadOnlyList<AdminHistoryEntry> History => _history;
+    public IList<AdminHistoryEntry> History => _history;
     public bool CanUndo => HistoryIndex > 0;
     public bool CanRedo => HistoryIndex >= 0 && HistoryIndex < _history.Count - 1;
 
@@ -95,3 +95,4 @@ public sealed class AdminViewModel
         return true;
     }
 }
+
